@@ -132,7 +132,7 @@ export const Lid = ({ scaleX, scaleY, rotate, translate, src }) => {
       >
         <div className="absolute inset-0 bg-[#272729] rounded-lg" />
         <img
-          src="https://cdn.donmai.us/sample/f2/9e/__hakurei_reimu_touhou_drawn_by_chinnpi__sample-f29e19882b5bee7002f5957d8d1f97a1.jpg"
+          src="https://i.pinimg.com/originals/02/fd/b7/02fdb7fadcdb4c24bd910626a0b631d9.jpg"
           alt="aceternity logo"
           className="object-cover object-left-top absolute rounded-lg inset-0 h-full w-full"
         />
@@ -577,39 +577,3 @@ const AceternityLogo = () => {
 
   );
 };
-
-// export const SpeakerGrid = () => {
-//   return (
-//     <div className="relative h-full flex flex-col">
-//       <div className="flex">
-//         <div className="rounded-lg bg-gray-900 w-2 h-2 m-2" />
-//         <div className="rounded-lg bg-gray-900 w-2 h-2 m-2" />
-//       </div>
-//       <div className="flex">
-//         <div className="rounded-lg bg-gray-900 w-2 h-2 m-2" />
-//         <div className="rounded-lg bg-gray-900 w-2 h-2 m-2" />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export const Row = ({ children }) => {
-//   return (
-//     <div className="flex flex-wrap mb-1">
-//       {children}
-//     </div>
-//   );
-// };
-
-// export const KBtn = ({ children, className, childrenClassName }) => {
-//   return (
-//     <div
-//       className={cn(
-//         "border border-[#191919] hover:bg-[#3d3d3d] transition-all duration-100 ease-in-out rounded-md flex items-center justify-center text-sm text-neutral-300 h-8 mx-0.5",
-//         className
-//       )}
-//     >
-//       <span className={cn("flex items-center justify-center", childrenClassName)}>{children}</span>
-//     </div>
-//   );
-// };
