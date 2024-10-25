@@ -1,17 +1,36 @@
 import { useState } from 'react'
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import './index.css'
 
-import { MacbookScroll } from "./components/ui/macbook-scroll";
 
+// Admin
+
+
+// User
+import About from './components/about';
 
 function App() {
   return (
-    <main className='text-4xl font-bold'>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              {/* LINKS HERE */}
+              <Link to="/about"></Link>
+            </li>
+          </ul>
+        </nav>
 
-      <MacbookScroll />
-    </main>
+        <Routes>
+          {/* ROUTES HERE */}
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </div>
+    </Router>
   )
 }
+
+
 
 export default App
