@@ -22,8 +22,16 @@ export const getPromo = async (req, res) => {
 }
 
 export const createPromo = async (req, res) => {
+    const promo = req.body;
+
+    if(!promo.name || !promo.discount || !promo.image || !promo.description || !promo.figurine || !promo.expiry) {
+        return res.status(400).json({ success: false, message: "Please fill all the fields" });
+    }
+
+    const newPromo = new Promo(promo);
+
     try {
-        const promo = await Promo.create(req.body);
+        await newPromo.save();
         res.status(201).json({success: true, data: promo});
     } catch (error) {
         console.log("Error in Creating Promo: ", error.message);

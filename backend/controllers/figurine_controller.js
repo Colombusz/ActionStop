@@ -22,8 +22,16 @@ export const getFigurine = async (req, res) => {
 }
 
 export const createFigurine = async (req, res) => {
+    const figurine = req.body;
+
+    if(!figurine.name || !figurine.price || !figurine.image || !figurine.origin || !figurine.classification) {
+        return res.status(400).json({ success: false, message: "Please fill all the fields" });
+    }
+
+    const newFigurine = new figurine(figurine);
+
     try {
-        const figurine = await figurine.create(req.body);
+        await newFigurine.save();
         res.status(201).json({success: true, data: figurine});
     } catch (error) {
         console.log("Error in Creating Figurine: ", error.message);

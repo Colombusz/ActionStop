@@ -22,8 +22,16 @@ export const getManufacturer = async (req, res) => {
 }
 
 export const createManufacturer = async (req, res) => {
+    const manufacturer = req.body;
+    
+    if(!manufacturer.name || !manufacturer.country || !manufacturer.image) {
+        return res.status(400).json({ success: false, message: "Please fill all the fields" });
+    }
+
+    const newManufacturer = new Manufacturer(manufacturer);
+
     try {
-        const manufacturer = await Manufacturer.create(req.body);
+        await newManufacturer.save();
         res.status(201).json({success: true, data: manufacturer});
     } catch (error) {
         console.log("Error in Creating Manufacturer: ", error.message);

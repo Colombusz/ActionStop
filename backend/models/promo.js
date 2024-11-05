@@ -19,6 +19,10 @@ const promoSchema = mongoose.Schema({
         required: true,
         ref: "Figurine",
     },
+    description: {
+        type: String,
+        required: [true, "Please enter the description of the promo"],
+    },
     expiry: {
         type: Date,
         required: [true, "Please enter the expiry of the promo"],
