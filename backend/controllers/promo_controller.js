@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Promo from "./promo.js";
+import Promo from "../models/promo.js";
 
 export const getPromos = async (req, res) => {
     try {

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Manufacturer from "../models/manufacturer";
+import Manufacturer from "../models/manufacturer.js";
 
 export const getManufacturers = async (req, res) => {
     try {

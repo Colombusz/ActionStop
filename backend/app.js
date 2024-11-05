@@ -20,5 +20,4 @@ app.use("/api/figurines", figurineRoutes);
 app.use("/api/manufacturers", manufacturerRoutes);
 app.use("/api/promos", promoRoutes);
 
-// Export the app
 export default app;
