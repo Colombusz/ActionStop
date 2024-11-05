@@ -136,14 +136,14 @@ export const products = [
         "https://m.media-amazon.com/images/I/51iJ8XsUFdL._AC_SL1000_.jpg",
     },
     {
-        title: "Waifuu",
+        title: "Hitori Goto",
         thumbnail:
-          "https://i.pinimg.com/originals/0e/5f/04/0e5f0414836f8e5df3d8f6fb0689eb50.jpg",
+          "https://store.aniplexusa.com/bocchi-the-rock/hitori-figure-1-7/images/1.jpg",
       },
       {
-        title: "Waifu",
+        title: "Misaka Mikoto",
         thumbnail:
-          "https://i.pinimg.com/originals/7b/77/ba/7b77ba0175533d620ea3823bd23989c3.jpg",
+          "https://i.pinimg.com/originals/9d/90/37/9d903788b61c8291660d07c2d3560f64.png",
       },
       {
         title: "Saberrrr",
