@@ -3,12 +3,12 @@ import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import { connectDB } from "./config/db.js";
+import app from "./app.js";
 
 dotenv.config();
 
-const app = express();
 const PORT = process.env.PORT || 5000
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
 app.use(express.json());  // Allows to accept JSON data in the req.body
 
