@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import figurine from "../models/figurine.js";
+import Figurine from "../models/figurine.js";
 
 export const getFigurines = async (req, res) => {
     try {
@@ -28,7 +29,7 @@ export const createFigurine = async (req, res) => {
         return res.status(400).json({ success: false, message: "Please fill all the fields" });
     }
 
-    const newFigurine = new figurine(figurine);
+    const newFigurine = new Figurine(figurine);
 
     try {
         await newFigurine.save();
