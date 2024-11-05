@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import figurine from "../models/figurine.js";
+// import figurine from "../models/figurine.js";
 import Figurine from "../models/figurine.js";
 
 export const getFigurines = async (req, res) => {
     try {
-        const figurines = await figurine.find();
+        const figurines = await Figurine.find();
         res.status(200).json({success: true, data: figurines});
     } catch (error) {
         console.log("Error in Fetching Figurines: ", error.message);
@@ -14,7 +14,7 @@ export const getFigurines = async (req, res) => {
 
 export const getFigurine = async (req, res) => {
     try {
-        const figurine = await figurine.findById(req.params.id);
+        const figurine = await Figurine.findById(req.params.id);
         res.status(200).json({success: true, data: figurine});
     } catch (error) {
         console.log("Error in Fetching Figurine: ", error.message);
@@ -48,7 +48,7 @@ export const updateFigurine = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No Figurine with id: ${id}`);
 
     try {
-        const updatedFigurine = await figurine.findByIdAndUpdate(id, figurine, { new: true });
+        const updatedFigurine = await Figurine.findByIdAndUpdate(id, figurine, { new: true });
         res.status(200).json({success: true, data: updatedFigurine});
     }catch (error) {
         console.log("Error Updating Figurine: ", error.message);
@@ -63,7 +63,7 @@ export const deleteFigurine = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No Figurine with id: ${id}`);
 
     try {
-        await figurine.findByIdAndRemove(id);
+        await Figurine.findByIdAndRemove(id);
         res.status(200).json({success: true, message: "Figurine deleted successfully"});
     } catch (error) {
         console.log("Error Deleting Figurine: ", error.message);
