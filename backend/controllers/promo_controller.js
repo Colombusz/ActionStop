@@ -12,8 +12,15 @@ export const getPromos = async (req, res) => {
 }
 
 export const getPromo = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const promo = await Promo.findById(req.params.id);
+        const promo = await Promo.findById(id);
+
+        if(!promo) {
+            return res.status(404).json({ success: false, message: "Promo not found" });
+        }
+        
         res.status(200).json({success: true, data: promo});
     } catch (error) {
         console.log("Error in Fetching Promo: ", error.message);

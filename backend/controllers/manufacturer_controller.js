@@ -12,8 +12,15 @@ export const getManufacturers = async (req, res) => {
 }
 
 export const getManufacturer = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const manufacturer = await Manufacturer.findById(req.params.id);
+        const manufacturer = await Manufacturer.findById(id);
+
+        if(!manufacturer) {
+            return res.status(404).json({ success: false, message: "Manufacturer not found" });
+        }
+        
         res.status(200).json({success: true, data: manufacturer});
     } catch (error) {
         console.log("Error in Fetching Manufacturer: ", error.message);

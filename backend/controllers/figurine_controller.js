@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import figurine from "../models/figurine.js";
 import Figurine from "../models/figurine.js";
 
 export const getFigurines = async (req, res) => {
@@ -13,8 +12,15 @@ export const getFigurines = async (req, res) => {
 }
 
 export const getFigurine = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const figurine = await figurine.findById(req.params.id);
+        const figurine = await Figurine.findById(id);
+
+        if(!figurine) {
+            return res.status(404).json({ success: false, message: "Figurine not found" });
+        }
+        
         res.status(200).json({success: true, data: figurine});
     } catch (error) {
         console.log("Error in Fetching Figurine: ", error.message);
