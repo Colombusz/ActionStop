@@ -8,6 +8,8 @@ import store from './components/store/store.js';  // Make sure your store is cor
 
 // Admin
 import AdminHomePage from './components/admin/home';
+import AdminSidebar from './components/admin/adminsidebar';
+import FigurineDashboard from './components/admin/figurine.jsx';
 
 // User
 import Home from './components/home';
@@ -18,19 +20,6 @@ function App() {
     <Provider store={store}>
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li>
-              {/* LINKS HERE */}
-              {/* User / Non user */}
-              <Link to="/about"></Link>
-              <Link to="/home"></Link>
-              {/* Admin */}
-              <Link to="/admin"></Link>
-            </li>
-          </ul>
-        </nav>
-
         <Routes>
           {/* ROUTES HERE */}
           {/* User / Non User */}
@@ -40,6 +29,7 @@ function App() {
 
           {/* Admin */}
           <Route path="/admin" element={<AdminHomePage />} />
+          <Route path="/admin/figurines" element={<FigurineDashboard />} />
         </Routes>
       </div>
     </Router>

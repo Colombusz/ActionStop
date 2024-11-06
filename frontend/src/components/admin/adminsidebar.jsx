@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import { IconArrowLeft, IconBrandTabler, IconSettings, IconUserBolt } from "@tabler/icons-react";
+import { GiFigurehead } from "react-icons/gi";
+import { MdOutlinePrecisionManufacturing } from "react-icons/md";
+import { IoGift } from "react-icons/io5";
+
 import { Sidebar, SidebarBody, DesktopSidebar, SidebarLink } from "../ui/sidebar";
 
 const AdminSidebar = () => {
-  const links = [
-    { label: "Dashboard", href: "#", icon: <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-    { label: "Profile", href: "#", icon: <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-    { label: "Settings", href: "#", icon: <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-    { label: "Logout", href: "#", icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-  ];
+    const links = [
+        { label: "Dashboard", href: "#", icon: <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Profile", href: "#", icon: <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Figurines", href: "/admin/figurines", icon: <GiFigurehead className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Manufacturers", href: "#", icon: <MdOutlinePrecisionManufacturing className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Promos", href: "#", icon: <IoGift className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Settings", href: "#", icon: <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Logout", href: "#", icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+    ];
+      
 
   const [open, setOpen] = useState(true); // Sidebar starts open on desktop
 

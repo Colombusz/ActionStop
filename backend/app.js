@@ -12,8 +12,8 @@ app.use(express.json({limit:'50mb'}));
 app.use(express.urlencoded({extended:true, limit:'50mb'}));
 
 // Middleware
-// app.use(cookieParser());
-// app.use(cors());
+app.use(cookieParser());
+app.use(cors());
 
 // Router Connection
 app.use("/api/figurines", figurineRoutes);

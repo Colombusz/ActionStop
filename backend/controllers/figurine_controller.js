@@ -3,7 +3,7 @@ import Figurine from "../models/figurine.js";
 
 export const getFigurines = async (req, res) => {
     try {
-        const figurines = await Figurine.find();
+        const figurines = await Figurine.find({});
         res.status(200).json({success: true, data: figurines});
     } catch (error) {
         console.log("Error in Fetching Figurines: ", error.message);
