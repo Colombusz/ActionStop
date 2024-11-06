@@ -15,15 +15,7 @@ export const getFigurine = async (req, res) => {
     const { id } = req.params;
 
     try {
-<<<<<<< Updated upstream
-        const figurine = await Figurine.findById(req.params.id);
-=======
         const figurine = await Figurine.findById(id);
-
-        if(!figurine) {
-            return res.status(404).json({ success: false, message: "Figurine not found" });
-        }
->>>>>>> Stashed changes
         res.status(200).json({success: true, data: figurine});
     } catch (error) {
         console.log("Error in Fetching Figurine: ", error.message);
