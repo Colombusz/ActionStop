@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import './index.css';
 
@@ -6,37 +7,44 @@ import { Provider } from 'react-redux';
 import store from './components/store/store.js';  // Make sure your store is correctly exported from store/store.js
 
 // Admin
+import AdminHomePage from './components/admin/home';
 
 // User
-import About from './components/pages/about';
-import Home from './components/pages/home';
+import Home from './components/home';
+import About from './components/about';
 
 function App() {
   return (
-    <Provider store={store}>  {/* Wrap the entire app with the Provider */}
-      <Router>
-        <div>
-          <nav>
-            
-             
-                {/* Provide text or labels for the Links */}
-                {/* <Link to="/about">About</Link>
-             
-             
-                <Link to="/home">Home</Link> */}
-             
-            
-          </nav>
+    <Provider store={store}>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              {/* LINKS HERE */}
+              {/* User / Non user */}
+              <Link to="/about"></Link>
+              <Link to="/home"></Link>
+              {/* Admin */}
+              <Link to="/admin"></Link>
+            </li>
+          </ul>
+        </nav>
 
-          <Routes>
-            {/* Define the routes here */}
-            <Route path="/about" element={<About />} />
-            <Route path="/home" element={<Home />} />
-          </Routes>
-        </div>
-      </Router>
+        <Routes>
+          {/* ROUTES HERE */}
+          {/* User / Non User */}
+          <Route path="/about" element={<About />} />
+          <Route path="/home" element={<Home />} />
+
+
+          {/* Admin */}
+          <Route path="/admin" element={<AdminHomePage />} />
+        </Routes>
+      </div>
+    </Router>
     </Provider>
-  );
+  )
 }
 
 export default App;

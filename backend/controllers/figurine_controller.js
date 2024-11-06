@@ -15,7 +15,7 @@ export const getFigurine = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const figurine = await Figurine.findById(req.params.id);
+        const figurine = await Figurine.findById(id);
         res.status(200).json({success: true, data: figurine});
     } catch (error) {
         console.log("Error in Fetching Figurine: ", error.message);
