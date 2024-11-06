@@ -10,6 +10,8 @@ import store from './components/store/store.js';  // Make sure your store is cor
 import AdminHomePage from './components/admin/home';
 import AdminSidebar from './components/admin/adminsidebar';
 import FigurineDashboard from './components/admin/figurine.jsx';
+import ManufacturerDashboard from './components/admin/manufacturer.jsx';
+import PromoDashboard from './components/admin/promo.jsx';
 
 // User
 import Home from './components/home';
@@ -30,6 +32,8 @@ function App() {
           {/* Admin */}
           <Route path="/admin" element={<AdminHomePage />} />
           <Route path="/admin/figurines" element={<FigurineDashboard />} />
+          <Route path="/admin/manufacturers" element={<ManufacturerDashboard />} />
+          <Route path="/admin/promos" element={<PromoDashboard />} />
         </Routes>
       </div>
     </Router>

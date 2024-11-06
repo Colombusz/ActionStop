@@ -4,38 +4,39 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 
 import AdminSidebar from './adminsidebar';
-import { useFigurineStore } from '../store/zfigurine';
+import { usePromoStore } from '../store/zpromo';
 
-const FigurineDashboard = () => {
-    // Fetching Figurines
-    const { fetchFigurines, figurines } = useFigurineStore();
+const PromoDashboard = () => {
+    // Fetching Promos
+    const { fetchPromos, promos } = usePromoStore();
 
     useEffect(() => {
-        const fetchfigurinedata = async () => {
-            await fetchFigurines();
+        const fetchPromoData = async () => {
+            await fetchPromos();
         }
-        fetchfigurinedata();
-    }, [fetchFigurines]);
+        fetchPromoData();
+    }, [fetchPromos]);
 
     return (
         <div className="flex">
             <AdminSidebar />
             <Stack spacing={2} className="flex-1 p-5">
-                <h1 className="font-delius text-3xl font-bold mb-4">Figurine Dashboard</h1>
-                <DataTable rows={figurines} />
+                <h1 className="font-delius text-3xl font-bold mb-4">Promo Dashboard</h1>
+                <DataTable rows={promos} />
             </Stack>
         </div>
     );
 }
 
-// DataTable for Figurines
+// DataTable for Promos
 const columns = [
   { field: '_id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Figure Name', width: 130 },
-  { field: 'price', headerName: 'Price', width: 130 },
+  { field: 'name', headerName: 'Promo Name', width: 130 },
+  { field: 'discount', headerName: 'Discount', width: 130 },
   { field: 'image', headerName: 'Image', width: 130 },
-  { field: 'origin', headerName: 'Origin', width: 130 },
-  { field: 'classification', headerName: 'Classification', width: 130 },
+  { field: 'figurine', headerName: 'Figurine', width: 130 },
+  { field: 'description', headerName: 'Description', width: 200 },
+  { field: 'expiry', headerName: 'Expiry Date', width: 130 },
 ];
 
 const paginationModel = { page: 0, pageSize: 5 };
@@ -56,5 +57,4 @@ function DataTable({ rows }) {
     );
 }
 
-
-export default FigurineDashboard;
+export default PromoDashboard;

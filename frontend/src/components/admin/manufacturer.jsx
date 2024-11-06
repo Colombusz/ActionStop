@@ -4,38 +4,36 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 
 import AdminSidebar from './adminsidebar';
-import { useFigurineStore } from '../store/zfigurine';
+import { useManufacturerStore } from '../store/zmanufacturer';
 
-const FigurineDashboard = () => {
-    // Fetching Figurines
-    const { fetchFigurines, figurines } = useFigurineStore();
+const ManufacturerDashboard = () => {
+    // Fetching Manufacturers
+    const { fetchManufacturers, manufacturers } = useManufacturerStore();
 
     useEffect(() => {
-        const fetchfigurinedata = async () => {
-            await fetchFigurines();
+        const fetchManufacturerData = async () => {
+            await fetchManufacturers();
         }
-        fetchfigurinedata();
-    }, [fetchFigurines]);
+        fetchManufacturerData();
+    }, [fetchManufacturers]);
 
     return (
         <div className="flex">
             <AdminSidebar />
             <Stack spacing={2} className="flex-1 p-5">
-                <h1 className="font-delius text-3xl font-bold mb-4">Figurine Dashboard</h1>
-                <DataTable rows={figurines} />
+                <h1 className="font-delius text-3xl font-bold mb-4">Manufacturer Dashboard</h1>
+                <DataTable rows={manufacturers} />
             </Stack>
         </div>
     );
 }
 
-// DataTable for Figurines
+// DataTable for Manufacturers
 const columns = [
   { field: '_id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Figure Name', width: 130 },
-  { field: 'price', headerName: 'Price', width: 130 },
+  { field: 'name', headerName: 'Manufacturer Name', width: 130 },
+  { field: 'country', headerName: 'Country', width: 130 },
   { field: 'image', headerName: 'Image', width: 130 },
-  { field: 'origin', headerName: 'Origin', width: 130 },
-  { field: 'classification', headerName: 'Classification', width: 130 },
 ];
 
 const paginationModel = { page: 0, pageSize: 5 };
@@ -56,5 +54,4 @@ function DataTable({ rows }) {
     );
 }
 
-
-export default FigurineDashboard;
+export default ManufacturerDashboard;
