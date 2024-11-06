@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
 
-import { HeroParallax } from './ui/hero-parallax';
-import { TextHoverEffect } from './ui/text-hover-effect';
+import { HeroParallax } from '../ui/hero-parallax';
+import { TextHoverEffect } from '../ui/text-hover-effect';
 import { motion } from 'framer-motion';
-import { ImagesSlider } from './ui/images-slider';
+import { ImagesSlider } from '../ui/images-slider';
 
-const World = React.lazy(() => import('./ui/globe').then((m) => ({ default: m.World, ssr: false })));
+const World = React.lazy(() => import('../ui/globe').then((m) => ({ default: m.World, ssr: false })));
 
 function About() {
   return (
