@@ -1,6 +1,7 @@
 import { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 
 // Utility function for conditional class names
 const cn = (...classes) => classes.filter(Boolean).join(" ");
@@ -96,8 +97,8 @@ export const MobileSidebar = ({ className, children, ...props }) => {
 export const SidebarLink = ({ link, className, ...props }) => {
   const { open, animate } = useSidebar();
   return (
-    <a
-      href={link.href}
+    <Link
+      to={link.to} // Use `to` instead of `href`
       className={cn("flex items-center justify-start gap-2 group/sidebar py-2", className)}
       {...props}
     >
@@ -111,6 +112,6 @@ export const SidebarLink = ({ link, className, ...props }) => {
       >
         {link.label}
       </motion.span>
-    </a>
+    </Link>
   );
 };

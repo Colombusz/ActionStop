@@ -22,35 +22,32 @@ const userSchema = mongoose.Schema({
         minLength: [6, "Your password must be at least 6 characters"],
         select: false,
     },
-    avatar: {
-        public_id: {
-            type: String,
-            required: true,
-        },
-        url: {
-            type: String,
-            required: true,
-        },
-    },
     role: {
         type: String,
         default: "user",
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    isVerified: {
+        type: Boolean,
+        default: false,
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
-});
+    verificationToken: String,
+    verificationTokenExpire: Date,
+
+}, { timestamps: true });
+
+// get jwt token
 userSchema.methods.getJwtToken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_TIME,
     });
 };
+// compare password
 userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
+// get reset password token
 userSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString("hex");
     this.resetPasswordToken = crypto
@@ -60,6 +57,7 @@ userSchema.methods.getResetPasswordToken = function () {
     this.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
     return resetToken;
 };
+// Middleware to hash the password
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         next();

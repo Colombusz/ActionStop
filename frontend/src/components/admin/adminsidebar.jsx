@@ -9,15 +9,16 @@ import { IoGift } from "react-icons/io5";
 import { Sidebar, SidebarBody, DesktopSidebar, SidebarLink } from "../ui/sidebar";
 
 const AdminSidebar = () => {
+    // Sidebar Links
     const links = [
-        { label: "Dashboard", href: "#", icon: <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-        { label: "Profile", href: "#", icon: <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-        { label: "Figurines", href: "/admin/figurines", icon: <GiFigurehead className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-        { label: "Manufacturers", href: "/admin/manufacturers", icon: <MdOutlinePrecisionManufacturing className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-        { label: "Promos", href: "/admin/promos", icon: <IoGift className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-        { label: "Settings", href: "#", icon: <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-        { label: "Logout", href: "#", icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
-    ];
+        { label: "Dashboard", to: "/admin", icon: <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Profile", to: "#", icon: <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Figurines", to: "/admin/figurines", icon: <GiFigurehead className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Manufacturers", to: "/admin/manufacturers", icon: <MdOutlinePrecisionManufacturing className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Promos", to: "/admin/promos", icon: <IoGift className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Settings", to: "#", icon: <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Logout", to: "#", icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+      ];
       
 
   const [open, setOpen] = useState(true); // Sidebar starts open on desktop
