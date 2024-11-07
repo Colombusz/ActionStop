@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { IconArrowLeft, IconBrandTabler, IconSettings, IconUserBolt } from "@tabler/icons-react";
 import { GiFigurehead } from "react-icons/gi";
+import { PiTruck } from "react-icons/pi";
 import { MdOutlinePrecisionManufacturing } from "react-icons/md";
 import { IoGift } from "react-icons/io5";
 
@@ -13,13 +14,13 @@ const AdminSidebar = () => {
     const links = [
         { label: "Dashboard", to: "/admin", icon: <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
         { label: "Profile", to: "#", icon: <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
+        { label: "Orders", to: "", icon: <PiTruck className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
         { label: "Figurines", to: "/admin/figurines", icon: <GiFigurehead className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
         { label: "Manufacturers", to: "/admin/manufacturers", icon: <MdOutlinePrecisionManufacturing className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
         { label: "Promos", to: "/admin/promos", icon: <IoGift className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
         { label: "Settings", to: "#", icon: <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
         { label: "Logout", to: "#", icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5" /> },
       ];
-      
 
   const [open, setOpen] = useState(true); // Sidebar starts open on desktop
 

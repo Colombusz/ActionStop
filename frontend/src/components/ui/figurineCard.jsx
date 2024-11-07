@@ -18,10 +18,10 @@ const MediaCard = ({ figurine }) => {
         title={figurine.name}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h5" component="div" className="font-delius">
           {figurine.name}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }} className="font-delius">
           Origin: {figurine.origin} <br />
           Classification: {figurine.classification} <br />
           Price: ${figurine.price}

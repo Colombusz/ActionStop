@@ -14,8 +14,8 @@ import ManufacturerDashboard from './components/admin/manufacturer.jsx';
 import PromoDashboard from './components/admin/promo.jsx';
 
 // User
-import Home from './components/home';
-import About from './components/about';
+import Home from './components/pages/home';
+import About from './components/pages/about';
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
           {/* ROUTES HERE */}
           {/* User / Non User */}
           <Route path="/about" element={<About />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
 
 
           {/* Admin */}

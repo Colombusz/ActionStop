@@ -11,9 +11,9 @@ export const fetchFigurines = createAsyncThunk(
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
-        console.log(response)
   
         const data = await response.json();
+        console.log("Data: ", data)
         return data; 
       } catch (error) {
         throw new Error(error.message || 'Something went wrong');
@@ -40,7 +40,7 @@ const figurineSlice = createSlice({
       })
       .addCase(fetchFigurines.fulfilled, (state, action) => {
         state.loading = false;
-        state.figurines = action.payload;
+        state.figurines = action.payload.data;
       })
       .addCase(fetchFigurines.rejected, (state, action) => {
         state.loading = false;
