@@ -5,10 +5,20 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
 const userSchema = mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: [true, "Please enter your name"],
         maxLength: [30, "Your name cannot exceed 30 characters"],
+    },
+    firstname: {
+        type: String,
+        required: [true, "Please enter your first name"],
+        maxLength: [30, "Your first name cannot exceed 30 characters"],
+    },
+    lastname: {
+        type: String,
+        required: [true, "Please enter your last name"],
+        maxLength: [30, "Your last name cannot exceed 30 characters"],
     },
     email: {
         type: String,
