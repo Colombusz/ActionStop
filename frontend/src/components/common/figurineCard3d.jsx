@@ -5,9 +5,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";  // Missing import for ShareIcon
 
 const FigurineCard3d = ({ figurine }) => {
-  return (  // Added the return statement here
+  return ( 
     <CardContainer className="inter-var">
-      <CardBody className="bg-gray-50 relative group/card dark:bg-black border w-auto sm:w-[30rem] h-auto rounded-xl p-6">
+      <CardBody className="bg-gray-50 relative group/card dark:bg-black border w-auto sm:w-[30rem] h-auto rounded-xl p-4">
         {/* Image */}
         <CardItem translateZ="100" className="w-full">
           <img
