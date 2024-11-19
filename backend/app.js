@@ -5,6 +5,7 @@ import cors from "cors";
 import figurineRoutes from "./routes/figurine_route.js";
 import manufacturerRoutes from "./routes/manufacturer_route.js";
 import promoRoutes from "./routes/promo_route.js";
+// import authRoutes from "./routes/auth_route.js";
 
 const app = express();
 
@@ -19,5 +20,7 @@ app.use(cors());
 app.use("/api/figurines", figurineRoutes);
 app.use("/api/manufacturers", manufacturerRoutes);
 app.use("/api/promos", promoRoutes);
+// app.use("/api/auth", authRoutes);
+
 
 export default app;

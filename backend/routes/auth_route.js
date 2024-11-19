@@ -1,10 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-const { 
-    registerUser,
-
-} = require('../controllers/auth_controller');
+import { registerUser } from '../controllers/auth_controller.js';
 
 // Under Construction
 // const { isAuthenticaedUser } = require('../middleware/authuser');

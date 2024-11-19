@@ -8,7 +8,7 @@ const mailtrapUser = process.env.MAILTRAP_USERNAME;
 const mailtrapPass = process.env.MAILTRAP_PASSWORD; 
 
 // Ensure your sender email is a Mailtrap-provided email
-export const sender = '"HAB APPLIANCES" <hello@demomailtrap.com>'; // Use your Mailtrap sender email
+export const sender = '"ActionStop Figurines" <hello@demomailtrap.com>'; // Use your Mailtrap sender email
 
 // Create a Nodemailer transport
 const transport = nodemailer.createTransport({
@@ -81,7 +81,7 @@ export const sendEmail = async (to, subject, html) => {
 
 // // export const sender = {
 // //   email: "kylasalardaa@gmail.com",
-// //   name: "HAB APPLIANCES",
+// //   name: "ActionStop",
 // // };
 
 // // const recipients = [
