@@ -26,7 +26,25 @@ function Signup() {
 
   const validateForm = () => {
     const passwordErrors = [];
-
+    
+    if (!username.trim()) {
+        return "Username must not be empty.";
+    }
+    if (!firstname.trim()) {
+        return "First name must not be empty.";
+    }
+    if (!lastname.trim()) {
+        return "Last name must not be empty.";
+    }
+    if (!email.trim()) {
+        return "Email must not be empty.";
+    }
+    if (!email.includes("@")) {
+        return "Email must contain '@'.";
+    }
+    if (password.length === 0) {
+        return "Password must not be empty.";
+    }
     if (password.length < 8) {
       passwordErrors.push("at least 8 characters");
     }
@@ -45,18 +63,7 @@ function Signup() {
     if (password !== confirmPassword) {
       return "Passwords do not match.";
     }
-    if (!email.includes("@")) {
-      return "Email must contain '@'.";
-    }
-    if (!username.trim()) {
-      return "Username must not be empty.";
-    }
-    if (!firstname.trim()) {
-      return "First name must not be empty.";
-    }
-    if (!lastname.trim()) {
-      return "Last name must not be empty.";
-    }
+    
     return "";
   };
 

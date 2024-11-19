@@ -1,19 +1,21 @@
 import bcryptjs from "bcryptjs";
 import crypto from "crypto";
+
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
 import {
     sendVerificationEmail,
     sendWelcomeEmail,
     sendPasswordResetEmail,
     sendResetSuccessEmail,
-} from "../mailtrap/emails.js";
-import { User } from "../models/user.model.js";
+} from "../utils/emails.js";
+
+import { User } from "../models/user";
 import ErrorHandler from '../utils/errorHandler.js'; // Correct import for ErrorHandler
 
 export const signup = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
     try {
-        if (!email || !password || !name) {
+        if ( !username || !firstname || !lastname || !email || !password) {
             throw new Error("All fields are required");
         }
         const userAlreadyExists = await User.findOne({ email });
@@ -24,9 +26,11 @@ export const signup = async (req, res) => {
         const hashedPassword = await bcryptjs.hash(password, 10);
         const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
         const user = new User({
+            username,
+            firstname,
+            lastname,
             email,
             password: hashedPassword,
-            name,
             verificationToken,
             verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
         });
