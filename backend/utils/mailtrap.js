@@ -1,11 +1,13 @@
 import nodemailer from 'nodemailer';
+import { MailtrapClient, MailtrapTransport } from 'mailtrap';
 import dotenv from 'dotenv';
+import e from 'express';
 
 dotenv.config();
 
 // Retrieve your Mailtrap credentials from environment variables
 const mailtrapUser = process.env.MAILTRAP_USERNAME; 
-const mailtrapPass = process.env.MAILTRAP_PASSWORD; 
+const mailtrapPass = process.env.MAILTRAP_PASSWORD;
 
 // Ensure your sender email is a Mailtrap-provided email
 export const sender = '"ActionStop Figurines" <hello@demomailtrap.com>'; // Use your Mailtrap sender email
@@ -20,6 +22,7 @@ const transport = nodemailer.createTransport({
     },
 });
 
+// Send an email
 export const sendEmail = async (to, subject, html) => {
     const mailOptions = {
         from: sender,
@@ -37,68 +40,33 @@ export const sendEmail = async (to, subject, html) => {
     }
 };
 
+//  ===================== Email Testing =====================
+const TOKEN = process.env.MAILTRAP_TOKEN;
+const ENDPOINT = process.env.MAILTRAP_ENDPOINT;
 
+const transport1 = nodemailer.createTransport(
+    MailtrapTransport({
+      token: TOKEN,
+      endpoint: ENDPOINT,
+    })
+  );
 
-
-
-// import {MailtrapClient}  from "mailtrap";
-// import dotenv from "dotenv";
-// dotenv.config();
-
-// //const TOKEN = "4f9ddd7aabcf6f7c747bb368b0690f67";
-
-// export const mailtrapClient = new MailtrapClient({
-//   token: process.env.MAILTRAP_TOKEN,
-//   endpoint: process.env.MAILTRAP_ENDPOINT,
-// });
-
-// export const sender = {
-//   email: "hello@demomailtrap.com",
-//   name: "Mailtrap Test",
-// };
-
-// // const recipients = [
-// //   {
-// //     email: "kylasalardaa@gmail.com",
-// //   }
-// // ];
-
-// // client
-// //   .send({
-// //     from: sender,
-// //     to: recipients,
-// //     subject: "You are awesome!",
-// //     text: "Congrats for sending test email with Mailtrap!",
-// //     category: "Integration Test",
-// //   })
-// //   .then(console.log, console.error);
-
-
-// // export const mailtrapClient = new MailtrapClient({
-// //    token: process.env.MAILTRAP_TOKEN,
-// //    endpoint: process.env.MAILTRAP_ENDPOINT,
-// //   });
-
-// // export const sender = {
-// //   email: "kylasalardaa@gmail.com",
-// //   name: "ActionStop",
-// // };
-
-// // const recipients = [
-// //   {
-// //     email: "kylasalardaa@gmail.com",
-// //   }
-// // ];
-
-// // mailtrapClient
-// //   .send({
-// //     from: sender,
-// //     to: recipients,
-// //     subject: "You are awesome!",
-// //     text: "Congrats for sending test email with Mailtrap!",
-// //     category: "Integration Test",
-// //   })
-// //   .then(console.log, console.error, console.log(process.env.MAILTRAP_TOKEN), console.log(process.env.MAILTRAP_ENDPOINT));
+const sender1 = {
+    address: "hello@demomailtrap.com",
+    name: "Mailtrap Test",
+  };
+const recipients1 = [
+    "kylasalardaa@gmail.com",
+  ];
   
+transport1
+.sendMail({
+      from: sender1,
+      to: recipients1,
+      subject: "You are awesome!",
+      text: "Congrats for sending test email with Mailtrap!",
+      category: "Integration Test",
+})
+.then(console.log, console.error);
 
 
