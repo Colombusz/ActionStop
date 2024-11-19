@@ -13,9 +13,10 @@ import FigurineDashboard from './components/admin/figurine.jsx';
 import ManufacturerDashboard from './components/admin/manufacturer.jsx';
 import PromoDashboard from './components/admin/promo.jsx';
 
-// User
+// User / Non User
 import Home from './components/pages/home';
 import About from './components/pages/about';
+import Signup from './components/pages/signup';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           {/* User / Non User */}
           <Route path="/about" element={<About />} />
           <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
 
 
           {/* Admin */}

@@ -6,6 +6,7 @@
 @layer base {
     body {
       font-family: 'Delius', cursive;
+      background-color: #E5C8EA;
     }
 }
 
@@ -14,5 +15,6 @@
     font-weight: 400;
     font-style: normal;
 }
+
 
 
