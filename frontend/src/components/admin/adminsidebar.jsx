@@ -29,8 +29,8 @@ const AdminSidebar = () => {
       {/* Sidebar */}
       <Sidebar open={open} setOpen={setOpen}>
         <DesktopSidebar>
-          <SidebarBody className="flex flex-col justify-between gap-10">
-            <div className="flex flex-col flex-1 overflow-y-auto">
+        <SidebarBody className="flex flex-col justify-between gap-10">
+          <div className="flex flex-col flex-1 overflow-y-auto">
               <Logo open={open} />
               <div className="mt-8 flex flex-col gap-2">
                 {links.map((link, idx) => (
@@ -58,7 +58,7 @@ const AdminSidebar = () => {
       </Sidebar>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 bg-white dark:bg-neutral-900 overflow-auto">
+      <div className="flex-1 p-2 bg-[#E5C8EA] overflow-auto">
         <DashboardContent />
       </div>
     </div>
@@ -70,17 +70,17 @@ const Logo = ({ open }) => (
   <a href="#" className="font-normal flex items-center text-sm text-black py-1">
     <div className="h-5 w-6 bg-black dark:bg-white rounded-lg" />
     {open && (
-      <span className="ml-2 font-medium text-black dark:text-white">ActionStop</span>
+      <span className="ml-1 font-medium text-black dark:text-white">ActionStop</span>
     )}
   </a>
 );
 
 // Dummy Dashboard Content
 const DashboardContent = () => (
-  <div className="space-y-4">
-    <div className="h-20 w-full rounded-lg bg-gray-200 dark:bg-neutral-800" />
+  <div className="">
+    {/* <div className="h-20 w-full rounded-lg bg-gray-200 dark:bg-neutral-800" />
     <div className="h-60 w-full rounded-lg bg-gray-200 dark:bg-neutral-800" />
-    <div className="h-40 w-full rounded-lg bg-gray-200 dark:bg-neutral-800" />
+    <div className="h-40 w-full rounded-lg bg-gray-200 dark:bg-neutral-800" /> */}
   </div>
 );
 

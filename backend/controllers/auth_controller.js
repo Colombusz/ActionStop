@@ -1,19 +1,18 @@
 
 import bcryptjs from "bcryptjs";
 import crypto from "crypto";
-import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie";
+import User from "../models/user.js"; 
+import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
 import {
-    sendVerificationEmail,
+    sendVerificationEmail, 
     sendWelcomeEmail,
     sendPasswordResetEmail,
     sendResetSuccessEmail,
 } from "../utils/emails.js";
-
-import { User } from "../models/user";
-import ErrorHandler from '../utils/errorHandler';
+import ErrorHandler from '../utils/errorHandler.js'; 
 
 export const signup = async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, firstname, lastname, email, password } = req.body;
     try {
         if ( !username || !firstname || !lastname || !email || !password) {
             throw new Error("All fields are required");
