@@ -49,4 +49,10 @@ const figurineSlice = createSlice({
   },
 });
 
+
+
+
+
+
 export default figurineSlice.reducer;
+
