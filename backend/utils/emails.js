@@ -6,7 +6,7 @@ import {
     PASSWORD_RESET_REQUEST_TEMPLATE,
     PASSWORD_RESET_SUCCESS_TEMPLATE,
 } from "./emailTemplate.js";
-import { sendEmail, sender } from "./mailtrap.js";
+import { sendEmail } from "./mailtrap.js";
 
 export const sendVerificationEmail = async (email, verificationToken) => {
     try {
