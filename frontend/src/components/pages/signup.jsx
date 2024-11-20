@@ -82,22 +82,24 @@ function Signup() {
       lastname,
       email,
       password,
+      confirmPassword,
     };
 
     console.log("Form Data:", formData);
-    // registerUser(formData);
+    registerUser(formData);
   };
 
   const registerUser = async (formData) => {
     setLoading(true);
     try {
+      console.log("FormData: ", formData)
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       };
 
-      const { data } = await axios.post("/api/auth/register", formData, config);
+      const { data } = await axios.post("/api/auth/signup", formData, config);
       console.log(data.user);
 
       setLoading(false);
