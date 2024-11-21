@@ -49,10 +49,16 @@ function LoginForm() {
       if (response.status === 200) {
         const user = response.data.user;
         if (user.isAdmin) {
+          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('isAuthenticated', 'true');
           navigate("/admin/dashboard");
         } else {
+          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('isAuthenticated', 'true');
           navigate("/");
           toast.success("Login successfully!");
+          // toast.success(response.data.user);
+          // console.log(response.data.user);
         }
       }
     } catch (err) {

@@ -74,10 +74,7 @@ const MainNavbar = ({ className }) => {
 
                 {/* Utilities */}
                 <MenuItem setActive={setActive} active={active} item="Utilities">
-                    <div className="grid grid-cols-4 gap-4 text-sm">
-                        <HoveredLink href="/hobby">
-                            <AiOutlineUser className="inline-block mr-2" /> Profile
-                        </HoveredLink>
+                    <div className="grid grid-cols-3 gap-4 text-sm">
                         <HoveredLink href="/favorites">
                             <AiOutlineHeart className="inline-block mr-2" /> My Favorites
                         </HoveredLink>
@@ -100,7 +97,7 @@ const MainNavbar = ({ className }) => {
 
                 {/* User Section */}
                 {isAuthenticated ? (
-                    <MenuItem setActive={setActive} active={active} item={`Hi, ${user?.name || 'User'}`}>
+                    <MenuItem setActive={setActive} active={active} item={`Hi, ${user?.firstname || 'User'}`}>
                         <div className="flex flex-col space-y-2 text-sm">
                             <HoveredLink href="/account">
                             <AiOutlineSetting className="inline-block mr-2" /> Account Settings

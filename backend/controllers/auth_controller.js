@@ -86,9 +86,10 @@ export const verifyEmail = async (req, res) => {
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
-
+    
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({email});
+        
         if (!user) {
             return res.status(400).json({ success: false, message: "Invalid credentials" });
         }
@@ -101,9 +102,11 @@ export const login = async (req, res) => {
         if (!user.isVerified) {
             return res.status(400).json({ success: false, message: "Email not verified" });
         }
-
+        
+        const userid = user._id;
         // JWT
-        generateTokenAndSetCookie(res, user._id);
+        generateTokenAndSetCookie(res, userid);
+   
         await user.save();
 
         res.status(200).json({
