@@ -4,6 +4,8 @@ import { Input } from "../ui/input";
 import { cn } from "../../utils/cn";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import VerificationModal from "../common/verificationModal";
+import { useModal } from "../ui/animated-modal";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -12,101 +14,69 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const { setOpen } = useModal();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
-      console.log("Error:", error);
+      console.error("Error:", error);
     }
-  }, [error, navigate]);
+  }, [error]);
 
   const validateForm = () => {
     const passwordErrors = [];
-    
-    if (!username.trim()) {
-        return "Username must not be empty.";
+    if (!username.trim()) return "Username must not be empty.";
+    if (!firstname.trim()) return "First name must not be empty.";
+    if (!lastname.trim()) return "Last name must not be empty.";
+    if (!email.trim() || !email.includes("@")) return "Invalid email address.";
+    if (password.length < 8) passwordErrors.push("at least 8 characters");
+    if (!/[A-Z]/.test(password)) passwordErrors.push("an uppercase letter");
+    if (!/[a-z]/.test(password)) passwordErrors.push("a lowercase letter");
+    if (!/[~!@#$%^&*()_\-+={[}\]|\\:;\"'<,>.?\/]/.test(password)) {
+      passwordErrors.push("a special character (~!@#$%^&*()_-+={[}]|\\:;\"'<,>.?/)");
     }
-    if (!firstname.trim()) {
-        return "First name must not be empty.";
-    }
-    if (!lastname.trim()) {
-        return "Last name must not be empty.";
-    }
-    if (!email.trim()) {
-        return "Email must not be empty.";
-    }
-    if (!email.includes("@")) {
-        return "Email must contain '@'.";
-    }
-    if (password.length === 0) {
-        return "Password must not be empty.";
-    }
-    if (password.length < 8) {
-      passwordErrors.push("at least 8 characters");
-    }
-    if (!/[A-Z]/.test(password)) {
-      passwordErrors.push("an uppercase letter");
-    }
-    if (!/[a-z]/.test(password)) {
-      passwordErrors.push("a lowercase letter");
-    }
-    if (!/[~`!@#$%^&*()_\-+={[}\]|\\:;\"'<,>.?\/]/.test(password)) {
-      passwordErrors.push("a special character (~`!@#$%^&*()_-+={[}]|\\:;\"'<,>.?/)");
-    }
-    if (passwordErrors.length > 0) {
-      return `Password must contain ${passwordErrors.join(", ")}.`;
-    }
-    if (password !== confirmPassword) {
-      return "Passwords do not match.";
-    }
-    
+    if (passwordErrors.length > 0) return `Password must contain ${passwordErrors.join(", ")}.`;
+    if (password !== confirmPassword) return "Passwords do not match.";
     return "";
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationError = validateForm();
-
     if (validationError) {
       setError(validationError);
       return;
     }
-
-    const formData = {
-      username,
-      firstname,
-      lastname,
-      email,
-      password,
-      confirmPassword,
-    };
-
-    console.log("Form Data:", formData);
-    registerUser(formData);
+    registerUser({ username, firstname, lastname, email, password });
   };
 
   const registerUser = async (formData) => {
     setLoading(true);
     try {
-      console.log("FormData: ", formData)
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-
-      const { data } = await axios.post("/api/auth/signup", formData, config);
-      console.log(data.user);
-
-      setLoading(false);
-      navigate("/");
+      const { data } = await axios.post("/api/auth/signup", formData, {
+        headers: { "Content-Type": "application/json" },
+      });
+      setOpen(true); // Open the verification modal
     } catch (error) {
-      setLoading(false);
       setError(error.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyEmail = async (code) => {
+    try {
+      const response = await fetch("http://localhost:5173/api/auth/verifyemail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await response.json();
+      console.log("Verification response:", data);
+    } catch (error) {
+      console.error("Error verifying email:", error);
     }
   };
 
@@ -196,28 +166,23 @@ function Signup() {
 
         {/* SUBMIT BUTTON */}
         <button
-          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           type="submit"
+          className={cn(
+            "w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2 font-semibold text-sm",
+            loading && "opacity-50 pointer-events-none"
+          )}
+          disabled={loading}
         >
-          {loading ? "Signing up..." : "Sign up →"}
-          <BottomGradient />
+          {loading ? "Loading..." : "Sign Up"}
         </button>
       </form>
+      <VerificationModal onVerify={handleVerifyEmail} />
     </div>
   );
 }
 
-const BottomGradient = () => (
-  <>
-    <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-    <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-  </>
-);
-
-const LabelInputContainer = ({ children, className }) => (
-  <div className={cn("flex flex-col space-y-2 w-full", className)}>
-    {children}
-  </div>
+const LabelInputContainer = ({ className, children }) => (
+  <div className={cn("flex flex-col space-y-2", className)}>{children}</div>
 );
 
 export default Signup;

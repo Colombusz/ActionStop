@@ -36,7 +36,7 @@ export const signup = async (req, res) => {
         await user.save();
 
         // JWT
-        generateTokenAndSetCookie(res, user._id);
+        // generateTokenAndSetCookie(res, user._id);
 
         await sendVerificationEmail(user.email, user.verificationToken);
 
@@ -54,7 +54,9 @@ export const signup = async (req, res) => {
 };
 
 export const verifyEmail = async (req, res) => {
+    console.log("Received payload:", req.body);
     const { code } = req.body;
+
     try {
         const user = await User.findOne({
             verificationToken: code,

@@ -12,9 +12,18 @@ const app = express();
 app.use(express.json({limit:'50mb'}));
 app.use(express.urlencoded({extended:true, limit:'50mb'}));
 
-// Middleware
+// Middleware, CORS Configuration
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ success: false, message: "Something went wrong!" });
+});
 
 // Router Connection
 app.use("/api/figurines", figurineRoutes);

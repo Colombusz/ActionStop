@@ -36,7 +36,6 @@ export const isAuthenticatedUser = async (req, res, next) => {
     }
 };
 
-
 // Middleware to allow only admin users
 export const authorizeAdmin = (req, res, next) => {
     if (!req.user.isAdmin) {
