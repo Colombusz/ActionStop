@@ -10,18 +10,19 @@ const Favorites = () => {
   const dispatch = useDispatch();
 
   // Retrieve user data from localStorage and parse it
-  const user = localStorage.getItem('user');
-  const userid = user._id; // Ensure user exists before accessing _id
+    const user = JSON.parse(localStorage.getItem('user'));
+    const id = user ? user._id : null;
+
 
   // Extract favorites, loading, and error states from the Redux store
   const { favorites, loading, error } = useSelector((state) => state.fetchFavorites);
 
   // Fetch favorites when the component mounts or userid changes
   useEffect(() => {
-    if (userid) {
-      dispatch(fetchFavorites(userid)); // Dispatch action to fetch favorites
+    if (id) {
+      dispatch(fetchFavorites(id)); // Dispatch action to fetch favorites
     }
-  }, [dispatch, userid]);
+  }, [dispatch, id]);
 
   // Handle loading and error states
   if (loading) {
@@ -33,6 +34,7 @@ const Favorites = () => {
   }
 
   console.log('Fetched users: ', favorites);
+  const faves = favorites.data;
 
   return (
     <div className="home-page">
@@ -45,8 +47,8 @@ const Favorites = () => {
       <div className="pt-16"> {/* Use padding-top to prevent overlap with the navbar */}
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
           {/* Check if favorites is an array and render the figurine cards */}
-          {Array.isArray(favorites) && favorites.length > 0 ? (
-            favorites.map((figurine) => (
+          {favorites && favorites.data.length > 0 ? (
+            favorites.data.map((figurine) => (
               <FigurineCard3d
                 key={figurine._id}
                 figurine={figurine}

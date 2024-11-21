@@ -20,15 +20,16 @@ export const add2fave = async (req, res) => {
 }
 
 export const fetchFavorites = async (req, res) => {
-    const { userId } = req.params;// Correctly extract the userId from req.params
+    const { id } = req.params;// Correctly extract the userId from req.params
     try {
-        const user = await User.findById(userId);
+        const user = await User.findById(id).populate("favorites");
         if (!user) {
           console.error("User not found for ID:", userId);
           return res.status(404).json({ success: false, message: "User not found" });
         }
         console.log("Fetched User:", user);
-        res.status(200).json({ success: true, data: user });
+        const favorites = user.favorites;
+        res.status(200).json({ success: true, data: favorites });
       } catch (error) {
         console.error("Error Fetching Favorites:", error);
         res.status(500).json({ success: false, message: "Error in Fetching Favorites" });

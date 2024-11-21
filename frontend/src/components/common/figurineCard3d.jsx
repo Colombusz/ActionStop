@@ -93,6 +93,7 @@ const FigurineCard3d = ({ figurine }) => {
         images={["https://via.placeholder.com/600x400?text=Image+1", "https://via.placeholder.com/600x400?text=Image+2"]}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        details={figurine}
       />
     </>
   );
