@@ -41,6 +41,12 @@ const userSchema = mongoose.Schema({
             ref: "Figurine",
         },
     ],
+    order: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Order",
+        },
+    ],
     resetPasswordToken: String,
     resetPasswordExpiresAt: Date,
     verificationToken: String,

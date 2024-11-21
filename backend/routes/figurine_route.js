@@ -10,4 +10,6 @@ router.get('/:id', getFigurine);
 router.put('/:id', updateFigurine);
 router.delete('/:id', deleteFigurine);
 
+
+
 export default router;

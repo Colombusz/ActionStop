@@ -1,7 +1,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import figurineReducer from './figurineSlice';
-import figurineModalReducer from './figurineModalSlice';
+import figurineModalReducer from './cardSlices/figurineModalSlice';
 
 const store = configureStore({
   reducer: {
