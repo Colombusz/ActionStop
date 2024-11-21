@@ -6,10 +6,15 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PreviewIcon from "@mui/icons-material/Preview";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-
+import FigurineModal from "../ui/modal";
+import { useState } from "react";
 const FigurineCard3d = ({ figurine }) => {
- 
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const images = [
+    "https://via.placeholder.com/600x400?text=Image+1",
+    "https://via.placeholder.com/600x400?text=Image+2",
+    
+  ];
  
 
   return (
@@ -56,7 +61,10 @@ const FigurineCard3d = ({ figurine }) => {
               
               <Tooltip title="View Full Product" placement="top">
              
-                  <IconButton  aria-label="view" >
+                  <IconButton  
+                  aria-label="view"
+                    onClick={() => setIsModalOpen(true)}
+                   >
                     <PreviewIcon  />
                   </IconButton>
               
@@ -79,6 +87,12 @@ const FigurineCard3d = ({ figurine }) => {
           </div>
         </CardBody>
       </CardContainer>
+
+        <FigurineModal
+          images={images}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
 
      
     </>

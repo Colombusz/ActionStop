@@ -1,7 +1,7 @@
 import express from 'express';
 
 
-import { add2fave, getTransaction, createTransaction, updateTransaction, deleteTransaction } from '../controllers/transact_controller.js';
+import { add2fave} from '../controllers/transaction_controller.js';
 
 
 const router = express.Router();
