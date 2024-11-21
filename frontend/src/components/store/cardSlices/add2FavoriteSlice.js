@@ -25,3 +25,30 @@ export const add2Favorite = asyncThunkCreator(
         }
     }
 );
+
+const add2FavoriteSlice = createSlice({
+    name: 'add2Favorite',
+    initialState: {
+        loading: false,
+        error: null,
+    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(add2Favorite.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(add2Favorite.fulfilled, (state) => {
+                state.loading = false;
+                toast.success('Added to Favorites');
+            })
+            .addCase(add2Favorite.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+                toast.error(action.error.message);
+            });
+    },
+});
+
+export default add2FavoriteSlice.reducer;

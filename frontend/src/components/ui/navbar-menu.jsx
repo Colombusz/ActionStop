@@ -79,10 +79,11 @@ export const ProductItem = ({ title, description, href, src }) => {
   );
 };
 
-export const HoveredLink = ({ children, ...rest }) => {
+export const HoveredLink = ({  href, children, ...rest }) => {
   return (
     <Link
       {...rest}
+      to={href}
       className="block max-w-sm p-4 border border-gray-300 dark:border-neutral-700 rounded-lg shadow-md hover:shadow-lg hover:border-gray-500 transition-all duration-200 ease-in-out bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 text-center hover:text-black"
     >
       {children}

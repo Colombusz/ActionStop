@@ -8,13 +8,22 @@ import PreviewIcon from "@mui/icons-material/Preview";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import FigurineModal from "../ui/modal";
 import { useState } from "react";
+// import { useDispatch } from "react-redux";
+// import { add2Favorite } from "../store/cardSlices/add2FavoriteSlice";
+
 const FigurineCard3d = ({ figurine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // const dispatch = useDispatch();
+
   const images = [
     "https://via.placeholder.com/600x400?text=Image+1",
     "https://via.placeholder.com/600x400?text=Image+2",
     
   ];
+
+  // const handleAddToFavorite = () => {
+  //   dispatch(add2Favorite({ figurineId: figurine._id, userId }));
+  // };
  
 
   return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HoveredLink, Menu, MenuItem, ProductItem } from '../ui/navbar-menu';
 import { cn } from "../../utils/cn";
-import { AiOutlineUser, AiOutlineHeart, AiOutlineShoppingCart, AiOutlineGift, AiOutlineBook } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineHeart, AiOutlineShoppingCart , AiOutlineGift, AiOutlineBook, AiOutlineLogin, AiOutlineForm, AiOutlineSetting, AiOutlineLogout } from "react-icons/ai";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { checkAuthStatus, handleLogout } from '../../utils/userauth';
@@ -74,15 +74,12 @@ const MainNavbar = ({ className }) => {
 
                 {/* Utilities */}
                 <MenuItem setActive={setActive} active={active} item="Utilities">
-                    <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div className="grid grid-cols-4 gap-4 text-sm">
                         <HoveredLink href="/hobby">
                             <AiOutlineUser className="inline-block mr-2" /> Profile
                         </HoveredLink>
                         <HoveredLink href="/favorites">
                             <AiOutlineHeart className="inline-block mr-2" /> My Favorites
-                        </HoveredLink>
-                        <HoveredLink href="/cart">
-                            <AiOutlineShoppingCart className="inline-block mr-2" /> Cart
                         </HoveredLink>
                         <HoveredLink href="/purchases">
                             <AiOutlineGift className="inline-block mr-2" /> Purchases
@@ -92,23 +89,37 @@ const MainNavbar = ({ className }) => {
                         </HoveredLink>
                     </div>
                 </MenuItem>
+               <MenuItem setActive={setActive} active={active} item="Cart">
+                    <ProductItem
+                                    title="Algochurn"
+                                    href="https://algochurn.com"
+                                    src="https://assets.aceternity.com/demos/algochurn.webp"
+                                    description="Prepare for tech interviews like never before."
+                                />
+                </MenuItem>
 
                 {/* User Section */}
                 {isAuthenticated ? (
                     <MenuItem setActive={setActive} active={active} item={`Hi, ${user?.name || 'User'}`}>
                         <div className="flex flex-col space-y-2 text-sm">
-                            <HoveredLink href="/account">Account Settings</HoveredLink>
+                            <HoveredLink href="/account">
+                            <AiOutlineSetting className="inline-block mr-2" /> Account Settings
+                            </HoveredLink>
                             {isAdmin && <HoveredLink href="/admin/dashboard">Admin Dashboard</HoveredLink>}
                             <button onClick={logout} className="text-red-500 hover:text-red-700">
-                                Log Out
+                                <AiOutlineLogout className="inline-block mr-2" /> Log Out
                             </button>
                         </div>
                     </MenuItem>
                 ) : (
                     <MenuItem setActive={setActive} active={active} item="Log In">
-                        <div className="flex flex-col space-y-2 text-sm">
-                            <HoveredLink href="/login">Log In</HoveredLink>
-                            <HoveredLink href="/signup">Sign Up</HoveredLink>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                            <HoveredLink href="/login">
+                                <AiOutlineLogin className="inline-block mr-2" />Log In
+                            </HoveredLink>
+                            <HoveredLink href="/signup">
+                            <AiOutlineForm className="inline-block mr-2"/> Sign Up
+                            </HoveredLink>
                         </div>
                     </MenuItem>
                 )}
