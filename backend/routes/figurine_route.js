@@ -10,4 +10,6 @@ router.get('/:id', getFigurine);
 router.put('/:id', upload.array("images", 5), updateFigurine);
 router.delete('/:id', deleteFigurine);
 
+
+
 export default router;
