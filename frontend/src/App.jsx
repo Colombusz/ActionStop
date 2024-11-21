@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './index.css';
 
-// Modal
+// Utility Components
 import { Modal } from './components/ui/animated-modal.jsx';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 // Redux Provider and Store
 import { Provider } from 'react-redux';
@@ -24,8 +27,14 @@ import Login from './components/pages/login';
 function App() {
   return (
     <Provider store={store}>
-      <Router>
+      <Router
+        future={{
+          v7_startTransition: true, // Enable React.startTransition for smoother updates
+          v7_relativeSplatPath: true, // Enable updated relative splat path resolution
+        }}
+      >
         <Modal>
+          <ToastContainer />
           <div className="relative z-10">
             <Routes>
               {/* User / Non-User Routes */}

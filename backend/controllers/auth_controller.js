@@ -54,8 +54,8 @@ export const signup = async (req, res) => {
 };
 
 export const verifyEmail = async (req, res) => {
-    console.log("Received payload:", req.body);
     const { code } = req.body;
+    // console.log("Received payload:", code);
 
     try {
         const user = await User.findOne({
@@ -86,13 +86,14 @@ export const verifyEmail = async (req, res) => {
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
+
     try {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ success: false, message: "Invalid credentials" });
         }
         const isPasswordValid = await bcryptjs.compare(password, user.password);
-
+        
         if (!isPasswordValid) {
             return res.status(400).json({ success: false, message: "Invalid credentials" });
         }
@@ -101,6 +102,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ success: false, message: "Email not verified" });
         }
 
+        // JWT
         generateTokenAndSetCookie(res, user._id);
         await user.save();
 
