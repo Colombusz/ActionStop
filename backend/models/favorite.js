@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 export const add2fave = async (req, res) => {
     const { user, figurine } = req.body;
 
