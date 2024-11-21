@@ -1,12 +1,13 @@
 // File to configure multer for image upload
 
 import multer from 'multer';
+import path from 'path';
 
 const storage = multer.memoryStorage();
 
 const upload = multer({ 
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // Limits file size to 5MB
+    limits: { fileSize: 20 * 1024 * 1024 }, // Limits file size to 20MB
     fileFilter: (req, file, cb) => {
         const filetypes = /jpeg|jpg|png/;
         const mimetype = filetypes.test(file.mimetype);

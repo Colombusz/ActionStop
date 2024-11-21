@@ -54,10 +54,6 @@ const figurineSchema = mongoose.Schema({
             type: String,
             required: [true, "Please enter the country of the manufacturer"],
         },
-        image: {
-            type: String,
-            required:  [true, "Please enter the image of the manufacturer"],
-        },
     }],
     reviews: [{
         name: {
