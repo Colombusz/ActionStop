@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFigurines } from '../store/figurineSlice';
-
+import ResponsiveFooter from '../common/footer';
 import FigurineCard3d from '../common/figurineCard3d';
 import MainNavbar from '../common/navbar';
 
@@ -18,23 +18,32 @@ const Home = () => {
   console.log('Fetched Figurines: ', figurines);
 
   return (
+    
     <div className="home-page">
       <MainNavbar />
 
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
+     
 
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mx-auto">
+      
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mx-auto mt-10">
+    
         {Array.isArray(figurines) &&
           figurines.map((figurine, index) => (
-            <FigurineCard3d
-              key={figurine._id}
-              figurine={figurine}
-            />
+         
+                <FigurineCard3d
+                key={figurine._id}
+                figurine={figurine}
+              />
+           
+            
           ))}
+         
       </div>
-
+      <ResponsiveFooter />
     </div>
+    
   );
 };
 

@@ -33,6 +33,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
+              {/* <Route path="/user/favorite" element={<Favorites />} /> */}
+              {/* <Route path="/figurine/detail" element={<Details />} /> */}
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminHomePage />} />
