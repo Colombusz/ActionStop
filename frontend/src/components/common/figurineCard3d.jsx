@@ -30,11 +30,12 @@ const FigurineCard3d = ({ figurine }) => {
       <CardContainer className="inter-var">
         <CardBody className="bg-gray-50 relative group/card dark:bg-black border w-auto sm:w-[30rem] h-auto rounded-xl p-4">
           <CardItem translateZ="100" className="w-full">
-            <img
-              src={figurine.image}
-              alt={figurine.name}
-              className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
-            />
+            {/* First Image */}
+          <img
+            src={(figurine.images && figurine.images[0]?.url) || 'default-placeholder.png'}
+            alt={figurine.name}
+            className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+          />
           </CardItem>
           <CardItem
             translateZ="50"
