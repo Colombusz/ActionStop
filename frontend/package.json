@@ -11,10 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.5",
-    "@mui/material": "^6.1.6",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.8",
+    "@mui/material": "^6.1.8",
     "@mui/x-data-grid": "^7.22.1",
     "@radix-ui/react-label": "^2.1.0",
     "@react-three/drei": "^9.115.0",
@@ -29,6 +29,7 @@
     "clsx": "^2.1.1",
     "firebase": "^11.0.2",
     "framer-motion": "^11.11.17",
+    "mui-datatables": "^4.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",

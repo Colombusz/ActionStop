@@ -8,11 +8,25 @@ const figurineSchema = mongoose.Schema({
     price: {
         type: Number,
         required: [true, "Please enter the price of the figurine"],
+        maxlength: [5, "Price cannot exceed 5 characters"],
+        default: 0.0,
     },
-    image: {
+    description: {
         type: String,
-        required:  [true, "Please enter the image of the figurine"],
+        required: [true, "Please enter the description of the figurine"],
     },
+    images: [
+        {
+            public_id: {
+                type: String,
+                required: true
+            },
+            url: {
+                type: String,
+                required: true
+            },
+        }
+    ],
     origin: {
         type: String,
         required: [true, "Please enter the origin of the figurine"],
