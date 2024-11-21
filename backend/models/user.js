@@ -35,6 +35,12 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    favorites: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Figurine",
+        },
+    ],
     resetPasswordToken: String,
     resetPasswordExpiresAt: Date,
     verificationToken: String,
