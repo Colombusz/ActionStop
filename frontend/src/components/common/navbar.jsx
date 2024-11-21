@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { checkAuthStatus, handleLogout } from '../../utils/userauth';
 
-const MainNavbar = ({ className }) => {
+const MainNavbar = ({ className,  handle}) => {
     const [active, setActive] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
@@ -43,7 +43,7 @@ const MainNavbar = ({ className }) => {
                 </MenuItem>
 
                 {/* Products */}
-                <MenuItem setActive={setActive} active={active} item="Products">
+                <MenuItem setActive={setActive} active={active} item="Products" href="/">
                     <div className="text-sm grid grid-cols-3 gap-10 p-4">
                         <ProductItem
                             title="Algochurn"
@@ -73,27 +73,37 @@ const MainNavbar = ({ className }) => {
                 </MenuItem>
 
                 {/* Utilities */}
-                <MenuItem setActive={setActive} active={active} item="Utilities">
-                    <div className="grid grid-cols-3 gap-4 text-sm">
-                        <HoveredLink href="/favorites">
-                            <AiOutlineHeart className="inline-block mr-2" /> My Favorites
-                        </HoveredLink>
-                        <HoveredLink href="/purchases">
-                            <AiOutlineGift className="inline-block mr-2" /> Purchases
-                        </HoveredLink>
-                        <HoveredLink href="/reviews">
-                            <AiOutlineBook className="inline-block mr-2" /> Reviews
-                        </HoveredLink>
-                    </div>
-                </MenuItem>
-               <MenuItem setActive={setActive} active={active} item="Cart">
-                    <ProductItem
-                                    title="Algochurn"
-                                    href="https://algochurn.com"
-                                    src="https://assets.aceternity.com/demos/algochurn.webp"
-                                    description="Prepare for tech interviews like never before."
-                                />
-                </MenuItem>
+                {isAuthenticated && (
+                    <MenuItem setActive={setActive} active={active} item="Utilities">
+                        <div className="grid grid-cols-3 gap-4 text-sm">
+                            <HoveredLink 
+                          
+                            href="/user/favorite"
+                            >
+                                <AiOutlineHeart className="inline-block mr-2" /> My Favorites
+                            </HoveredLink>
+                            <HoveredLink href="/purchases">
+                                <AiOutlineGift className="inline-block mr-2" /> Purchases
+                            </HoveredLink>
+                            <HoveredLink href="/reviews">
+                                <AiOutlineBook className="inline-block mr-2" /> Reviews
+                            </HoveredLink>
+                        </div>
+                    </MenuItem>
+                )}
+                {isAuthenticated && (
+                     <MenuItem setActive={setActive} active={active} item="Cart">
+                     <ProductItem
+                                     title="Algochurn"
+                                     href="https://algochurn.com"
+                                     src="https://assets.aceternity.com/demos/algochurn.webp"
+                                     description="Prepare for tech interviews like never before."
+                                 />
+                    </MenuItem>
+                )}
+                
+
+              
 
                 {/* User Section */}
                 {isAuthenticated ? (

@@ -6,6 +6,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import VerificationModal from "../common/verificationModal";
 import { useModal } from "../ui/animated-modal";
+import MainNavbar from "../common/navbar";
+import ResponsiveFooter from "../common/footer";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -81,7 +83,15 @@ function Signup() {
   };
 
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black mt-14 mb-14">
+    <div>
+  {/* Navbar */}
+  <div className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-black">
+    <MainNavbar />
+  </div>
+
+  {/* Main Content */}
+  <div className="pt-16"> {/* Use padding-top instead of margin-top to prevent overlap */}
+    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black mt-14">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to ActionStop
       </h2>
@@ -178,6 +188,12 @@ function Signup() {
       </form>
       <VerificationModal onVerify={handleVerifyEmail} />
     </div>
+    <div className="mt-10">
+      <ResponsiveFooter />
+    </div>
+  </div>
+</div>
+
   );
 }
 

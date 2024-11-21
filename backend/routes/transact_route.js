@@ -6,7 +6,7 @@ import { add2fave, fetchFavorites, removeFavorite } from '../controllers/transac
 
 const router = express.Router();
 
-router.get('/:id/add2fave', add2fave);
-router.get('/fetchFavorites', fetchFavorites);
-router.get('/:id/removeFavorite', removeFavorite);
+router.post('/:id/add2fave', add2fave);
+router.get('/:id/fetchFavorites', fetchFavorites);
+router.delete('/:id/removeFavorite', removeFavorite);
 export default router;

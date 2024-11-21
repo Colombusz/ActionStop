@@ -7,6 +7,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import MainNavbar from "../common/navbar";
+import ResponsiveFooter from "../common/footer";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -74,13 +76,16 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-transparent">
+    <div className="flex flex-col min-h-screen">
+    <MainNavbar />
+    <div className="flex-grow flex items-center justify-center pt-16"> {/* Add padding-top */}
       <div className="max-w-md w-full p-8 bg-white dark:bg-black shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold text-center text-neutral-800 dark:text-neutral-200">
           "ActionStop!" Login
         </h2>
-        <p className="text-center text-neutral-600 text-sm mt-2 dark:text-neutral-300"></p>
+        <p className="text-center text-neutral-600 text-sm mt-2 dark:text-neutral-300">
           Log in to access your account and explore more figurines.
+        </p>
         <form className="mt-8" onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-2 mb-4">
             <Label htmlFor="email">Email Address</Label>
@@ -130,6 +135,10 @@ function LoginForm() {
         </form>
       </div>
     </div>
+    <ResponsiveFooter />
+  </div>
+  
+  
   );
 }
 

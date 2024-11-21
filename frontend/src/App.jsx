@@ -23,7 +23,7 @@ import Home from './components/pages/home';
 import About from './components/pages/about';
 import Signup from './components/pages/signup';
 import Login from './components/pages/login';
-
+import Favorites from './components/pages/favorites';
 function App() {
   return (
     <Provider store={store}>
@@ -42,7 +42,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
-              {/* <Route path="/user/favorite" element={<Favorites />} /> */}
+              <Route path="/user/favorite" element={<Favorites />} />
               {/* <Route path="/figurine/detail" element={<Details />} /> */}
 
               {/* Admin Routes */}

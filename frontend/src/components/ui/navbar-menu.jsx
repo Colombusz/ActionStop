@@ -11,15 +11,19 @@ const transition = {
   restSpeed: 0.001,
 };
 
-export const MenuItem = ({ setActive, active, item, children }) => {
+export const MenuItem = ({ setActive, active, item, children, href }) => {
   return (
     <div onMouseEnter={() => setActive(item)} className="relative">
+      
+      <Link to={href} className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white">
       <motion.p
         transition={{ duration: 0.3 }}
         className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white"
+        
       >
         {item}
       </motion.p>
+      </Link>
       {active !== null && (
         <motion.div
           initial={{ opacity: 0, scale: 0.85, y: 10 }}

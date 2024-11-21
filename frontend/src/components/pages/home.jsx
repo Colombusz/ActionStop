@@ -8,8 +8,11 @@ import FigurineCard3d from '../common/figurineCard3d';
 import MainNavbar from '../common/navbar';
 
 const Home = () => {
+
+
   const dispatch = useDispatch();
   const { figurines, loading, error } = useSelector((state) => state.figurines);
+ 
 
   useEffect(() => {
     dispatch(fetchFigurines());
@@ -17,32 +20,41 @@ const Home = () => {
 
   console.log('Fetched Figurines: ', figurines);
 
+
+
+
   return (
     
-    <div className="home-page">
-      <MainNavbar />
-
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-     
-
+  <div className="home-page">
+  {/* Navbar */}
+  <div className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-black">
+    <MainNavbar 
       
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mx-auto mt-10">
-    
-        {Array.isArray(figurines) &&
-          figurines.map((figurine, index) => (
-         
-                <FigurineCard3d
+    />
+  </div>
+
+  {/* Main Content */}
+  <div className="pt-16"> {/* Use padding-top to prevent overlap with the navbar */}
+    {loading && <p className="text-center text-lg text-blue-500">Loading...</p>}
+    {error && <p className="text-center text-lg text-red-500">Error: {error}</p>}
+
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4"> {/* Spacing between items */}
+    {Array.isArray(figurines) && figurines.length > 0 ? (
+            figurines.map((figurine) => (
+              <FigurineCard3d
                 key={figurine._id}
                 figurine={figurine}
               />
-           
-            
-          ))}
-         
-      </div>
-      <ResponsiveFooter />
+            ))
+          ) : (
+            <div>No favorites found.</div> // If favorites is empty or not an array
+          )}
     </div>
+
+    <ResponsiveFooter />
+  </div>
+</div>
+
     
   );
 };

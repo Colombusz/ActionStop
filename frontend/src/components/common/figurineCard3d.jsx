@@ -1,36 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { CardContainer, CardBody, CardItem } from "../ui/3d-card";
 import IconButton from "@mui/material/IconButton";
 import { Tooltip } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PreviewIcon from "@mui/icons-material/Preview";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import FigurineModal from "../ui/modal";
-import { useState } from "react";
-// import { useDispatch } from "react-redux";
-// import { add2Favorite } from "../store/cardSlices/add2FavoriteSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { add2Favorite } from "../store/cardSlices/add2FavoriteSlice";
 
 const FigurineCard3d = ({ figurine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.add2Favorite.favorites);
 
-  const images = [
-    "https://via.placeholder.com/600x400?text=Image+1",
-    "https://via.placeholder.com/600x400?text=Image+2",
-    
-  ];
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user ? user._id : null;
+  const isFavorite = favorites.some(fav => fav._id === figurine._id);
 
-  // const handleAddToFavorite = () => {
-  //   dispatch(add2Favorite({ figurineId: figurine._id, userId }));
-  // };
- 
+  const handleAddToFavorite = (figurineId) => {
+    console.log("Adding to favorites:", figurineId); // Debugging the dispatch
+    dispatch(add2Favorite({ figurineId, userId }));
+  };
 
   return (
     <>
       <CardContainer className="inter-var">
         <CardBody className="bg-gray-50 relative group/card dark:bg-black border w-auto sm:w-[30rem] h-auto rounded-xl p-4">
-          {/* Image */}
           <CardItem translateZ="100" className="w-full">
             <img
               src={figurine.image}
@@ -38,16 +36,12 @@ const FigurineCard3d = ({ figurine }) => {
               className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
             />
           </CardItem>
-
-          {/* Figurine Name */}
           <CardItem
             translateZ="50"
             className="text-xl font-bold text-neutral-600 dark:text-white font-delius mt-4"
           >
             {figurine.name}
           </CardItem>
-
-          {/* Figurine Details */}
           <CardItem
             as="p"
             translateZ="60"
@@ -58,26 +52,24 @@ const FigurineCard3d = ({ figurine }) => {
             Price: ${figurine.price}
           </CardItem>
 
-          {/* Action Buttons */}
           <div className="flex justify-center items-center mt-4">
-          
-            <CardItem translateZ={20} as="div" className="flex space-x-10" >
+            <CardItem translateZ={20} as="div" className="flex space-x-10">
               <Tooltip title={`Add ${figurine.name} to Favorites <3`} placement="top">
-                <IconButton aria-label="add to favorites">
-                  <FavoriteIcon />
+                <IconButton 
+                  aria-label="add to favorites"
+                  onClick={() => handleAddToFavorite(figurine._id)}
+                >
+                  {isFavorite ?<FavoriteBorderIcon />  : <FavoriteIcon />}
                 </IconButton>
               </Tooltip>
               
               <Tooltip title="View Full Product" placement="top">
-             
-                  <IconButton  
+                <IconButton
                   aria-label="view"
-                    onClick={() => setIsModalOpen(true)}
-                   >
-                    <PreviewIcon  />
-                  </IconButton>
-              
-                
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <PreviewIcon />
+                </IconButton>
               </Tooltip>
               
               <Tooltip title={`Add ${figurine.name} to Cart!`} placement="top">
@@ -92,18 +84,15 @@ const FigurineCard3d = ({ figurine }) => {
                 </IconButton>
               </Tooltip>
             </CardItem>
-           
           </div>
         </CardBody>
       </CardContainer>
 
-        <FigurineModal
-          images={images}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-
-     
+      <FigurineModal
+        images={["https://via.placeholder.com/600x400?text=Image+1", "https://via.placeholder.com/600x400?text=Image+2"]}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 };
