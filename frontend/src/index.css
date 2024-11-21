@@ -6,7 +6,7 @@
 @layer base {
     body {
       font-family: 'Delius', cursive;
-      background-color: #E5C8EA;
+      /* background-color: #E5C8EA; */
     }
 }
 
@@ -16,5 +16,14 @@
     font-style: normal;
 }
 
-
+.vortex-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Place behind content */
+  overflow: hidden;
+  background-color: rgba(229, 200, 234, 1);
+}
 
