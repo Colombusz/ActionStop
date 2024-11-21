@@ -74,9 +74,9 @@ const FigurineModal = ({ images, details, isOpen, onClose }) => {
       <div className="col-span-2 grid gap-4 mb-4 overflow-y-auto max-h-[70vh]">
         {/* Description Section */}
         <div className="bg-gray-100 p-4 rounded-lg">
-          <h2 className="text-2xl font-bold mb-2">Name</h2>
-          <p className="text-gray-700 mb-2">Origin: </p>
-          <p className="text-gray-700 mb-2">Classification: </p>
+          <h2 className="text-2xl font-bold mb-2">{details.name}</h2>
+          <p className="text-gray-700 mb-2">Origin: {details.origin} </p>
+          <p className="text-gray-700 mb-2">Classification: {details.classification}</p>
           <p className="text-lg font-semibold">Price: ${details?.price || "0.00"}</p>
         </div>
 

@@ -3,16 +3,16 @@ import { toast } from "react-toastify";
 // Async action to fetch the list of favorite figurines
 export const fetchFavorites = createAsyncThunk(
   'figurines/fetchFavorites',
-  async (userId) => {
+  async (id) => {
     try {
-      const response = await fetch(`/api/transaction/${userId}/fetchFavorites`, {
+      const response = await fetch(`/api/transaction/${id}/fetchFavorites`, {
         method: 'GET',
         // Add headers if necessary, e.g., for authentication:
         // headers: { 'Authorization': `Bearer ${token}` },
       });
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.message}`);
+        throw new Error(`Error: ${response.statusText}`);
       }
 
       const data = await response.json();
