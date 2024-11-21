@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './index.css';
 
 // Utility Components
+import { Vortex } from './components/ui/vortex.jsx';
 import { Modal } from './components/ui/animated-modal.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -33,9 +34,15 @@ function App() {
           v7_relativeSplatPath: true, // Enable updated relative splat path resolution
         }}
       >
+        <Vortex
+            rangeY={800}
+            particleCount={500}
+            baseHue={120}
+          />
         <Modal>
           <ToastContainer />
           <div className="relative z-10">
+          
             <Routes>
               {/* User / Non-User Routes */}
               <Route path="/about" element={<About />} />
@@ -51,6 +58,7 @@ function App() {
               <Route path="/admin/manufacturers" element={<ManufacturerDashboard />} />
               <Route path="/admin/promos" element={<PromoDashboard />} />
             </Routes>
+          
           </div>
         </Modal>
       </Router>

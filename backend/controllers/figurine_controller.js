@@ -69,6 +69,27 @@ export const createFigurine = async (req, res) => {
             });
         }
 
+        // try to parse manufacturer || INSOMNIA TESTING
+        let parsedManufacturers;
+        try {
+            parsedManufacturers = JSON.parse(manufacturer);
+            if (!Array.isArray(parsedManufacturers)) {
+                throw new Error("Manufacturer must be an array of objects.");
+            }
+
+            // Validate each manufacturer object
+            parsedManufacturers.forEach((manu) => {
+                if (!manu.name || !manu.country) {
+                    throw new Error("Each manufacturer must have 'name' and 'country' properties.");
+                }
+            });
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: `Invalid manufacturer format: ${error.message}`,
+            });
+        }
+
         // Validate and upload images
         let imageLinks = [];
         if (images && images.length > 0) {
@@ -94,7 +115,7 @@ export const createFigurine = async (req, res) => {
             images: imageLinks,
             origin,
             classification,
-            manufacturer: [],
+            manufacturer: parsedManufacturers,
             reviews: [],
         });
 
