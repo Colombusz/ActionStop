@@ -22,7 +22,7 @@ export const Vortex = (props) => {
   const xOff = 0.00125;
   const yOff = 0.00125;
   const zOff = 0.0005;
-  const backgroundColor = "rgba(255, 46, 50, 0.1)";
+  const backgroundColor = "rgba(205, 111, 200, 0.1)";
   let tick = 0;
   const noise3D = createNoise3D();
   let particleProps = new Float32Array(particlePropsLength);

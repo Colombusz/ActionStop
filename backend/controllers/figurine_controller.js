@@ -136,11 +136,11 @@ export const createFigurine = async (req, res) => {
 
 export const updateFigurine = async (req, res) => {
     const { id } = req.params;
-    const figurine = req.body;
 
     // 404 not found
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No Figurine with id: ${id}`);
-
+    
+    const figurine = await Figurine.findById(id);
     const images = req.files;
     let imageLinks = [];
 
@@ -156,12 +156,42 @@ export const updateFigurine = async (req, res) => {
             const result = await uploadToCloudinary(images[i].buffer);
             imageLinks.push({ public_id: result.public_id, url: result.secure_url });
         }
+    } else {
+        imageLinks = figurine.images;
     }
+
+    // Manufaturer || INSOMNIA TESTING
+    let manufacturer;
+    try {
+        manufacturer = JSON.parse(req.body.manufacturer);
+
+        // Validate the parsed manufacturer array
+        if (!Array.isArray(manufacturer)) {
+            throw new Error("Manufacturer must be an array of objects.");
+        }
+
+        manufacturer.forEach((manu) => {
+            if (!manu.name || !manu.country) {
+                throw new Error("Each manufacturer must have 'name' and 'country' properties.");
+            }
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: `Invalid manufacturer format: ${error.message}`,
+        });
+    }
+
+    const updatedData = {
+        ...req.body,
+        manufacturer,
+        images: imageLinks
+    };
 
     try {
         const updatedFigurine = await Figurine.findByIdAndUpdate(
             id, 
-            { ...figurine, images: imageLinks.length > 0 ? imageLinks : figurine.images }, 
+            updatedData,
             { new: true }
         );
         res.status(200).json({success: true, data: updatedFigurine});
