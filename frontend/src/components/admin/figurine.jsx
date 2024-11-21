@@ -13,14 +13,14 @@ import {
   ModalFooter,
   useModal,
 } from '../ui/animated-modal';
-import FigurineModal from './figurineModal'; // Ensure this import is correct
+import FigurineModal from './figurineModal';
+import FigurineEditModal from './figurineEditModal';
 
 export const FigurineDashboard = () => {
-  // Fetching Figurines
   const { fetchFigurines, figurines } = useFigurineStore();
   const [selectedFigurine, setSelectedFigurine] = useState(null);
+  const [selectedFigurineForEdit, setSelectedFigurineForEdit] = useState(null);
   const { setOpen } = useModal();
-
 
   useEffect(() => {
     const fetchfigurinedata = async () => {
@@ -29,10 +29,16 @@ export const FigurineDashboard = () => {
     fetchfigurinedata();
   }, [fetchFigurines]);
 
-  const handleRowButtonClick = (figurine) => {
-    console.log("Figurine selected:", figurine);
+  const handleDetailsClick = (figurine) => {
+    console.log("Viewing details for:", figurine);
     setSelectedFigurine(figurine);
-    setOpen(true); 
+    setOpen(true); // Open the Details Modal
+  };
+
+  const handleEditClick = (figurine) => {
+    console.log("Editing figurine:", figurine);
+    setSelectedFigurineForEdit(figurine);
+    setOpen(true); // Open the Edit Modal
   };
 
   return (
@@ -42,12 +48,26 @@ export const FigurineDashboard = () => {
         <h1 className="font-delius text-3xl font-bold mb-4">Figurine Dashboard</h1>
         <DataTable
           rows={figurines}
-          onRowButtonClick={handleRowButtonClick}
+          onDetailsClick={handleDetailsClick}
+          onEditClick={handleEditClick}
         />
+        {/* Details Modal */}
         {selectedFigurine && (
           <FigurineModal
             figurine={selectedFigurine}
             onClose={() => setSelectedFigurine(null)}
+          />
+        )}
+        {/* Edit Modal */}
+        {selectedFigurineForEdit && (
+          <FigurineEditModal
+            figurine={selectedFigurineForEdit}
+            onClose={() => setSelectedFigurineForEdit(null)}
+            onSave={(updatedFigurine) => {
+              console.log("Saving changes:", updatedFigurine);
+              // API call or state update to save the edited figurine
+              setSelectedFigurineForEdit(null); // Close modal after saving
+            }}
           />
         )}
       </Stack>
@@ -55,12 +75,7 @@ export const FigurineDashboard = () => {
   );
 };
 
-/*
-    All Figurines
-    name, price, description, images, origin, classification, manufacturer, reviews
- */
-
-const DataTable = ({ rows, onRowButtonClick }) => {
+const DataTable = ({ rows, onDetailsClick, onEditClick }) => {
   const columns = [
     { name: '_id', label: 'ID' },
     { name: 'name', label: 'Figure Name' },
@@ -75,23 +90,20 @@ const DataTable = ({ rows, onRowButtonClick }) => {
           const rowIndex = tableMeta.rowIndex;
           const figurine = rows[rowIndex];
           return (
-            <div className=" text-white px-3 py-1 rounded flex items-center space-x-2">
-            <button
+            <div className="flex items-center space-x-2">
+              <button
                 className="px-4 py-2 bg-zinc-900 text-white rounded hover:bg-zinc-600 transition"
-                onClick={() => {
-                onRowButtonClick(figurine);
-                }}>
+                onClick={() => onDetailsClick(figurine)}
+              >
                 Details
-            </button>
-            <button
+              </button>
+              <button
                 className="px-4 py-2 bg-zinc-900 text-white rounded hover:bg-zinc-600 transition"
-                onClick={() => {
-                onRowButtonClick(figurine);
-                }}>
+                onClick={() => onEditClick(figurine)}
+              >
                 Edit
-            </button>
+              </button>
             </div>
-
           );
         },
       },
@@ -102,7 +114,7 @@ const DataTable = ({ rows, onRowButtonClick }) => {
     filterType: 'checkbox',
     selectableRows: 'none',
     rowsPerPage: 5,
-    rowsPerPageOptions: [5, 10, 15],
+    rowsPerPageOptions: [5, 7, 10, 15],
   };
 
   const data = rows.map((row) => ({
@@ -125,5 +137,6 @@ const DataTable = ({ rows, onRowButtonClick }) => {
     </Paper>
   );
 };
+
 
 export default FigurineDashboard;
