@@ -2,10 +2,11 @@ import React from "react";
 import { ModalBody, ModalContent, ModalFooter } from "../../ui/animated-modal";
 
 const FigurineDeleteModal = ({ figurine, onClose, onConfirm }) => {
+  console.log("Figurine to delete:", figurine);
   return (
     <ModalBody>
       <ModalContent>
-        {Array.isArray(figurine) && figurine.length > 1 ? (
+        {figurine && figurine.length > 1 ? (
           <>
             <p>Are you sure you want to delete the following figurines?</p>
             <ul className="list-disc ml-5">
@@ -40,6 +41,7 @@ const FigurineDeleteModal = ({ figurine, onClose, onConfirm }) => {
     </ModalBody>
   );
 };
+
 
 
 export default FigurineDeleteModal;

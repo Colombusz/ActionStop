@@ -8,7 +8,6 @@ import { Modal } from './components/ui/animated-modal.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
-
 // Redux Provider and Store
 import { Provider } from 'react-redux';
 import store from './components/store/store.js';
@@ -25,7 +24,16 @@ import About from './components/pages/about';
 import Signup from './components/pages/signup';
 import Login from './components/pages/login';
 import Favorites from './components/pages/favorites';
+
+// User Authentication
+import { checkAuthStatus, handleLogout } from './utils/userauth.js';
+
 function App() {
+  // Authentication
+  const [isAuthenticated, setIsAuthenticated] = useState(() => checkAuthStatus);
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
+  const [isadmin, setAdmin] = useState(() => localStorage.getItem('isadmin') === 'true');
+
   return (
     <Provider store={store}>
       <Router

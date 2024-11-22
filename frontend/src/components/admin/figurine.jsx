@@ -51,7 +51,8 @@ const FigurineDashboard = () => {
   };
 
   const handleDeleteClick = (figurine) => {
-    setFigurineToDelete(figurine);
+    console.log("Deleting Figurine:", figurine);
+    setFigurineToDelete([figurine]); // Wrap the figurine in an array
     setOpen(true);
   };
 
@@ -66,24 +67,24 @@ const FigurineDashboard = () => {
     setFigurineToDelete(figurinesToDelete);
     setOpen(true); 
   };
-  
+
   const confirmDelete = async () => {
     if (figurineToDelete && figurineToDelete.length > 0) {
       try {
         for (const fig of figurineToDelete) {
           await deleteFigurine(fig._id); // Call API for each figurine
         }
-        fetchFigurines(); 
+        await fetchFigurines(); // Refresh the list after deletion
+        toast.success("Figurine(s) deleted successfully.");
       } catch (error) {
         console.error("Failed to delete figurines:", error);
+        toast.error("Failed to delete figurines.");
       } finally {
         setFigurineToDelete(null);
         setSelectedIds(new Set()); // Clear selected IDs
-        toast.success("Figurine(s) deleted successfully.");
       }
     }
   };
-  
 
   return (
     <div className="flex">
@@ -125,7 +126,7 @@ const FigurineDashboard = () => {
         {selectedFigurine && (
           <FigurineModal
             figurine={selectedFigurine}
-            onClose={() => setSelectedFigurine(null)}
+            onClose={() => { setSelectedFigurine(null); setOpen(false); }}
           />
         )}
 
@@ -133,7 +134,7 @@ const FigurineDashboard = () => {
         {figurineToDelete && (
           <FigurineDeleteModal
             figurine={figurineToDelete}
-            onClose={() => { setFigurineToDelete(null) }}
+            onClose={() => { setFigurineToDelete(null); setOpen(false); }}
             onConfirm={confirmDelete}
           />
         )}
@@ -142,7 +143,7 @@ const FigurineDashboard = () => {
         {selectedFigurineForEdit && (
           <FigurineEditModal
             figurine={selectedFigurineForEdit}
-            onClose={() => setSelectedFigurineForEdit(null)}
+            onClose={() => {setSelectedFigurineForEdit(null); setOpen(false); }}
             onSave={() => {
               setSelectedFigurineForEdit(null);
               fetchFigurines(); // Refresh the list
@@ -153,7 +154,7 @@ const FigurineDashboard = () => {
         {/* Add Modal */}
         {isAddModalOpen && (
           <FigurineAddModal
-            onClose={() => { setIsAddModalOpen(false) }}
+            onClose={() => { setIsAddModalOpen(false); setOpen(false); }}
             onSave={() => {
               setIsAddModalOpen(false);
               fetchFigurines(); // Refresh the list
@@ -186,7 +187,7 @@ const DataTable = ({ rows, onDetailsClick, onEditClick, onDeleteClick, selectedI
 
   const columns = [
     {
-      name: "Select",
+      name: "",
       label: "",
       options: {
         customBodyRenderLite: (dataIndex) => {
@@ -208,6 +209,7 @@ const DataTable = ({ rows, onDetailsClick, onEditClick, onDeleteClick, selectedI
     { name: "price", label: "Price" },
     { name: "origin", label: "Origin" },
     { name: "classification", label: "Classification" },
+    { name: "stock", label: "Stock" },
     {
       name: "actions",
       label: "Actions",
@@ -259,6 +261,7 @@ const DataTable = ({ rows, onDetailsClick, onEditClick, onDeleteClick, selectedI
     _id: row?._id || "N/A",
     name: row?.name || "N/A",
     price: row?.price || 0,
+    stock: row?.stock || 0,
     origin: row?.origin || "Unknown",
     classification: row?.classification || "Uncategorized",
     description: row?.description || "No description available.",
@@ -314,6 +317,9 @@ const DataTable = ({ rows, onDetailsClick, onEditClick, onDeleteClick, selectedI
               ) : (
                 <p>No manufacturer information.</p>
               )}
+              <p>
+                <strong>Stock:</strong>  {row.stock}
+              </p>
               <p>
                 <strong>Created At:</strong> {row.createdAt}
               </p>

@@ -16,6 +16,7 @@ const validationSchema = Yup.object({
         country: Yup.string().required('Manufacturer country is required'),
     }),
     images: Yup.array().min(1, 'At least one image is required'),
+    stock: Yup.number().required('Stock is required').positive('Stock must be positive'),
 });
 
 const FigurineAddModal = ({ onClose, onSave }) => {
@@ -32,6 +33,7 @@ const FigurineAddModal = ({ onClose, onSave }) => {
                 name: "",
                 country: "",
             },
+            stock: "",
             images: [],
         },
         validationSchema,
@@ -44,6 +46,7 @@ const FigurineAddModal = ({ onClose, onSave }) => {
             newData.append("classification", values.classification);
             newData.append("manufacturer.name", values.manufacturer.name);
             newData.append("manufacturer.country", values.manufacturer.country);
+            newData.append("stock", values.stock);
 
             values.images.forEach((file) => {
                 newData.append("images", file);
@@ -209,6 +212,20 @@ const FigurineAddModal = ({ onClose, onSave }) => {
                             />
                             {formik.touched.manufacturer?.country && formik.errors.manufacturer?.country ? (
                                 <div className="text-red-500 text-sm">{formik.errors.manufacturer.country}</div>
+                            ) : null}
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Stock</label>
+                            <input
+                                type="number"
+                                name="stock"
+                                value={formik.values.stock}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            {formik.touched.stock && formik.errors.stock ? (
+                                <div className="text-red-500 text-sm">{formik.errors.stock}</div>
                             ) : null}
                         </div>
                         <div>

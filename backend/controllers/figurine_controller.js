@@ -129,9 +129,9 @@ export const createFigurine = async (req, res) => {
     }
 };
 
-
 export const updateFigurine = async (req, res) => {
     const { id } = req.params;
+    console.log("Figurine to update:", req.body);
 
     // 404 not found
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No Figurine with id: ${id}`);
@@ -155,28 +155,6 @@ export const updateFigurine = async (req, res) => {
     } else {
         imageLinks = figurine.images;
     }
-
-    // Manufacturer || INSOMNIA TESTING || NOT WORKING SA APP KAPAG NAKA UNCOMMENT
-    // let manufacturer;
-    // try {
-    //     manufacturer = JSON.parse(req.body.manufacturer);
-
-    //     // Validate the parsed manufacturer array
-    //     if (!Array.isArray(manufacturer)) {
-    //         throw new Error("Manufacturer must be an array of objects.");
-    //     }
-
-    //     manufacturer.forEach((manu) => {
-    //         if (!manu.name || !manu.country) {
-    //             throw new Error("Each manufacturer must have 'name' and 'country' properties.");
-    //         }
-    //     });
-    // } catch (error) {
-    //     return res.status(400).json({
-    //         success: false,
-    //         message: `Invalid manufacturer format: ${error.message}`,
-    //     });
-    // }
 
     const updatedData = {
         ...req.body,
@@ -228,3 +206,36 @@ export const deleteFigurine = async (req, res) => {
         res.status(500).json({ success: false, message: "Server Error" });
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+    // Manufacturer || INSOMNIA TESTING || NOT WORKING SA APP KAPAG NAKA UNCOMMENT
+    // let manufacturer;
+    // try {
+    //     manufacturer = JSON.parse(req.body.manufacturer);
+
+    //     // Validate the parsed manufacturer array
+    //     if (!Array.isArray(manufacturer)) {
+    //         throw new Error("Manufacturer must be an array of objects.");
+    //     }
+
+    //     manufacturer.forEach((manu) => {
+    //         if (!manu.name || !manu.country) {
+    //             throw new Error("Each manufacturer must have 'name' and 'country' properties.");
+    //         }
+    //     });
+    // } catch (error) {
+    //     return res.status(400).json({
+    //         success: false,
+    //         message: `Invalid manufacturer format: ${error.message}`,
+    //     });
+    // }

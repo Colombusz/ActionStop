@@ -31,6 +31,12 @@ const figurineSchema = mongoose.Schema({
         type: String,
         required: [true, "Please enter the origin of the figurine"],
     },
+    stock: {
+        type: Number,
+        required: [true, 'Please enter product stock'],
+        maxLength: [5, 'Product name cannot exceed 5 characters'],
+        default: 0
+    },
     classification: {
         type: String,
         required: [true, "Please enter the classification of the figurine"],
