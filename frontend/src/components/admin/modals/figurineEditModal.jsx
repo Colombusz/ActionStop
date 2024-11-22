@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { ModalBody, ModalContent, ModalFooter } from "../../ui/animated-modal";
 import { useFigurineStore } from "../../store/zfigurine"; 
 import { toast } from 'react-toastify';
+import Loading from "../../common/loading";
 
 const FigurineEditModal = ({ figurine, onClose, onSave }) => {
+    const [loading, setLoading] = useState(false);
     const { updateFigurine } = useFigurineStore();
 
     const [formData, setFormData] = useState({
@@ -37,6 +39,7 @@ const FigurineEditModal = ({ figurine, onClose, onSave }) => {
     };
   
     const handleSubmit = async () => {
+        setLoading(true);
         const updatedData = new FormData();
     
         updatedData.append("name", formData.name);
@@ -73,8 +76,10 @@ const FigurineEditModal = ({ figurine, onClose, onSave }) => {
             });
             onSave(); // Trigger parent save action
             onClose(); // Close the modal
+            setLoading(false);
           }
         } catch (error) {
+          setLoading(false);
           console.error("Error updating figurine:", error);
           toast.error("An error occurred while updating the figurine.", {
             position: "top-right",
@@ -193,6 +198,7 @@ const FigurineEditModal = ({ figurine, onClose, onSave }) => {
           </button>
         </ModalFooter>
       </ModalBody>
+      <Loading loading={loading} />
     </>
   );
 };
