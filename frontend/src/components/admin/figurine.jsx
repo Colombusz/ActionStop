@@ -2,55 +2,93 @@ import React, { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import MUIDataTable from "mui-datatables";
+import { FaTrashAlt } from "react-icons/fa";
 
 import AdminSidebar from './adminsidebar';
 import { useFigurineStore } from '../store/zfigurine';
 import {
   Modal,
-  ModalTrigger,
   ModalBody,
   ModalContent,
   ModalFooter,
   useModal,
 } from '../ui/animated-modal';
-import FigurineModal from './figurineModal';
-import FigurineEditModal from './figurineEditModal';
+import FigurineModal from './modals/figurineModal';
+import FigurineEditModal from './modals/figurineEditModal';
+import FigurineAddModal from './modals/figurineAddModal';
+import FigurineDeleteModal from './modals/figurineDeleteModal.jsx';
 
-export const FigurineDashboard = () => {
-  const { fetchFigurines, figurines } = useFigurineStore();
+const FigurineDashboard = () => {
+  const { fetchFigurines, figurines, deleteFigurine } = useFigurineStore();
   const [selectedFigurine, setSelectedFigurine] = useState(null);
   const [selectedFigurineForEdit, setSelectedFigurineForEdit] = useState(null);
+  const [figurineToDelete, setFigurineToDelete] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const { setOpen } = useModal();
 
   useEffect(() => {
-    const fetchfigurinedata = async () => {
+    const fetchData = async () => {
       await fetchFigurines();
     };
-    fetchfigurinedata();
+    fetchData();
   }, [fetchFigurines]);
 
   const handleDetailsClick = (figurine) => {
-    console.log("Viewing details for:", figurine);
     setSelectedFigurine(figurine);
     setOpen(true); // Open the Details Modal
   };
 
   const handleEditClick = (figurine) => {
-    console.log("Editing figurine:", figurine);
     setSelectedFigurineForEdit(figurine);
     setOpen(true); // Open the Edit Modal
+  };
+
+  const handleAddClick = () => {
+    setIsAddModalOpen(true); // Open the Add Modal
+    setOpen(true);
+  };
+
+  const handleDeleteClick = (figurine) => {
+    setFigurineToDelete(figurine);
+    setOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (figurineToDelete) {
+      try {
+        await deleteFigurine(figurineToDelete._id);
+        fetchFigurines(); // Refresh the list
+      } catch (error) {
+        console.error("Failed to delete figurine:", error);
+      } finally {
+        setFigurineToDelete(null);
+      }
+    }
   };
 
   return (
     <div className="flex">
       <AdminSidebar />
       <Stack spacing={2} className="flex-1 p-5">
-        <h1 className="font-delius text-3xl font-bold mb-4">Figurine Dashboard</h1>
+        <h1 className="font-delius text-3xl font-bold mb-4">"ActionStop!" Figurine Dashboard</h1>
+
+        {/* Add Button */}
+        <div className="flex justify-start mt-4">
+          <button
+            className="px-4 py-2 bg-zinc-900 text-white rounded hover:bg-green-500 transition"
+            onClick={handleAddClick}
+          >
+            Add New Figurine
+          </button>
+        </div>
+
         <DataTable
           rows={figurines}
           onDetailsClick={handleDetailsClick}
           onEditClick={handleEditClick}
+          onDeleteClick={handleDeleteClick}
         />
+
         {/* Details Modal */}
         {selectedFigurine && (
           <FigurineModal
@@ -58,15 +96,35 @@ export const FigurineDashboard = () => {
             onClose={() => setSelectedFigurine(null)}
           />
         )}
+
+        {/* Delete Confirmation Modal */}
+        {figurineToDelete && (
+          <FigurineDeleteModal
+            figurine={figurineToDelete}
+            onClose={() => { setFigurineToDelete(null) }}
+            onConfirm={confirmDelete}
+          />
+        )}
+
         {/* Edit Modal */}
         {selectedFigurineForEdit && (
           <FigurineEditModal
             figurine={selectedFigurineForEdit}
             onClose={() => setSelectedFigurineForEdit(null)}
-            onSave={(updatedFigurine) => {
-              console.log("Saving changes:", updatedFigurine);
-              // API call or state update to save the edited figurine
-              setSelectedFigurineForEdit(null); // Close modal after saving
+            onSave={() => {
+              setSelectedFigurineForEdit(null);
+              fetchFigurines(); // Refresh the list
+            }}
+          />
+        )}
+
+        {/* Add Modal */}
+        {isAddModalOpen && (
+          <FigurineAddModal
+            onClose={() => { setIsAddModalOpen(false) }}
+            onSave={() => {
+              setIsAddModalOpen(false);
+              fetchFigurines(); // Refresh the list
             }}
           />
         )}
@@ -75,7 +133,7 @@ export const FigurineDashboard = () => {
   );
 };
 
-const DataTable = ({ rows, onDetailsClick, onEditClick }) => {
+const DataTable = ({ rows, onDetailsClick, onEditClick, onDeleteClick }) => {
   const columns = [
     { name: '_id', label: 'ID' },
     { name: 'name', label: 'Figure Name' },
@@ -103,6 +161,12 @@ const DataTable = ({ rows, onDetailsClick, onEditClick }) => {
               >
                 Edit
               </button>
+              <button
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-800 transition"
+                onClick={() => onDeleteClick(figurine)}
+              >
+                <FaTrashAlt />
+              </button>
             </div>
           );
         },
@@ -114,17 +178,17 @@ const DataTable = ({ rows, onDetailsClick, onEditClick }) => {
     filterType: 'checkbox',
     selectableRows: 'none',
     rowsPerPage: 5,
-    rowsPerPageOptions: [5, 7, 10, 15],
+    rowsPerPageOptions: [5, 7],
   };
 
-  const data = rows.map((row) => ({
-    _id: row._id,
-    name: row.name,
-    price: row.price,
-    origin: row.origin,
-    classification: row.classification,
+  const data = (rows || []).map((row) => ({
+    _id: row?._id || "N/A",
+    name: row?.name || "N/A",
+    price: row?.price || 0,
+    origin: row?.origin || "Unknown",
+    classification: row?.classification || "Uncategorized",
     actions: null,
-  }));
+}));
 
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
@@ -137,6 +201,5 @@ const DataTable = ({ rows, onDetailsClick, onEditClick }) => {
     </Paper>
   );
 };
-
 
 export default FigurineDashboard;
