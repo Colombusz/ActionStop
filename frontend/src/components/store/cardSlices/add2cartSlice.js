@@ -70,11 +70,11 @@ const add2CartSlice = createSlice({
                 // Remove item if quantity is less than 1
                 const index = state.cartItems.findIndex(item => item.id === id);
                
-                if (index) {
+                if (index !== -1) {
                     state.cartItems.splice(index, 1);
                     saveToLocalStorage(state);
                 }
-                else if(index === 0){
+                else if(state.cartItems.length === 1){
                     return initialState;
                 } // Remove item
                 toast.success("Item removed from the cart", {
