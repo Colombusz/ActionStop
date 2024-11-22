@@ -37,16 +37,20 @@ const add2CartSlice = createSlice({
             const { id, name, origin, price, image, quantity } = action.payload;
 
             // Check if the item already exists in the cart
-            const existingItem = state.find(item => item.id === id);
+            const existingItem = state.cartItems.find(item => item.id === id);
 
             if (existingItem) {
                 // Update quantity if item exists
                 existingItem.quantity += quantity;
-                toast.success(`Updated! ${name} quantity added to Cart`);
+                toast.success(`Updated! ${name} quantity added to Cart`,{
+                    autoClose: 500, // Duration in milliseconds (3 seconds
+                });
             } else {
                 // Add new item to the cart
                 state.cartItems.push({ id, name, origin, price, image, quantity });
-                toast.success(`Saved! ${name} added to Cart`);
+                toast.success(`Saved! ${name} added to Cart`, {
+                    autoClose: 500, // Duration in milliseconds (3 seconds)
+                });
             }
 
             saveToLocalStorage(state); // Save updated cart to localStorage
@@ -65,17 +69,26 @@ const add2CartSlice = createSlice({
             if (quantity < 1) {
                 // Remove item if quantity is less than 1
                 const index = state.cartItems.findIndex(item => item.id === id);
+               
                 if (index) {
-                    state.splice(index, 1);
+                    state.cartItems.splice(index, 1);
+                    saveToLocalStorage(state);
+                }
+                else if(index === 0){
+                    return initialState;
                 } // Remove item
-                toast.success("Item removed from the cart");
+                toast.success("Item removed from the cart", {
+                    autoClose: 500, // Duration in milliseconds (3 seconds)
+                  });
             } else {
                 // Update quantity
                 // console.log(id)
                 
                 
                 item.quantity = quantity;
-                toast.success("Quantity updated");
+                toast.success("Quantity updated",{
+                    autoClose: 500, // Duration in milliseconds (3 seconds)
+                });
             }
            
             saveToLocalStorage(state); // Save updated cart to localStorage
@@ -111,12 +124,17 @@ const add2CartSlice = createSlice({
                 return sum + item.price * item.quantity;
             }, 0);
 
-            toast.info(`Current Total: ${state.total}`);
+            toast.info(`Current Total: ${state.total}`,{
+                autoClose: 500, // Duration in milliseconds (3 seconds)
+            });
+        },
+        resetCartState: () => {
+            return initialState;
         },
     },
 });
 
 
-export const { addToCart, updateQuantity, resetCart, removeFromCart, calculateTotal } = add2CartSlice.actions;
+export const { addToCart, updateQuantity, resetCart,resetCartState, removeFromCart, calculateTotal } = add2CartSlice.actions;
 
 export default add2CartSlice.reducer;

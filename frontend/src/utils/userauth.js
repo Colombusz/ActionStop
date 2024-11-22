@@ -6,12 +6,14 @@ export const checkAuthStatus = () => {
 };
 
 export const handleLogout = async (setIsAuthenticated, setUser, setIsAdmin) => {
+ 
   try {
     await axios.post('http://localhost:5000/api/auth/logout', {}, { withCredentials: true });
     localStorage.removeItem('user');
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('cartData')
+    localStorage.removeItem('cartData');
+    
     setIsAuthenticated(false);
     setUser(null);
     setIsAdmin(false);

@@ -108,7 +108,7 @@ export const CartItem = ({ id }) => {
     state.cart.cartItems.find((product) => product.id === id)
     
   );
-  console.log(item);
+  // console.log(item);
   // If item is not found (e.g., removed), return null
   if (!item) {
     return null;
@@ -127,7 +127,7 @@ export const CartItem = ({ id }) => {
   
   
   return (
-    <div className="max-h-[80vh] overflow-y-auto">
+    <div className="">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
