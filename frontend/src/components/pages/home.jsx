@@ -20,8 +20,9 @@ const Home = () => {
 
   console.log('Fetched Figurines: ', figurines);
 
-
-
+  const Cart = JSON.parse(localStorage.getItem('cartData'));
+  const cartData = Cart || [];
+  // console.log(cartData);
 
   return (
     
@@ -29,7 +30,7 @@ const Home = () => {
   {/* Navbar */}
   <div className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-black">
     <MainNavbar 
-      
+      Cart={cartData}
     />
   </div>
 

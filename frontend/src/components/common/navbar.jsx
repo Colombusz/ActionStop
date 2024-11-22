@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { HoveredLink, Menu, MenuItem, ProductItem } from '../ui/navbar-menu';
+import { HoveredLink, Menu, MenuItem, ProductItem, CartItem, CheckoutSummary } from '../ui/navbar-menu';
 import { cn } from "../../utils/cn";
 import { AiOutlineUser, AiOutlineHeart, AiOutlineShoppingCart , AiOutlineGift, AiOutlineBook, AiOutlineLogin, AiOutlineForm, AiOutlineSetting, AiOutlineLogout } from "react-icons/ai";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { checkAuthStatus, handleLogout } from '../../utils/userauth';
-
-const MainNavbar = ({ className,  handle}) => {
+import { Box } from '@mui/material';
+import { updateQuantity } from '../store/cardSlices/add2cartSlice';
+const MainNavbar = ({ className,  Cart}) => {
     const [active, setActive] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
@@ -32,7 +33,9 @@ const MainNavbar = ({ className,  handle}) => {
     return (
         <div className={cn("fixed top-5 inset-x-0 max-w-2xl mx-auto z-50", className)}>
             <Menu setActive={setActive}>
-            
+                {/* AboutUs */}
+                <MenuItem  item="AboutUs" href="/about" />
+                
                 {/* Products */}
                 <MenuItem setActive={setActive} active={active} item="Products" href="/">
                     <div className="text-sm grid grid-cols-3 gap-10 p-4">
@@ -83,14 +86,33 @@ const MainNavbar = ({ className,  handle}) => {
                     </MenuItem>
                 )}
                 {isAuthenticated && (
-                     <MenuItem setActive={setActive} active={active} item="Cart">
-                     <ProductItem
-                                     title="Algochurn"
-                                     href="https://algochurn.com"
-                                     src="https://assets.aceternity.com/demos/algochurn.webp"
-                                     description="Prepare for tech interviews like never before."
-                                 />
-                    </MenuItem>
+                    <MenuItem setActive={setActive} active={active} item="Cart">
+                    <div className="overflow-y-auto" style={{ maxHeight: '400px' }}>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        {Array.isArray(Cart) && Cart.length > 0 ? (
+                          Cart.map((figurine) => (
+                            <CartItem
+                              key={figurine.id}
+                              id={figurine.id}
+                              // href="/products/1"
+                              src={figurine.image}
+                              title={figurine.name}
+                              description={`Price: $ ${figurine.quantity * figurine.price}`}
+                              quantity={figurine.quantity}
+                              
+                            />
+                          ))
+                        ) : (
+                          <div>No favorites found.</div> // If favorites is empty or not an array
+                        )}
+                      </div>
+                      
+                      <CheckoutSummary 
+                      
+                      />
+                      </div>
+                  </MenuItem>
+                  
                 )}
                 
 

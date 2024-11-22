@@ -4,7 +4,7 @@ import figurineReducer from './figurineSlice';
 import figurineModalReducer from './cardSlices/figurineModalSlice';
 import add2FavoriteReducer from './cardSlices/add2FavoriteSlice';
 import fetchFavoritesReducer from './cardSlices/fetchFavoritesSlice';
-
+import  add2CartReducer  from './cardSlices/add2cartSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +12,7 @@ const store = configureStore({
     modalFigurines: figurineModalReducer,
     add2Favorite: add2FavoriteReducer,
     fetchFavorites: fetchFavoritesReducer,
+    cart: add2CartReducer,
 
   },
 });

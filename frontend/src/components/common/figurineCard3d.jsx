@@ -10,6 +10,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import FigurineModal from "../ui/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { add2Favorite } from "../store/cardSlices/add2FavoriteSlice";
+import { addToCart } from "../store/cardSlices/add2cartSlice";
 
 const FigurineCard3d = ({ figurine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +24,19 @@ const FigurineCard3d = ({ figurine }) => {
   const handleAddToFavorite = (figurineId) => {
     console.log("Adding to favorites:", figurineId); // Debugging the dispatch
     dispatch(add2Favorite({ figurineId, userId }));
+  };
+
+  const handleAdd2Cart = (figurine) =>
+  {
+    // console.log(figurine)
+    dispatch(addToCart({
+      id : figurine._id,
+      name: figurine.name,
+      origin: figurine.origin,
+      price: figurine.price,
+      image: figurine.images[0].url,
+      quantity: 1
+    }));
   };
 
   return (
@@ -74,7 +88,10 @@ const FigurineCard3d = ({ figurine }) => {
               </Tooltip>
               
               <Tooltip title={`Add ${figurine.name} to Cart!`} placement="top">
-                <IconButton aria-label="add">
+                <IconButton 
+                aria-label="add"
+                onClick={() => handleAdd2Cart(figurine)}
+                >
                   <AddShoppingCartIcon />
                 </IconButton>
               </Tooltip>
@@ -90,7 +107,7 @@ const FigurineCard3d = ({ figurine }) => {
       </CardContainer>
 
       <FigurineModal
-        images={["https://via.placeholder.com/600x400?text=Image+1", "https://via.placeholder.com/600x400?text=Image+2"]}
+        images={figurine.images}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         details={figurine}

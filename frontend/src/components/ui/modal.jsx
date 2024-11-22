@@ -49,7 +49,7 @@ const FigurineModal = ({ images, details, isOpen, onClose }) => {
         {images.map((image, index) => (
           <img
             key={index}
-            src={image}
+            src={image.url}
             alt={`Slide ${index + 1}`}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
               index === currentIndex ? "opacity-100" : "opacity-0"

@@ -47,8 +47,8 @@ const Favorites = () => {
       <div className="pt-16"> {/* Use padding-top to prevent overlap with the navbar */}
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
           {/* Check if favorites is an array and render the figurine cards */}
-          {favorites && favorites.data.length > 0 ? (
-            favorites.data.map((figurine) => (
+          {faves ? (
+            faves.map((figurine) => (
               <FigurineCard3d
                 key={figurine._id}
                 figurine={figurine}

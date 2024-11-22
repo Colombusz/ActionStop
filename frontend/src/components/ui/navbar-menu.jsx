@@ -1,7 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-
+import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlinePlus, AiOutlineWarning } from "react-icons/ai";
+import { Button } from "@mui/material";
+import { updateQuantity, removeFromCart, calculateTotal } from "../store/cardSlices/add2cartSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { createSelector } from "@reduxjs/toolkit";
 const transition = {
   type: "spring",
   mass: 0.5,
@@ -92,5 +97,166 @@ export const HoveredLink = ({  href, children, ...rest }) => {
     >
       {children}
     </Link>
+  );
+};
+
+export const CartItem = ({ id }) => {
+  const dispatch = useDispatch();
+
+  // Fetch the current item from Redux
+  const item = useSelector((state) =>
+    state.cart.cartItems.find((product) => product.id === id)
+    
+  );
+  console.log(item);
+  // If item is not found (e.g., removed), return null
+  if (!item) {
+    return null;
+  }
+
+  const { name, price, href, image , quantity } = item;
+
+  // Handles updating the quantity, ensuring no negative values
+  const handleQuantity = (newQuantity) => {
+    if (!isNaN(newQuantity)) {
+      dispatch(updateQuantity({ id, quantity: newQuantity }));
+      dispatch(calculateTotal())
+    }
+  };
+
+  
+  
+  return (
+    <div className="max-h-[80vh] overflow-y-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.3 }} // Adjust transition as needed
+        className="flex items-start space-x-3 p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 shadow-md"
+      >
+        {/* Product Link */}
+        <Link to={href} className="flex space-x-3 flex-grow min-w-0">
+          <img
+            src ={image}
+            width={80}
+            height={80}
+            alt={name}
+            className="flex-shrink-0 rounded-md shadow-md object-cover w-20 h-20"
+          />
+          <div className="flex-grow min-w-0">
+            <h4 className="text-base font-bold mb-1 text-black dark:text-white truncate">
+              {name}
+            </h4>
+            <p className="text-neutral-700 text-sm dark:text-neutral-300 line-clamp-2 break-words">
+              ${price}
+            </p>
+          </div>
+        </Link>
+
+        {/* Quantity Controls */}
+        <div className="flex flex-col items-end space-y-2 flex-shrink-0">
+          <div className="flex items-center space-x-1">
+            {/* Decrease Quantity */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                if(quantity===1)
+                {
+                  handleQuantity(0)
+                }
+                else{
+                  handleQuantity(quantity - 1)
+                }
+                
+               }}
+              className="w-7 h-7 flex items-center justify-center text-base font-medium rounded-md 
+                         bg-gray-300 dark:bg-neutral-700 hover:bg-gray-400 dark:hover:bg-neutral-600
+                         text-black dark:text-white border border-gray-300 dark:border-neutral-600"
+              
+              aria-label="Decrease quantity"
+            >
+              <AiOutlineArrowLeft />
+            </motion.button>
+
+            {/* Quantity Input */}
+            <input
+              type="number"
+             
+              value={quantity}
+              onChange={(e) => {
+                const value = parseInt(e.target.value, 10);
+                if (!isNaN(value)) {
+                  handleQuantity(value);
+                }
+              }}
+              className="w-10 text-center rounded-md border border-gray-300 dark:border-neutral-700 
+                         px-1 py-0.5 bg-white dark:bg-neutral-800 text-black dark:text-white text-sm"
+            />
+
+            {/* Increase Quantity */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleQuantity(quantity + 1)}
+              className="w-7 h-7 flex items-center justify-center text-base font-medium rounded-md 
+                         bg-gray-300 dark:bg-neutral-700 hover:bg-gray-400 dark:hover:bg-neutral-600
+                         text-black dark:text-white border border-gray-300 dark:border-neutral-600"
+              aria-label="Increase quantity"
+            >
+              <AiOutlineArrowRight />
+            </motion.button>
+          </div>
+
+          {/* Remove Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              console.log(id)
+              handleQuantity(0)}} // Removes the item by setting quantity to 0
+            className="text-xs text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
+          >
+            <AiOutlineWarning className="inline-block mr-1" /> Remove
+          </motion.button>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+export const CheckoutSummary = () => {
+  const dispatch = useDispatch(); 
+
+  const total = useSelector((state) => state.cart.total);
+  
+  return (
+    <div className="p-4 border-2 border-dashed border-black mt-4 bg-white">
+      <div className="space-y-4">
+        {/* Price Summary */}
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-semibold">Total:</span>
+          <span className="text-xl font-bold">$ {total}</span>
+        </div>
+        
+        {/* Checkout Button */}
+        <Button
+          sx={{
+            width: '100%',
+            backgroundColor: 'black',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#4b4b4b', // Darker shade of gray, similar to hover:bg-gray-800
+            },
+            paddingY: 2, // py-2
+            paddingX: 4, // px-4
+          }}
+          onClick={() => console.log('Proceed to checkout')}
+        >
+          Proceed to checkout
+        </Button>
+      </div>
+    </div>
   );
 };
