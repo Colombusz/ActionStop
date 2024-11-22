@@ -5,19 +5,25 @@ export const useFigurineStore = create((set) => ({
     setFigurines: (figurines) => set({ figurines }),
 
     createFigurine: async (newFigurine) => {
-        if (!newFigurine.name || !newFigurine.image || !newFigurine.price) {
-            return { success: false, message: "Please fill in all Fields." };
+        // DEBUGGING
+        for (let [key, value] of newFigurine.entries()) {
+            console.log(`${key}: ${value}`);
         }
+    
         const res = await fetch("/api/figurines", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newFigurine)
+            body: newFigurine, // FormData object
         });
+    
+        if (!res.ok) {
+            const errorData = await res.json();
+            console.error("Error creating figurine:", errorData.message);
+            return { success: false, message: errorData.message };
+        }
+    
         const data = await res.json();
         set((state) => ({ figurines: [...state.figurines, data.data] }));
-
+    
         return { success: true, message: "Figurine Created Successfully." };
     },
 
@@ -25,8 +31,6 @@ export const useFigurineStore = create((set) => ({
         try {
             const res = await fetch("/api/figurines");
             const data = await res.json();
-            console.log("API response:", data);  // Log response to verify structure
-    
             set({ figurines: data.data });
         } catch (error) {
             console.error("Error fetching figurines:", error);
@@ -48,10 +52,7 @@ export const useFigurineStore = create((set) => ({
     updateFigurine: async (fid, updatedFigurine) => {
         const res = await fetch(`/api/figurines/${fid}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedFigurine)
+            body: updatedFigurine, // FormData
         });
         const data = await res.json();
         if (!data.success) return { success: false, message: data.message };

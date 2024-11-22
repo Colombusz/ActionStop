@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Modal, ModalBody, ModalContent, ModalFooter, useModal } from "../ui/animated-modal";
-import { AnimatedTestimonials } from "../ui/animated-testimonial";
+import { Modal, ModalBody, ModalContent, ModalFooter, useModal } from "../../ui/animated-modal";
+import { AnimatedTestimonials } from "../../ui/animated-testimonial";
 
 const FigurineModal = ({ figurine, onClose }) => {
     console.log("Figurine Images:", figurine.images);
@@ -21,6 +21,7 @@ const FigurineModal = ({ figurine, onClose }) => {
             <p><strong>Description:</strong> <span className="ml-2">{figurine.description || "N/A"}</span></p>
             <p><strong>Origin:</strong> <span className="ml-2">{figurine.origin}</span></p>
             <p><strong>Classification:</strong> <span className="ml-2">{figurine.classification}</span></p>
+            <p><strong>Images:</strong> <span className="ml-2">{testimonials.length}</span></p>
   
             <AnimatedTestimonials testimonials={testimonials} />
           </ModalContent>

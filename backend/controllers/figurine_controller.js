@@ -48,15 +48,31 @@ export const getFigurine = async (req, res) => {
 
 export const createFigurine = async (req, res) => {
     try {
-        // Extract figurine details and files
-        const { name, price, description, origin, classification, manufacturer } = req.body;
+        // DEBUGGING
+        // console.log("Req Body: ", req.body);
+        const { name, price, description, origin, classification } = req.body;
         const images = req.files;
 
-        // Check for missing required fields
-        if (!name || !price || !description || !origin || !classification || !manufacturer) {
+        let parsedManufacturers;
+        if (req.body["manufacturer.name"] && req.body["manufacturer.country"]) {
+            parsedManufacturers = [
+                {
+                    name: req.body["manufacturer.name"],
+                    country: req.body["manufacturer.country"],
+                }, 
+            ];
+        } else {
             return res.status(400).json({
                 success: false,
-                message: "Please fill all the required fields",
+                message: "Manufacturer information is incomplete. Please provide both 'name' and 'country'.",
+            });
+        }
+
+        // Validate required fields
+        if (!name || !price || !description || !origin || !classification) {
+            return res.status(400).json({
+                success: false,
+                message: "Please fill all the required fields.",
             });
         }
 
@@ -66,27 +82,6 @@ export const createFigurine = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Invalid classification. Choose from Western, Anime, Manga, Fantasy, Other.",
-            });
-        }
-
-        // try to parse manufacturer || INSOMNIA TESTING
-        let parsedManufacturers;
-        try {
-            parsedManufacturers = JSON.parse(manufacturer);
-            if (!Array.isArray(parsedManufacturers)) {
-                throw new Error("Manufacturer must be an array of objects.");
-            }
-
-            // Validate each manufacturer object
-            parsedManufacturers.forEach((manu) => {
-                if (!manu.name || !manu.country) {
-                    throw new Error("Each manufacturer must have 'name' and 'country' properties.");
-                }
-            });
-        } catch (error) {
-            return res.status(400).json({
-                success: false,
-                message: `Invalid manufacturer format: ${error.message}`,
             });
         }
 
@@ -134,6 +129,7 @@ export const createFigurine = async (req, res) => {
     }
 };
 
+
 export const updateFigurine = async (req, res) => {
     const { id } = req.params;
 
@@ -160,31 +156,31 @@ export const updateFigurine = async (req, res) => {
         imageLinks = figurine.images;
     }
 
-    // Manufaturer || INSOMNIA TESTING
-    let manufacturer;
-    try {
-        manufacturer = JSON.parse(req.body.manufacturer);
+    // Manufacturer || INSOMNIA TESTING || NOT WORKING SA APP KAPAG NAKA UNCOMMENT
+    // let manufacturer;
+    // try {
+    //     manufacturer = JSON.parse(req.body.manufacturer);
 
-        // Validate the parsed manufacturer array
-        if (!Array.isArray(manufacturer)) {
-            throw new Error("Manufacturer must be an array of objects.");
-        }
+    //     // Validate the parsed manufacturer array
+    //     if (!Array.isArray(manufacturer)) {
+    //         throw new Error("Manufacturer must be an array of objects.");
+    //     }
 
-        manufacturer.forEach((manu) => {
-            if (!manu.name || !manu.country) {
-                throw new Error("Each manufacturer must have 'name' and 'country' properties.");
-            }
-        });
-    } catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: `Invalid manufacturer format: ${error.message}`,
-        });
-    }
+    //     manufacturer.forEach((manu) => {
+    //         if (!manu.name || !manu.country) {
+    //             throw new Error("Each manufacturer must have 'name' and 'country' properties.");
+    //         }
+    //     });
+    // } catch (error) {
+    //     return res.status(400).json({
+    //         success: false,
+    //         message: `Invalid manufacturer format: ${error.message}`,
+    //     });
+    // }
 
     const updatedData = {
         ...req.body,
-        manufacturer,
+        // manufacturer,
         images: imageLinks
     };
 
@@ -205,20 +201,30 @@ export const deleteFigurine = async (req, res) => {
     const { id } = req.params;
 
     // 404 not found
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No Figurine with id: ${id}`);
-
-    // Cloudinary Delete Images
-    await Promise.all(
-        figurine.images.map(async (image) => {
-            await cloudinary.uploader.destroy(image.public_id);
-        })
-    );
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send(`No Figurine with id: ${id}`);
+    }
 
     try {
-        await Figurine.findByIdAndRemove(id);
-        res.status(200).json({success: true, message: "Figurine deleted successfully"});
+        const figurine = await Figurine.findById(id);
+        if (!figurine) {
+            return res.status(404).json({ success: false, message: "Figurine not found" });
+        }
+
+        // Cloudinary Delete Images
+        if (figurine.images && figurine.images.length > 0) {
+            await Promise.all(
+                figurine.images.map(async (image) => {
+                    await cloudinary.uploader.destroy(image.public_id);
+                })
+            );
+        }
+
+        // Delete the figurine from the database
+        await Figurine.findByIdAndDelete(id);
+        res.status(200).json({ success: true, message: "Figurine deleted successfully" });
     } catch (error) {
-        console.log("Error Deleting Figurine: ", error.message);
+        console.error("Error Deleting Figurine:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
-}
+};
