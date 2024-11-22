@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HoveredLink, Menu, MenuItem, ProductItem, CartItem, CheckoutSummary } from '../ui/navbar-menu';
 import { cn } from "../../utils/cn";
-import { AiOutlineUser, AiOutlineHeart, AiOutlineShoppingCart, AiOutlineGift, AiOutlineBook, AiOutlineLogin, AiOutlineForm, AiOutlineSetting, AiOutlineLogout } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineHeart, AiOutlineShoppingCart, AiOutlineGift, AiOutlineBook, AiOutlineLogin, AiOutlineForm, AiOutlineSetting, AiOutlineLogout, AiOutlineStop } from "react-icons/ai";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { checkAuthStatus, handleLogout } from '../../utils/userauth';
@@ -40,8 +40,8 @@ const MainNavbar = ({ className }) => {
     };
 
     // Retrieve cart data from localStorage
-    const Cart = JSON.parse(localStorage.getItem('cartData')) || [];
-
+    // 
+    const Cart = useSelector((state) => state.cart);
     return (
         <div className={cn("fixed top-5 inset-x-0 max-w-2xl mx-auto z-50", className)}>
             <Menu setActive={setActive}>
@@ -108,10 +108,19 @@ const MainNavbar = ({ className }) => {
                                         />
                                     ))
                                 ) : (
-                                    <div>No items in the cart.</div>
+                                    <div className="flex  items-center justify-center text-center p-2">
+                                        <p className=" text-center text-gray-500 text-lg font-semibold">
+                                            <AiOutlineStop className="inline-block mr-2"/> Your cart is empty! . . . . . . . . . .
+                                        </p>
+                                    </div>
                                 )}
                             </div>
-                            <CheckoutSummary />
+                            {Array.isArray(Cart.cartItems) && Cart.cartItems.length > 0 ? (
+                                   <CheckoutSummary />
+                                ) : (
+                                    null
+                                )}
+                            
                         </div>
                     </MenuItem>
                 )}

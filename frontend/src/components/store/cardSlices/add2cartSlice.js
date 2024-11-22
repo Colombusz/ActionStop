@@ -34,7 +34,7 @@ const add2CartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action) => {
-            const { id, name, origin, price, image, quantity } = action.payload;
+            const { id, name, origin, price, image, quantity, stock } = action.payload;
 
             // Check if the item already exists in the cart
             const existingItem = state.cartItems.find(item => item.id === id);
@@ -47,7 +47,7 @@ const add2CartSlice = createSlice({
                 });
             } else {
                 // Add new item to the cart
-                state.cartItems.push({ id, name, origin, price, image, quantity });
+                state.cartItems.push({ id, name, origin, price, image, quantity, stock });
                 toast.success(`Saved! ${name} added to Cart`, {
                     autoClose: 500, // Duration in milliseconds (3 seconds)
                 });
@@ -64,6 +64,13 @@ const add2CartSlice = createSlice({
             if (!item) {
                 toast.error("Item doesn't exist in the cart");
                 return; // Exit without modifying the state
+            }
+
+            if(quantity > item.stock){
+                toast.error("Quantity exceeds stock limit",{
+                    autoClose: 750, // Duration in milliseconds (3 seconds)
+                });
+                return;
             }
 
             if (quantity < 1) {
@@ -102,9 +109,9 @@ const add2CartSlice = createSlice({
             const { id } = action.payload;
 
             // Find the item by ID and remove it from the Redux state
-            const index = state.findIndex(item => item.id === id);
+            const index = state.cartItems.findIndex(item => item.id === id);
             if (index) {
-                state.splice(index, 1); // Remove the item from Redux state
+                state.cartItems.splice(index, 1); // Remove the item from Redux state
                 toast.success("Item removed from the cart");
             } else {
                 toast.error("Item not found in the cart");
