@@ -6,7 +6,7 @@ export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
   const [active, setActive] = useState(0);
 
   if (!testimonials.length) {
-    return <p>No testimonials available.</p>;
+    return <p>Images Available.</p>;
   }
 
   const handleNext = () => {

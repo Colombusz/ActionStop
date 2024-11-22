@@ -42,7 +42,6 @@ function App() {
         <Modal>
           <ToastContainer />
           <div className="relative z-10">
-          
             <Routes>
               {/* User / Non-User Routes */}
               <Route path="/about" element={<About />} />
@@ -54,11 +53,11 @@ function App() {
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminHomePage />} />
+
               <Route path="/admin/figurines" element={<FigurineDashboard />} />
               <Route path="/admin/manufacturers" element={<ManufacturerDashboard />} />
               <Route path="/admin/promos" element={<PromoDashboard />} />
             </Routes>
-          
           </div>
         </Modal>
       </Router>

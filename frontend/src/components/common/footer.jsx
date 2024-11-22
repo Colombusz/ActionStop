@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 
 // react icons
 import {CgFacebook} from "react-icons/cg";
@@ -13,7 +14,8 @@ const ResponsiveFooter = () => {
                 <div
                     className="flex justify-center sm:justify-between gap-[30px] w-full flex-wrap">
                     <p className="text-[0.9rem] text-text hover:text-primary cursor-pointer transition-all duration-200">Products</p>
-                    <p className="text-[0.9rem] text-text hover:text-primary cursor-pointer transition-all duration-200">About Us</p>
+                    <Link to="/about" className="text-[0.9rem] text-text hover:text-primary cursor-pointer transition-all duration-200">About Us</Link>
+                    {/* <p className="text-[0.9rem] text-text hover:text-primary cursor-pointer transition-all duration-200">About Us</p> */}
                     <p className="text-[0.9rem] text-text hover:text-primary cursor-pointer transition-all duration-200">Our Team</p>
                         <p className="text-[0.9rem] text-text hover:text-primary cursor-pointer transition-all duration-200">Contact
                         Us</p>
