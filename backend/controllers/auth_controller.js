@@ -170,7 +170,7 @@ export const googlelogin = async (req, res) => {
 
         // Generate JWT and set cookie
         generateTokenAndSetCookie(res, user._id);
-
+        
         res.status(200).json({
             success: true,
             user: {

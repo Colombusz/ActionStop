@@ -14,6 +14,9 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import { DeleteOutline, DeliveryDiningOutlined, ReviewsOutlined } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { cancelOrder } from '../store/utilitiesSlice';
+import ReviewModal from './reviewModal';
+import { useState } from 'react';
+import { useEffect } from 'react';                                                                  
 const OrderContainer = ({ order }) => {
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('user'));
@@ -21,9 +24,16 @@ const OrderContainer = ({ order }) => {
     const handleCancelOrder = (id, oid) => {
         dispatch(cancelOrder({ id, orderid: oid }));
     };
-    
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [orderid, setorderid] = useState(null);
+    useEffect(() => {
+        if (order) {
+            setorderid(order._id);
+        }
+    }, [order]);
     return (
         <Card sx={{ width: '100%', maxWidth: 1200, margin: 'auto', mt: 2 }}>
+            
             <CardContent>
                 <Box
                     display="flex"
@@ -111,6 +121,12 @@ const OrderContainer = ({ order }) => {
                         {order.orderItems && order.orderItems.length > 0 ? (
                             order.orderItems.map((item, index) => (
                                 <React.Fragment key={index} >
+                                     <ReviewModal 
+                                    isOpen={isModalOpen} 
+                                    onClose={() => setIsModalOpen(false)}
+                                    figurine={item.figurine}
+                                    orderid = {orderid}
+                                    />
                                     <Grid item xs={12} md={3}>
                                         <Typography variant="body2" color="text.secondary">
                                             Product
@@ -137,15 +153,23 @@ const OrderContainer = ({ order }) => {
                                             Review:
                                         </Typography>
                                         {(order.status === 'delivered' || order.status === 'completed')? (
-
-                                            <IconButton>
-                                            <ReviewsOutlined sx={{ color: 'green' }} />
+                                            // {order._id ===}
+                                            <IconButton
+                                            onClick={() => setIsModalOpen(true)}>
+                                            <ReviewsOutlined 
+                                            sx={{ color: 'green' }} 
+                                            
+                                            />
+                                                
                                             </IconButton>
+                                            
+                                            
                                         ):(
                                             <Typography variant="body1">Finish the delivery</Typography>
                                         )}
                                         
                                     </Grid>
+                               
                                 </React.Fragment>
                             ))
                         ) : (
@@ -158,7 +182,9 @@ const OrderContainer = ({ order }) => {
                     </Grid>
                 </Paper>
             </CardContent>
+           
         </Card>
+        
     );
 };
 

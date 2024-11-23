@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const reviewSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, "Please enter the name of the reviewer"],
-    },
     rating: {
         type: Number,
         required: [true, "Please enter the rating of the review"],
@@ -18,7 +14,22 @@ const reviewSchema = mongoose.Schema({
         required: true,
         ref: "User",
     },
+    figurine: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Figurine",
+    },
+    order:
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Order",
+    },
     
 },{
     timestamps: true,
 });
+
+const Review = mongoose.model("Review", reviewSchema);
+
+export default Review;

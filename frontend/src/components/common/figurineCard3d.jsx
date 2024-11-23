@@ -13,6 +13,7 @@ import { add2Favorite } from "../store/cardSlices/add2FavoriteSlice";
 import { addToCart } from "../store/cardSlices/add2cartSlice";
 import { calculateTotal } from "../store/cardSlices/add2cartSlice";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 const FigurineCard3d = ({ figurine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
@@ -25,6 +26,14 @@ const FigurineCard3d = ({ figurine }) => {
   const handleAddToFavorite = (figurineId) => {
     console.log("Adding to favorites:", figurineId); // Debugging the dispatch
     dispatch(add2Favorite({ figurineId, userId }));
+  };
+
+  const handlenotify = (name) => {
+    toast.warn(`Please login to add ${name} to favorites`);
+  };
+
+  const handlenotifyBuy = (name) => {
+    toast.warn(`Please login to Buy ${name} !!!`);
   };
 
   const handleAdd2Cart = (figurine) =>
@@ -74,12 +83,24 @@ const FigurineCard3d = ({ figurine }) => {
           <div className="flex justify-center items-center mt-4">
             <CardItem translateZ={20} as="div" className="flex space-x-10">
               <Tooltip title={`Add ${figurine.name} to Favorites <3`} placement="top">
-                <IconButton 
-                  aria-label="add to favorites"
-                  onClick={() => handleAddToFavorite(figurine._id)}
-                >
-                  {isFavorite ?<FavoriteBorderIcon />  : <FavoriteIcon />}
-                </IconButton>
+                
+                  {userId ?
+                    <IconButton 
+                    aria-label="add to favorites"
+                    onClick={() => handleAddToFavorite(figurine._id)}
+                  >
+                   <FavoriteIcon /> 
+                   </IconButton>
+                   : 
+                   <IconButton 
+                    aria-label="add to favorites"
+                    onClick={() => handlenotify(figurine.name)}
+                  >
+                    <FavoriteBorderIcon /> 
+                    </IconButton>
+                    
+                    }
+                
               </Tooltip>
               
               <Tooltip title="View Full Product" placement="top">
@@ -92,12 +113,22 @@ const FigurineCard3d = ({ figurine }) => {
               </Tooltip>
               
               <Tooltip title={`Add ${figurine.name} to Cart!`} placement="top">
-                <IconButton 
-                aria-label="add"
-                onClick={() => handleAdd2Cart(figurine)}
-                >
-                  <AddShoppingCartIcon />
-                </IconButton>
+              {userId ?
+                    <IconButton 
+                    aria-label="add to favorites"
+                    onClick={() => handleAdd2Cart(figurine)}
+                  >
+                   <AddShoppingCartIcon  /> 
+                   </IconButton>
+                   : 
+                   <IconButton 
+                    aria-label="add to favorites"
+                    onClick={() => handlenotifyBuy(figurine.name)}
+                  >
+                    <AddShoppingCartIcon  /> 
+                    </IconButton>
+                    
+                    }
               </Tooltip>
 
               <Tooltip title={`Buy ${figurine.name} now!`} placement="top">

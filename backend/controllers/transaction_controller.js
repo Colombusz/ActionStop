@@ -2,6 +2,7 @@ import mongoose, { model } from "mongoose";
 import User from "../models/user.js";
 import Figurine from "../models/figurine.js";
 import Order from "../models/order.js";
+import Review from "../models/review.js";
 import e from "express";
 
 export const add2fave = async (req, res) => {
@@ -158,7 +159,7 @@ export const fetchOrders = async (req, res) => {
             populate: {
                 path: "orderItems.figurine", // Populate figurines in order items
                 model: "Figurine",
-                select: '-images', // Exclude the image field from figurines
+                 // Exclude the image field from figurines
             },
         });
     
@@ -241,5 +242,34 @@ export const cancelOrder = async (req, res) => {
     } catch (error) {
         console.error("Error Cancelling Order:", error.message || error);
         res.status(500).json({ success: false, message: "Error Cancelling Order" });
+    }
+}
+
+
+export const createReview  = async (req, res) => {
+    const { figId, comment, rating, userid, orderid } = req.body;
+    try {
+        const figurine = await Figurine.findById(figId);
+        const user = await User.findById(userid);
+        if (!figurine) {
+            return res.status(404).json({ success: false, message: "Figurine not found" });
+        }
+        const review = {
+            user: userid,
+            figurine: figId,
+            order: orderid,
+            comment: comment,
+            rating: rating,
+        };
+        const createdReview = await Review.create(review);
+       const reviewid = createdReview._id;
+        figurine.reviews.push(reviewid);
+        await figurine.save();
+        console.log(review);
+        res.status(201).json({ success: true, data: createdReview });
+    }
+    catch (error) {
+        console.log("Error in Creating Review: ", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 }

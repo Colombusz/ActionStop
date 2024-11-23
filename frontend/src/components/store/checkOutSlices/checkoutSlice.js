@@ -9,9 +9,9 @@ const initialState = {
   error: null,
 };
 const user = JSON.parse(localStorage.getItem("user")); // Access `localStorage` on the client
-if (user) {
-  const userId = user._id;
-}
+
+  const userId = user._id || null;
+
 
 export const sendCheckoutData = createAsyncThunk(
   "checkout/sendCheckoutData",
