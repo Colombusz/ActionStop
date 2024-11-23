@@ -24,14 +24,12 @@ import About from './components/pages/about';
 import Signup from './components/pages/signup';
 import Login from './components/pages/login';
 import Favorites from './components/pages/favorites';
-<<<<<<< HEAD
+
 
 // User Authentication
 import { checkAuthStatus, handleLogout } from './utils/userauth.js';
-
-=======
 import Checkout from './components/pages/checkout.jsx';
->>>>>>> fac15ec (partial shi- for checkout)
+
 function App() {
   // Authentication
   const [isAuthenticated, setIsAuthenticated] = useState(() => checkAuthStatus);
