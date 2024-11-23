@@ -18,7 +18,7 @@ router.get('/current-user', isAuthenticatedUser, getCurrentUser);
 router.put('/update', upload.single("upload_profile"), updateProfile);
 
 router.get('/users', isAuthenticatedUser ,getUsers, authorizeAdmin);
-router.get('/user/:id', isAuthenticatedUser, getUserById, authorizeAdmin);
+router.get('/users/:id', isAuthenticatedUser, getUserById, authorizeAdmin);
 
 // To DO
 // getuserprofile, updateprofile, updatepassword, forgotpassword, resetpassword

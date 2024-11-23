@@ -3,8 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import figurineRoutes from "./routes/figurine_route.js";
-import manufacturerRoutes from "./routes/manufacturer_route.js";
-import promoRoutes from "./routes/promo_route.js";
+import reviewRoutes from "./routes/review_route.js";
 import authRoutes from "./routes/auth_route.js";
 import transactionRoutes from "./routes/transact_route.js";
 const app = express();
@@ -31,8 +30,7 @@ app.use((err, req, res, next) => {
 
 // Router Connection
 app.use("/api/figurines", figurineRoutes);
-app.use("/api/manufacturers", manufacturerRoutes);
-app.use("/api/promos", promoRoutes);
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use("/api/transaction", transactionRoutes);
