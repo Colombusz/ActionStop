@@ -11,7 +11,7 @@ import FigurineModal from "../ui/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { add2Favorite } from "../store/cardSlices/add2FavoriteSlice";
 import { addToCart } from "../store/cardSlices/add2cartSlice";
-
+import { calculateTotal } from "../store/cardSlices/add2cartSlice";
 const FigurineCard3d = ({ figurine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
@@ -35,8 +35,10 @@ const FigurineCard3d = ({ figurine }) => {
       origin: figurine.origin,
       price: figurine.price,
       image: figurine.images[0].url,
-      quantity: 1
+      quantity: 1,
+      stock: figurine.stock
     }));
+    dispatch(calculateTotal())
   };
 
   return (
@@ -64,7 +66,8 @@ const FigurineCard3d = ({ figurine }) => {
           >
             Origin: {figurine.origin} <br />
             Classification: {figurine.classification} <br />
-            Price: ${figurine.price}
+            Price: ${figurine.price}<br />
+            Stocks: {figurine.stock}
           </CardItem>
 
           <div className="flex justify-center items-center mt-4">

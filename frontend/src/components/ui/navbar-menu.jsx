@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlinePlus, AiOutlineWarning } from "react-icons/ai";
+import { AiOutlineAliwangwang, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineBarcode, AiOutlineMoneyCollect, AiOutlinePlus, AiOutlineWarning } from "react-icons/ai";
 import { Button } from "@mui/material";
 import { updateQuantity, removeFromCart, calculateTotal } from "../store/cardSlices/add2cartSlice";
 import { useDispatch } from "react-redux";
@@ -114,7 +114,7 @@ export const CartItem = ({ id }) => {
     return null;
   }
 
-  const { name, price, href, image , quantity } = item;
+  const { name, price, href, image , quantity, stock } = item;
 
   // Handles updating the quantity, ensuring no negative values
   const handleQuantity = (newQuantity) => {
@@ -149,7 +149,8 @@ export const CartItem = ({ id }) => {
               {name}
             </h4>
             <p className="text-neutral-700 text-sm dark:text-neutral-300 line-clamp-2 break-words">
-              ${price}
+              ${price} <br/>
+              Stocks: {stock}
             </p>
           </div>
         </Link>
@@ -236,7 +237,7 @@ export const CheckoutSummary = () => {
       <div className="space-y-4">
         {/* Price Summary */}
         <div className="flex justify-between items-center">
-          <span className="text-lg font-semibold">Total:</span>
+          <span className="text-lg font-semibold">Sub-Total <AiOutlineArrowRight className="inline-block mr-1"/> </span>
           <span className="text-xl font-bold">$ {total}</span>
         </div>
         
@@ -253,8 +254,10 @@ export const CheckoutSummary = () => {
             paddingX: 4, // px-4
           }}
           onClick={() => console.log('Proceed to checkout')}
+          component={Link} // Use React Router's Link component
+          to="/user/checkout"
         >
-          Proceed to checkout
+          <AiOutlineBarcode className="inline-block mr-2" /> Proceed to checkout 
         </Button>
       </div>
     </div>
