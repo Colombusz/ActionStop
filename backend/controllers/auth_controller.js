@@ -129,39 +129,53 @@ export const login = async (req, res) => {
 
 export const googlelogin = async (req, res) => {
     const { idToken } = req.body;
+
     try {
         const decodedToken = await auth.verifyIdToken(idToken);
         const email = decodedToken.email;
         const firebaseUid = decodedToken.uid;
 
+        console.log("Decoded Token:", decodedToken);
+
         let user = await User.findOne({ email });
         if (!user) {
-            // Generate a random password
-            const randomPassword = crypto.randomBytes(16).toString('hex');
+            const fullName = decodedToken.name || "Google User";
+            const [firstname, lastname = ""] = fullName.split(" ", 2);
+
+            // unique username
+            let username = fullName.replace(/\s+/g, "_").toLowerCase();
+            let usernameExists = await User.findOne({ username });
+            while (usernameExists) {
+                username = `${username}_${crypto.randomBytes(3).toString("hex")}`;
+                usernameExists = await User.findOne({ username });
+            }
+
+            // Generate a secure random password
+            const randomPassword = crypto.randomBytes(8).toString("hex"); // Ensures at least 16 characters
 
             // Create a new user if not found
             user = new User({
-                username: decodedToken.name,
+                username,
                 firstname,
                 lastname,
                 email,
                 password: randomPassword,
                 firebaseUid,
-                address: 'N/A', 
+                address: "N/A", // Default address
                 isVerified: true,
             });
+
             await user.save();
         }
 
-        // JWT
+        // Generate JWT and set cookie
         generateTokenAndSetCookie(res, user._id);
-        await user.save();
 
         res.status(200).json({
             success: true,
             user: {
                 ...user._doc,
-                password: undefined,
+                password: undefined, // Exclude password from response
             },
         });
     } catch (error) {
@@ -169,6 +183,7 @@ export const googlelogin = async (req, res) => {
         res.status(400).json({ success: false, message: "Invalid Google ID token" });
     }
 };
+
 
 export const logout = async (req, res) => {
     res.clearCookie('token');
