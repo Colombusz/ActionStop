@@ -1,7 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
 import User from "../models/user.js";
 import Figurine from "../models/figurine.js";
 import Order from "../models/order.js";
+import e from "express";
 
 export const add2fave = async (req, res) => {
     const { figurineId, userId  } = req.body;
@@ -143,4 +144,102 @@ export const checkout = async (req, res) => {
           message: "An error occurred while processing your checkout.",
         });
       }
+}
+
+
+
+export const fetchOrders = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById(id).populate({
+            path: "order",
+            model: "Order",
+            populate: {
+                path: "orderItems.figurine", // Populate figurines in order items
+                model: "Figurine",
+                select: '-images', // Exclude the image field from figurines
+            },
+        });
+    
+        // Check if user exists
+        if (!user) {
+            console.error(`User not found for ID: ${id}`);
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+    
+        // Extract orders from the user
+        const orders = user.order;
+    
+        console.log("Fetched Orders:", JSON.stringify(orders, null, 2));
+    
+        // Return the orders
+        return res.status(200).json({
+            success: true,
+            data: orders,
+        });
+    } catch (error) {
+        console.error("Error Fetching Orders:", error.message || error);
+
+        // Handle specific Mongoose errors if needed
+        const isValidationError = error.name === "ValidationError";
+        const isCastError = error.name === "CastError";
+
+        return res.status(500).json({
+            success: false,
+            message: isValidationError
+                ? "Invalid data format"
+                : isCastError
+                ? "Invalid user ID format"
+                : "Error in Fetching Orders",
+        });
+    }
+};
+
+
+export const cancelOrder = async (req, res) => {
+    const { orderid, id } = req.body;
+    try {
+        const udir = await Order.findById(orderid);
+        if (!udir) {
+            return res.status(404).json({ success: false, message: "Order not found" });
+        }
+        udir.status = "cancelled";
+        await udir.save();
+
+        const user = await User.findById(id).populate({
+            path: "order",
+            model: "Order",
+            populate: {
+                path: "orderItems.figurine", // Populate figurines in order items
+                model: "Figurine",
+                select: '-images', // Exclude the image field from figurines
+            },
+        });
+    
+        // Check if user exists
+        if (!user) {
+            console.error(`User not found for ID: ${id}`);
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        const orders = user.order;
+    
+        console.log("Fetched Orders:", JSON.stringify(orders, null, 2));
+    
+    
+        return res.status(200).json({
+            success: true,
+            data: orders,
+        });
+    } catch (error) {
+        console.error("Error Cancelling Order:", error.message || error);
+        res.status(500).json({ success: false, message: "Error Cancelling Order" });
+    }
 }
