@@ -136,9 +136,15 @@ const OrderContainer = ({ order }) => {
                                         <Typography variant="body2" color="text.secondary">
                                             Review:
                                         </Typography>
-                                        <IconButton>
+                                        {(order.status === 'delivered' || order.status === 'completed')? (
+
+                                            <IconButton>
                                             <ReviewsOutlined sx={{ color: 'green' }} />
-                                        </IconButton>
+                                            </IconButton>
+                                        ):(
+                                            <Typography variant="body1">Finish the delivery</Typography>
+                                        )}
+                                        
                                     </Grid>
                                 </React.Fragment>
                             ))

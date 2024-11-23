@@ -4,7 +4,8 @@ import { HeroParallax } from '../ui/hero-parallax';
 import { TextHoverEffect } from '../ui/text-hover-effect';
 import { motion } from 'framer-motion';
 import { ImagesSlider } from '../ui/images-slider';
-
+import MainNavbar from '../common/navbar';
+import ResponsiveFooter from '../common/footer';
 import { Link } from 'react-router-dom';
 
 const World = React.lazy(() => import('../ui/globe').then((m) => ({ default: m.World, ssr: false })));
@@ -12,6 +13,9 @@ const World = React.lazy(() => import('../ui/globe').then((m) => ({ default: m.W
 function About() {
   return (
     <div className='bg-zinc-900 w-full'>
+       <div className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-black">
+        <MainNavbar />
+      </div>
         {/* PARALLAX */}
         <HeroParallax products={products} />;  
 
@@ -121,6 +125,8 @@ function About() {
                 <div className="absolute inset-0 w-full h-full bg-transparent [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
             </div>
         </div> */}
+
+<ResponsiveFooter />
     </div>
 
   );
