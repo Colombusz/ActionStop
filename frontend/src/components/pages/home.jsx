@@ -47,7 +47,7 @@ const Home = () => {
               />
             ))
           ) : (
-            <div>No favorites found.</div> // If favorites is empty or not an array
+            <div>No Figurines found.</div> // If favorites is empty or not an array
           )}
     </div>
 

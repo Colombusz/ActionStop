@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { add2Favorite } from "../store/cardSlices/add2FavoriteSlice";
 import { addToCart } from "../store/cardSlices/add2cartSlice";
 import { calculateTotal } from "../store/cardSlices/add2cartSlice";
+import { Link } from "react-router-dom";
 const FigurineCard3d = ({ figurine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
@@ -100,9 +101,15 @@ const FigurineCard3d = ({ figurine }) => {
               </Tooltip>
 
               <Tooltip title={`Buy ${figurine.name} now!`} placement="top">
-                <IconButton aria-label="buy" className="ml-auto">
-                  <StorefrontIcon />
-                </IconButton>
+              <IconButton 
+                aria-label="buy" 
+                className="ml-auto"
+                onClick={() => handleAdd2Cart(figurine)}
+                component={Link} 
+                to="/user/checkout"
+              >
+                <StorefrontIcon />
+              </IconButton>
               </Tooltip>
             </CardItem>
           </div>
@@ -114,6 +121,7 @@ const FigurineCard3d = ({ figurine }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         details={figurine}
+        
       />
     </>
   );
