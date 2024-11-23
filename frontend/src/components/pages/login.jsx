@@ -5,6 +5,10 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useNavigate } from "react-router-dom";
 
+// Firebase
+import { auth, googleProvider } from "../../../firebaseConfig.js";
+import { signInWithPopup } from "firebase/auth";
+
 import axios from "axios";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -13,7 +17,7 @@ import MainNavbar from "../common/navbar";
 import ResponsiveFooter from "../common/footer";
 import { IconBrandGoogle } from "@tabler/icons-react";
 
-function LoginForm() {
+function LoginForm({ onLogin }) {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
 
@@ -41,6 +45,7 @@ function LoginForm() {
 
         if (response.status === 200) {
           const user = response.data.user;
+          onLogin(user);
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("isAuthenticated", "true");
 
@@ -65,31 +70,33 @@ function LoginForm() {
   });
 
   const handleLoginWithGoogle = async () => {
-    console.log("Login with Google");
-    // setLoading(true);
-    // try {
-    //   const response = await axios.get(
-    //     "http://localhost:5000/api/auth/google",
-    //     { withCredentials: true }
-    //   );
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const idToken = await result.user.getIdToken();
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/google-login',
+        { idToken },
+        { withCredentials: true }
+      );
 
-    //   if (response.status === 200) {
-    //     const user = response.data.user;
-    //     localStorage.setItem("user", JSON.stringify(user));
-    //     localStorage.setItem("isAuthenticated", "true");
-
-    //     if (user.isAdmin) {
-    //       navigate("/admin/dashboard");
-    //     } else {
-    //       navigate("/");
-    //       toast.success("Login successfully!");
-    //     }
-    //   }
-    // } catch (err) {
-    //   toast.error("Login failed. Please try again.");
-    // } finally {
-    //   setLoading(false);
-    // }
+      if (response.status === 200) {
+        const user = response.data.user;
+        onLogin(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('isAdmin', user.isAdmin.toString());
+        if (user.isAdmin) {
+          navigate('/admin');
+          toast.success('Login Success!');
+        } else {
+          navigate('/');
+          toast.success('Login Success!');
+        }
+      }
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      toast.error('Google sign-in failed. Please try again.');
+    }
   };
 
   return (

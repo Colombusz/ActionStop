@@ -50,7 +50,7 @@ export const createFigurine = async (req, res) => {
     try {
         // DEBUGGING
         // console.log("Req Body: ", req.body);
-        const { name, price, description, origin, classification } = req.body;
+        const { name, price, description, origin, classification, stock } = req.body;
         const images = req.files;
 
         let parsedManufacturers;
@@ -109,6 +109,7 @@ export const createFigurine = async (req, res) => {
             description,
             images: imageLinks,
             origin,
+            stock,
             classification,
             manufacturer: parsedManufacturers,
             reviews: [],

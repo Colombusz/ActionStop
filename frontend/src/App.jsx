@@ -25,9 +25,9 @@ import Signup from './components/pages/signup';
 import Login from './components/pages/login';
 import Favorites from './components/pages/favorites';
 
-
 // User Authentication
 import { checkAuthStatus, handleLogout } from './utils/userauth.js';
+
 import Checkout from './components/pages/checkout.jsx';
 
 function App() {
@@ -35,6 +35,15 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => checkAuthStatus);
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
   const [isadmin, setAdmin] = useState(() => localStorage.getItem('isadmin') === 'true');
+
+  const handleLogin = (userData) => {
+    setIsAuthenticated(true); 
+    setUser(userData);
+    setAdmin(userData.isAdmin);
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('isAdmin', userData.isAdmin.toString());
+  };
 
   return (
     <Provider store={store}>
@@ -57,7 +66,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/" element={<Home />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<Login onLogin={handleLogin} />} />
               <Route path="/user/favorite" element={<Favorites />} />
               <Route path="/user/checkout" element={<Checkout />} />
               {/* <Route path="/figurine/detail" element={<Details />} /> */}

@@ -28,12 +28,12 @@ const FigurineAddModal = ({ onClose, onSave }) => {
             price: "",
             description: "",
             origin: "",
+            stock: "",
             classification: "",
             manufacturer: {
                 name: "",
                 country: "",
-            },
-            stock: "",
+            }, 
             images: [],
         },
         validationSchema,
@@ -43,10 +43,10 @@ const FigurineAddModal = ({ onClose, onSave }) => {
             newData.append("price", values.price);
             newData.append("description", values.description);
             newData.append("origin", values.origin);
+            newData.append("stock", values.stock);
             newData.append("classification", values.classification);
             newData.append("manufacturer.name", values.manufacturer.name);
             newData.append("manufacturer.country", values.manufacturer.country);
-            newData.append("stock", values.stock);
 
             values.images.forEach((file) => {
                 newData.append("images", file);
