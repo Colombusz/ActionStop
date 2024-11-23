@@ -50,7 +50,7 @@ function LoginForm({ onLogin }) {
           localStorage.setItem("isAuthenticated", "true");
 
           if (user.isAdmin) {
-            navigate("/admin/dashboard");
+            navigate("/admin");
           } else {
             navigate("/");
             toast.success("Login successfully!");

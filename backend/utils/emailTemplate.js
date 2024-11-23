@@ -103,7 +103,7 @@ export const WELCOME_EMAIL_TEMPLATE = `
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to HAB Appliances</title>
+    <title>Welcome to ActionStop Figurines</title>
     <style>
       body {
         margin: 0;
@@ -164,7 +164,7 @@ export const WELCOME_EMAIL_TEMPLATE = `
   <body>
     <div class="container">
       <div class="header">
-        Welcome to HAB Appliances, {name}!
+        Welcome to ActionStop Figurines, {name}!
       </div>
       <div class="content">
         <h2>We are excited to have you on board!</h2>
@@ -175,7 +175,7 @@ export const WELCOME_EMAIL_TEMPLATE = `
         <a href="{href}" class="btn">Click to Go to Home Page</a>
       </div>
       <div class="footer">
-        &copy; 2024 HAB Appliances. All rights reserved.
+        &copy; 2024 ActionStop Appliances. All rights reserved.
       </div>
     </div>
   </body>

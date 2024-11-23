@@ -75,7 +75,7 @@ export const verifyEmail = async (req, res) => {
         user.verificationToken = undefined;
         user.verificationTokenExpiresAt = undefined;
         await user.save();
-        await sendWelcomeEmail(user.email, user.name);
+        await sendWelcomeEmail(user.email, user.firstname);
         res.status(200).json({
             success: true,
             message: "Email verified successfully",
@@ -138,16 +138,6 @@ export const googlelogin = async (req, res) => {
         if (!user) {
             // Generate a random password
             const randomPassword = crypto.randomBytes(16).toString('hex');
-
-            const user = new User({
-                username,
-                firstname,
-                lastname,
-                email,
-                password: hashedPassword,
-                verificationToken,
-                verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
-            });
 
             // Create a new user if not found
             user = new User({
@@ -273,6 +263,23 @@ export const getUserById = async (req, res) => {
             user,
         });
     } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
+// Get current user
+export const getCurrentUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id); // include password
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+        res.status(200).json({
+            success: true,
+            user,
+        });
+    }
+    catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
 };

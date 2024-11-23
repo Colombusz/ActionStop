@@ -1,5 +1,5 @@
 import express from 'express';
-import { signup, verifyEmail, login, googlelogin, logout, forgotPassword, resetPassword, getUsers, getUserById } from '../controllers/auth_controller.js';
+import { signup, verifyEmail, login, googlelogin, logout, forgotPassword, resetPassword, getUsers, getUserById, getCurrentUser } from '../controllers/auth_controller.js';
 import { isAuthenticatedUser, authorizeAdmin } from '../middleware/authuser.js';
 
 const router = express.Router();
@@ -13,8 +13,11 @@ router.post('/verifyemail', verifyEmail);
 router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resetToken', resetPassword);
 
+router.get('/current-user', isAuthenticatedUser, getCurrentUser);
+
 router.get('/users', isAuthenticatedUser ,getUsers, authorizeAdmin);
 router.get('/user/:id', isAuthenticatedUser, getUserById, authorizeAdmin);
+
 
 
 // To DO
