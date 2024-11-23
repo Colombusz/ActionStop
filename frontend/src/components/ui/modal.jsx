@@ -2,10 +2,27 @@ import React, { useState, useEffect } from "react";
 import { Button, Divider, Stack, ListItem } from "@mui/material";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import { BsBasket } from "react-icons/bs";
-
-const FigurineModal = ({ images, details, isOpen, onClose }) => {
+import { addToCart, calculateTotal } from "../store/cardSlices/add2cartSlice";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+const FigurineModal = ({ images, details, isOpen, onClose, execute }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const dispatch = useDispatch();
+  const handleAdd2Cart = (details) =>
+    {
+      // console.log(figurine)
+      dispatch(addToCart({
+        id : details._id,
+        name: details.name,
+        origin: details.origin,
+        price: details.price,
+        image: details.images[0].url,
+        quantity: 1,
+        stock: details.stock
+      }));
+      dispatch(calculateTotal())
+    };
 
   useEffect(() => {
     if (isOpen) {
@@ -89,10 +106,19 @@ const FigurineModal = ({ images, details, isOpen, onClose }) => {
             </div>
             <div className="flex justify-end items-center col-span-1">
               <div className="flex flex-col gap-4">
-                <Button variant="outlined" startIcon={<StorefrontIcon />}>
+                <Button 
+                variant="outlined" 
+                startIcon={<StorefrontIcon />}
+                onClick = {() => handleAdd2Cart(details)}
+                component={Link} 
+                to="/user/checkout"
+                >
                   Buy
                 </Button>
-                <Button variant="outlined" startIcon={<BsBasket />}>
+                <Button variant="outlined" 
+                startIcon={<BsBasket />}
+                onClick = {() => handleAdd2Cart(details)}
+                >
                   Add To Cart
                 </Button>
               </div>

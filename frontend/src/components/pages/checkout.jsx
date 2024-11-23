@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import FigurineHolder from '../ui/figurineHolder';
 import ShippingForm from '../ui/fform';
 import { useSelector } from 'react-redux';
+
 const Checkout = () => {
     const items = useSelector((state) => state.cart.cartItems);
     // const items = JSON.parse(localStorage.getItem('cartData')) || [];

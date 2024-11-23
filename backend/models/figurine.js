@@ -61,9 +61,10 @@ const figurineSchema = mongoose.Schema({
             required: [true, "Please enter the country of the manufacturer"],
         },
     }],
-    reviews:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review",
+    reviews: {
+        type: [mongoose.Schema.Types.ObjectId],  // Array of ObjectIds
+        ref: "Review",                           // Reference to the 'Review' model
+        default: [],                             // Default empty array for no reviews
     },
     
 },{

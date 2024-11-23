@@ -24,6 +24,7 @@ import About from './components/pages/about';
 import Signup from './components/pages/signup';
 import Login from './components/pages/login';
 import Favorites from './components/pages/favorites';
+import Purchases from './components/pages/purchases.jsx';
 
 import ProfileCard from './components/common/profile.jsx';
 import AdminProfile from './components/admin/adminprofile.jsx';
@@ -86,6 +87,7 @@ function App() {
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
               <Route path="/user/favorite" element={<Favorites />} />
               <Route path="/user/checkout" element={<Checkout />} />
+              <Route path="/user/purchases" element={<Purchases />} />
               {/* <Route path="/figurine/detail" element={<Details />} /> */}
 
               {/* Profile Cards */}

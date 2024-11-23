@@ -1,11 +1,18 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { AiOutlineDelete, AiOutlineMinus, AiOutlineNumber, AiOutlinePlus } from "react-icons/ai";
-import { updateQuantity, removeFromCart } from "../store/cardSlices/add2cartSlice";
+import { updateQuantity, removeFromCart, calculateTotal } from "../store/cardSlices/add2cartSlice";
 import { useDispatch } from "react-redux";
 const FigurineHolder = ({figurine}) => {
 
   const dispatch = useDispatch();
+  const id = figurine.id;
+  const handleQuantity = (newQuantity) => {
+    if (!isNaN(newQuantity)) {
+      dispatch(updateQuantity({ id, quantity: newQuantity }));
+      dispatch(calculateTotal());
+    }
+  };
   return (
     <Box sx={{ border: '2px black' }} className="flex items-center bg-purple-300 p-5 rounded-lg shadow-md w-full mt-2 mb-2  ">
   
@@ -41,7 +48,8 @@ const FigurineHolder = ({figurine}) => {
 
     {/* Quantity Controller */}
     <div className="flex items-center space-x-2">
-      <button className="px-2 py-1 bg-gray-700 text-white rounded-lg text-xs">
+      <button className="px-2 py-1 bg-gray-700 text-white rounded-lg text-xs"
+      onClick={() => handleQuantity(figurine.quantity - 1)}>
         <AiOutlineMinus />
       </button>
       <input
@@ -50,7 +58,8 @@ const FigurineHolder = ({figurine}) => {
         min="1"
         className="text-center w-16 bg-gray-700 text-white rounded-lg"
       />
-      <button className="px-2 py-1 bg-gray-700 text-white rounded-lg text-xs">
+      <button className="px-2 py-1 bg-gray-700 text-white rounded-lg text-xs"
+      onClick={() => handleQuantity(figurine.quantity + 1)}>
         <AiOutlinePlus />
       </button>
     </div>
