@@ -14,7 +14,7 @@ const AdminProfile = () => {
     email: "",
     address: "",
     phone: "",
-    image: { public_id: "", url: "" }, // Ensure image always has default structure
+    image: { public_id: "", url: "" },
   });
 
   const [editedUser, setEditedUser] = useState({
