@@ -25,6 +25,9 @@ import Signup from './components/pages/signup';
 import Login from './components/pages/login';
 import Favorites from './components/pages/favorites';
 
+import ProfileCard from './components/common/profile.jsx';
+import AdminProfile from './components/admin/adminprofile.jsx';
+
 // User Authentication
 import { checkAuthStatus, handleLogout } from './utils/userauth.js';
 import ProtectedRoute from './components/common/protectedroute.jsx';
@@ -56,6 +59,7 @@ function App() {
       setUser(storedUser);
       setAdmin(storedAdmin);
     }
+    
   }, []);
 
   return (
@@ -84,11 +88,19 @@ function App() {
               <Route path="/user/checkout" element={<Checkout />} />
               {/* <Route path="/figurine/detail" element={<Details />} /> */}
 
+              {/* Profile Cards */}
+              <Route path="/profile" element={<ProfileCard />} />
+              <Route path="/admin/profile" element={<AdminProfile />} />
+
               {/* Admin Routes */}
-              <Route path="/admin" element={<ProtectedRoute element={<AdminHomePage />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              {/* <Route path="/admin" element={<ProtectedRoute element={<AdminHomePage />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
               <Route path="/admin/figurines" element={<ProtectedRoute element={<FigurineDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
               <Route path="/admin/manufacturers" element={<ProtectedRoute element={<ManufacturerDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
-              <Route path="/admin/promos" element={<ProtectedRoute element={<PromoDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              <Route path="/admin/promos" element={<ProtectedRoute element={<PromoDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} /> */}
+              <Route path="/admin" element={<AdminHomePage />} />
+              <Route path="/admin/figurines" element={<FigurineDashboard />} />
+              <Route path="/admin/manufacturers" element={<ManufacturerDashboard />} />
+              <Route path="/admin/promos" element={<PromoDashboard />} />
             </Routes>
           </div>
         </Modal>

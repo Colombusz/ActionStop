@@ -4,7 +4,7 @@ import User from "../models/user.js";
 export const isAuthenticatedUser = async (req, res, next) => {
     try {
         const { token } = req.cookies;
-        console.log("Received token:", token);
+        // console.log("Received token:", token);
 
         if (!token) {
             return res.status(401).json({
@@ -15,7 +15,7 @@ export const isAuthenticatedUser = async (req, res, next) => {
 
         // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Decoded token payload:", decoded);
+        // console.log("Decoded token payload:", decoded);
 
         req.user = await User.findById(decoded.id); // Ensure consistency with `id` or `userId`
 

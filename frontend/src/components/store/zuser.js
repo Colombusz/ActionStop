@@ -5,21 +5,21 @@ export const useUserStore = create((set) => ({
     currentUser: null, // Current user logged in
     setUsers: (users) => set({ users }),
 
-    fetchCurrentUser: async () => {
-        try {
-          const res = await fetch("/api/current-user");
-          const data = await res.json();
-          set({ currentUser: data });
-          console.log("Current User:", data);
-            return data;
-        } catch (error) {
-          console.error("Error fetching current user:", error);
-        }
-    },
+    // fetchCurrentUser: async () => {
+    //     try {
+    //       const res = await fetch("/current-user");
+    //       const data = await res.json();
+    //       set({ currentUser: data });
+    //       console.log("Current User:", data);  
+    //     } catch (error) {
+    //       console.error("Error fetching current user:", error);
+    //     }
+    // },
 
+    // Get Users
     fetchUsers: async () => {
         try {
-            const res = await fetch("/api/users");
+            const res = await fetch("/users");
             const data = await res.json();
             set({ users: data.data });
         } catch (error) {
@@ -27,9 +27,10 @@ export const useUserStore = create((set) => ({
         }
     },
 
+    // Get User by ID
     fetchUserById: async (uid) => {
         try {
-            const res = await fetch(`/api/users/${uid}`);
+            const res = await fetch(`/users/${uid}`);
             const data = await res.json();
             return { success: true, data: data.data };
         } catch (error) {
@@ -39,9 +40,9 @@ export const useUserStore = create((set) => ({
     },
 
     // Update current user
-    updateCurrentUser: async (updatedUser) => {
+    updateCurrentUser: async (uid ,updatedUser) => {
         try {
-            const res = await fetch("/api/current-user", {
+            const res = await fetch(`/user/${uid}`, {
                 method: "PUT",
                 body: updatedUser, // FormData
             });

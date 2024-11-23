@@ -32,6 +32,16 @@ const userSchema = mongoose.Schema(
         required: false,
         maxLength: [11, "Your phone number cannot exceed 11 characters"],
     },
+    image: {
+      public_id: {
+        type: String,
+        required: false,
+      },
+      url: {
+        type: String,
+        required: false,
+      },
+    },
     password: {
       type: String,
       required: [true, "Please enter your password"],

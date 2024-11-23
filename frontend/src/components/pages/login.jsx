@@ -48,6 +48,7 @@ function LoginForm({ onLogin }) {
           onLogin(user);
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("isAuthenticated", "true");
+          localStorage.setItem("isAdmin", user.isAdmin.toString());
 
           if (user.isAdmin) {
             navigate("/admin");

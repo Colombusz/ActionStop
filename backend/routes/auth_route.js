@@ -1,6 +1,7 @@
 import express from 'express';
-import { signup, verifyEmail, login, googlelogin, logout, forgotPassword, resetPassword, getUsers, getUserById, getCurrentUser } from '../controllers/auth_controller.js';
+import { signup, verifyEmail, login, googlelogin, logout, forgotPassword, resetPassword, getUsers, getUserById, getCurrentUser, updateProfile } from '../controllers/auth_controller.js';
 import { isAuthenticatedUser, authorizeAdmin } from '../middleware/authuser.js';
+import upload from '../utils/multer.js';
 
 const router = express.Router();
 
@@ -14,11 +15,10 @@ router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resetToken', resetPassword);
 
 router.get('/current-user', isAuthenticatedUser, getCurrentUser);
+router.put('/update', upload.single("upload_profile"), updateProfile);
 
 router.get('/users', isAuthenticatedUser ,getUsers, authorizeAdmin);
 router.get('/user/:id', isAuthenticatedUser, getUserById, authorizeAdmin);
-
-
 
 // To DO
 // getuserprofile, updateprofile, updatepassword, forgotpassword, resetpassword
