@@ -29,6 +29,7 @@ import Favorites from './components/pages/favorites';
 import { checkAuthStatus, handleLogout } from './utils/userauth.js';
 
 import Checkout from './components/pages/checkout.jsx';
+
 function App() {
   // Authentication
   const [isAuthenticated, setIsAuthenticated] = useState(() => checkAuthStatus);
