@@ -14,18 +14,16 @@ const AdminSidebar = () => {
   const { fetchCurrentUser } = useUserStore();
 
   const [open, setOpen] = useState(true); // Sidebar starts open on desktop
-  const [user, setUser] = useState(null); // Current user
+  const [user, adminUser] = useState(null); // Current user
 
   // Fetch current user
   useEffect(() => {
     const fetchUser = async () => {
       const user = await fetchCurrentUser();
-      setUser(user);
+      adminUser(user);
     };
     fetchUser();
   }, [fetchCurrentUser]);
-
-  console.log(user);
 
   // Sidebar Links
   const links = [

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './index.css';
 
@@ -27,6 +27,7 @@ import Favorites from './components/pages/favorites';
 
 // User Authentication
 import { checkAuthStatus, handleLogout } from './utils/userauth.js';
+import ProtectedRoute from './components/common/protectedroute.jsx';
 
 import Checkout from './components/pages/checkout.jsx';
 
@@ -34,7 +35,7 @@ function App() {
   // Authentication
   const [isAuthenticated, setIsAuthenticated] = useState(() => checkAuthStatus);
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
-  const [isadmin, setAdmin] = useState(() => localStorage.getItem('isadmin') === 'true');
+  const [isAdmin, setAdmin] = useState(() => localStorage.getItem('isAdmin') === 'true');
 
   const handleLogin = (userData) => {
     setIsAuthenticated(true); 
@@ -53,7 +54,7 @@ function App() {
     if (storedAuth && storedUser) {
       setIsAuthenticated(true);
       setUser(storedUser);
-      setIsAdmin(storedAdmin);
+      setAdmin(storedAdmin);
     }
   }, []);
 
