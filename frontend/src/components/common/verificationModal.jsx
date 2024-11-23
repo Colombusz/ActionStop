@@ -20,11 +20,10 @@ const VerificationModal = ({ onVerify }) => {
     }
     setLoading(true);
     try {
-      // Call the `onVerify` function passed as a prop
       await onVerify(verificationCode);
-      setOpen(false); // Close modal on success
     } catch (err) {
       setError(err.message || "Verification failed. Please try again.");
+      toast.error("Verification failed. Please try again.");
     } finally {
       setLoading(false);
     }

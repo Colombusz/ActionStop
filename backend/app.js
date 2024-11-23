@@ -21,6 +21,10 @@ app.use(cors({
 
 // Error handling middleware
 app.use((err, req, res, next) => {
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    next();
+
     console.error(err.stack);
     res.status(500).json({ success: false, message: "Something went wrong!" });
 });

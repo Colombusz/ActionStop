@@ -10,6 +10,7 @@ import VerificationModal from "../common/verificationModal";
 import { useModal } from "../ui/animated-modal";
 import MainNavbar from "../common/navbar";
 import ResponsiveFooter from "../common/footer";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const { setOpen } = useModal();
@@ -66,8 +67,17 @@ const Signup = () => {
       });
       const data = await response.json();
       console.log("Verification response:", data);
+      if (data.success) {
+        toast.success("Email verified successfully!");
+        navigate("/login");
+        setOpen(false);
+      } else {
+        console.error("Error verifying email:", data.message);
+        toast.error("Wrong Verification Code Provided.");
+      }
     } catch (error) {
-      console.error("Error verifying email:", error);
+      console.error("Error:", error);
+      toast.error("An error occurred.");
     }
   };
 

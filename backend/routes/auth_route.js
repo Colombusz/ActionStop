@@ -1,5 +1,5 @@
 import express from 'express';
-import { signup, verifyEmail, login, logout, forgotPassword, resetPassword, getUsers, getUserById } from '../controllers/auth_controller.js';
+import { signup, verifyEmail, login, googlelogin, logout, forgotPassword, resetPassword, getUsers, getUserById } from '../controllers/auth_controller.js';
 import { isAuthenticatedUser, authorizeAdmin } from '../middleware/authuser.js';
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 // Routes
 router.post('/signup', signup);
 router.post('/login', login);
+router.post('/google-login', googlelogin);
 router.post('/logout', logout);
 router.post('/verifyemail', verifyEmail);
 router.post('/forgotpassword', forgotPassword);

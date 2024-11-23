@@ -10,6 +10,11 @@ import {
     sendResetSuccessEmail,
 } from "../utils/emails.js";
 import ErrorHandler from '../utils/errorHandler.js'; 
+import { auth } from '../utils/firebase.js';
+
+import cloudinary from "../utils/cloudinaryConfig.js";
+import multer from "multer";
+const upload = multer({ storage: multer.memoryStorage() });
 
 export const signup = async (req, res) => {
     const { username, firstname, lastname, email, password } = req.body;
@@ -31,7 +36,7 @@ export const signup = async (req, res) => {
             email,
             password: hashedPassword,
             verificationToken,
-            verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
+            verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours   
         });
         await user.save();
 
@@ -55,7 +60,7 @@ export const signup = async (req, res) => {
 
 export const verifyEmail = async (req, res) => {
     const { code } = req.body;
-    // console.log("Received payload:", code);
+    console.log("Body:", req.body);
 
     try {
         const user = await User.findOne({
@@ -119,6 +124,58 @@ export const login = async (req, res) => {
         });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
+    }
+};
+
+export const googlelogin = async (req, res) => {
+    const { idToken } = req.body;
+    try {
+        const decodedToken = await auth.verifyIdToken(idToken);
+        const email = decodedToken.email;
+        const firebaseUid = decodedToken.uid;
+
+        let user = await User.findOne({ email });
+        if (!user) {
+            // Generate a random password
+            const randomPassword = crypto.randomBytes(16).toString('hex');
+
+            const user = new User({
+                username,
+                firstname,
+                lastname,
+                email,
+                password: hashedPassword,
+                verificationToken,
+                verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
+            });
+
+            // Create a new user if not found
+            user = new User({
+                username: decodedToken.name,
+                firstname,
+                lastname,
+                email,
+                password: randomPassword,
+                firebaseUid,
+                address: 'N/A', 
+                isVerified: true,
+            });
+            await user.save();
+        }
+
+        generateTokenAndSetCookie(res, user._id);
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            user: {
+                ...user._doc,
+                password: undefined,
+            },
+        });
+    } catch (error) {
+        console.error("Error verifying Google ID token:", error);
+        res.status(400).json({ success: false, message: "Invalid Google ID token" });
     }
 };
 
