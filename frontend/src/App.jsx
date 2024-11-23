@@ -44,6 +44,18 @@ function App() {
     localStorage.setItem('isAdmin', userData.isAdmin.toString());
   };
 
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    const storedAuth = checkAuthStatus();
+    const storedAdmin = localStorage.getItem('isAdmin') === 'true';
+
+    if (storedAuth && storedUser) {
+      setIsAuthenticated(true);
+      setUser(storedUser);
+      setIsAdmin(storedAdmin);
+    }
+  }, []);
+
   return (
     <Provider store={store}>
       <Router
@@ -71,11 +83,10 @@ function App() {
               {/* <Route path="/figurine/detail" element={<Details />} /> */}
 
               {/* Admin Routes */}
-              <Route path="/admin" element={<AdminHomePage />} />
-
-              <Route path="/admin/figurines" element={<FigurineDashboard />} />
-              <Route path="/admin/manufacturers" element={<ManufacturerDashboard />} />
-              <Route path="/admin/promos" element={<PromoDashboard />} />
+              <Route path="/admin" element={<ProtectedRoute element={<AdminHomePage />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              <Route path="/admin/figurines" element={<ProtectedRoute element={<FigurineDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              <Route path="/admin/manufacturers" element={<ProtectedRoute element={<ManufacturerDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              <Route path="/admin/promos" element={<ProtectedRoute element={<PromoDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
             </Routes>
           </div>
         </Modal>
