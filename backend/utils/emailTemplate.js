@@ -1,4 +1,3 @@
-// Will Modify this Later or Soon hehe
 
 export const VERIFICATION_EMAIL_TEMPLATE = `
 <!DOCTYPE html>
@@ -21,7 +20,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
     <p>Enter this code on the verification page to complete your registration.</p>
     <p>This code will expire in 15 minutes for security reasons.</p>
     <p>If you didn't create an account with us, please ignore this email.</p>
-    <p>Best regards,<br>Your App Team</p>
+    <p>Best regards,<br>ActionStop Figurines</p>
   </div>
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
     <p>This is an automated message, please do not reply to this email.</p>
@@ -29,6 +28,117 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
 </body>
 </html>
 `;
+
+export const ORDER_DETAILS_TEMPLATE = (order) => `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Details</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #f9f9f9;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .order-details, .figurine-details {
+        margin-bottom: 20px;
+      }
+      .order-details h2, .figurine-details h3 {
+        color: #333;
+      }
+      .figurine {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fff;
+      }
+      .figurine img {
+        max-width: 100px;
+        display: block;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Your Order Details</h1>
+        <p>Thank you for shopping with us! Here are your order details:</p>
+      </div>
+      <div class="order-details">
+        <h2>Order Summary</h2>
+        <p><strong>Order ID:</strong> ${order?._id || "N/A"}</p>
+        <p><strong>Shipping Address:</strong> ${order?.shippingAddress || "N/A"}</p>
+        <p><strong>Payment Method:</strong> ${order?.paymentMethod || "N/A"}</p>
+        <p><strong>Shipping Price:</strong> $${order?.shippingPrice || 0}</p>
+        <p><strong>Total Price:</strong> $${order?.totalPrice || 0}</p>
+        <p><strong>Status:</strong> ${order?.status || "N/A"}</p>
+        <p><strong>Order Date:</strong> ${
+          order?.createdAt ? new Date(order.createdAt).toLocaleString() : "N/A"
+        }</p>
+      </div>
+      <div class="figurine-details">
+        <h3>Items in Your Order</h3>
+        ${
+          order?.orderItems?.length
+            ? order.orderItems
+                .map(
+                  (item) => `
+          <div class="figurine">
+            <p><strong>Figurine:</strong> ${
+              item?.figurineDetails?.name || "N/A"
+            }</p>
+            <p><strong>Description:</strong> ${
+              item?.figurineDetails?.description || "N/A"
+            }</p>
+            <p><strong>Price:</strong> $${item?.figurineDetails?.price || 0}</p>
+            <p><strong>Quantity:</strong> ${item?.qty || 0}</p>
+            ${
+              item?.figurineDetails?.images?.[0]?.url
+                ? `<img src="${item.figurineDetails.images[0].url}" alt="${
+                    item.figurineDetails.name || "Figurine Image"
+                  }" />`
+                : ""
+            }
+          </div>`
+                )
+                .join("")
+            : "<p>No items in this order.</p>"
+        }
+      </div>
+    </div>
+  </body>
+</html>
+`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 <!DOCTYPE html>
@@ -169,13 +279,13 @@ export const WELCOME_EMAIL_TEMPLATE = `
       <div class="content">
         <h2>We are excited to have you on board!</h2>
         <p>
-          Explore a wide range of high-quality appliances to meet all your needs. 
+          Explore a wide range of high-quality figurines to meet all your needs. 
           Start browsing now and take advantage of our latest offers!
         </p>
         <a href="{href}" class="btn">Click to Go to Home Page</a>
       </div>
       <div class="footer">
-        &copy; 2024 ActionStop Appliances. All rights reserved.
+        &copy; 2024 ActionStop Figurines. All rights reserved.
       </div>
     </div>
   </body>

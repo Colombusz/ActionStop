@@ -135,7 +135,7 @@ export const googlelogin = async (req, res) => {
         const email = decodedToken.email;
         const firebaseUid = decodedToken.uid;
 
-        console.log("Decoded Token:", decodedToken);
+        // console.log("Decoded Token:", decodedToken);
 
         let user = await User.findOne({ email });
         if (!user) {
