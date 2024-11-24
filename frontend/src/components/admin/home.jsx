@@ -192,7 +192,7 @@ function Charts({ setSummaryData }) {
           yAxis={[
             {
               min: 0,
-              max: 100,
+              max: 20,
               label: "Orders",
             },
           ]}

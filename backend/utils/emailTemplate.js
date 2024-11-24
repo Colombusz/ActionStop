@@ -77,7 +77,7 @@ export const ORDER_DETAILS_TEMPLATE = (order) => `
     <div class="container">
       <div class="header">
         <h1>Your Order Details</h1>
-        <p>Thank you for shopping with us! Here are your order details:</p>
+        <p>Thank you <strong> ${order.username || "User"} </strong> for shopping with us! Here are your order details:</p>
       </div>
       <div class="order-details">
         <h2>Order Summary</h2>

@@ -34,19 +34,12 @@ import AdminProfile from './components/admin/adminprofile.jsx';
 import { checkAuthStatus, handleLogout } from './utils/userauth.js';
 import ProtectedRoute from './components/common/protectedroute.jsx';
 
-
-// firebase notif
-import { generateToken } from './utils/firebaseConfig.js';
-// import { toast } from 'react-toastify';
 import Checkout from './components/pages/checkout.jsx';
 import { onMessage } from 'firebase/messaging';
 import { messaging } from './utils/firebaseConfig.js';
 
 function App() {
-
   useEffect(() => {
-    
-    
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
 
@@ -57,6 +50,7 @@ function App() {
       // ...
     });
   }, []);
+  
   // Authentication
   const [isAuthenticated, setIsAuthenticated] = useState(() => checkAuthStatus);
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
@@ -105,7 +99,7 @@ function App() {
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/about" element={<About />} />
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home isAuthenticated={isAuthenticated} user={user} handleLogout={() => handleLogout(setIsAuthenticated, setUser, setIsAdmin)} />} />
 
               {/* User Routes */}
               <Route path="/user/favorite" element={<ProtectedRoute element={<Favorites />} isAuthenticated={isAuthenticated} /> } />
@@ -113,8 +107,6 @@ function App() {
               <Route path="/user/purchases" element={<ProtectedRoute element={<Purchases />} isAuthenticated={isAuthenticated} />} />
               <Route path="/user/reviewpage" element={<ProtectedRoute element={<ReviewPage />} isAuthenticated={isAuthenticated} />} />
               <Route path="/profile" element={<ProtectedRoute element={<ProfileCard />} isAuthenticated={isAuthenticated} />} />
-
-              {/* <Route path="/figurine/detail" element={<Details />} /> */}
 
               {/* Admin Routes */}
               <Route path="/admin" element={<ProtectedRoute element={<AdminHomePage />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
