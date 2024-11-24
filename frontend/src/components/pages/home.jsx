@@ -15,10 +15,9 @@ const Home = () => {
  
 
   useEffect(() => {
+    console.log("Fetching figurines...");
     dispatch(fetchFigurines());
-  }, [dispatch]);
-
-  console.log('Fetched Figurines: ', figurines);
+}, [dispatch]);
 
 
   // console.log(typeof cartData);

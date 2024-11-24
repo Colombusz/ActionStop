@@ -88,7 +88,7 @@ const MainNavbar = ({ className }) => {
                             <HoveredLink href="/user/purchases">
                                 <AiOutlineGift className="inline-block mr-2" /> Purchases
                             </HoveredLink>
-                            <HoveredLink href="/user/reviewpage">
+                            <HoveredLink href="/profile">
                                 <AiOutlineBook className="inline-block mr-2" /> Reviews
                             </HoveredLink>
                         </div>

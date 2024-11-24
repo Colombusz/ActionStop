@@ -71,15 +71,41 @@ export const updateReview = createAsyncThunk(
     }
 );
 
+export const fetchFigurineReviews = createAsyncThunk(
+    'review/fetchFigurineReviews',
+    async (figId, { rejectWithValue }) => {
+        try {
+            const response = await fetch(`/api/transaction/${figId}/FigurineReviews`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                return rejectWithValue(errorData.message || 'Failed to fetch reviews');
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Something went wrong');
+        }
+    }
+);
+
+
 const reviewSlice = createSlice({
     name: 'review',
     initialState: {
         loading: false,
         error: null,
         reviews: [],
-        myreviews:[], // Presumably contains fetched reviews
+        myreviews:[],
+        figreviews: [], // Presumably contains fetched reviews
     },
-    reducers: {},
+    reducers: {
+        resetReviewState: (state) => {
+            state.figreviews = [];
+        }
+    },
+
+
     extraReducers: (builder) => {
         builder
             // Handle review creation
@@ -140,8 +166,29 @@ const reviewSlice = createSlice({
                     autoClose: 750,
                 });
                 console.log(state.error);
+            })
+
+
+            .addCase(fetchFigurineReviews.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchFigurineReviews.fulfilled, (state, action) => {
+                state.loading = false;
+                state.figreviews = action.payload; // Update myreviews with fetched reviews
+                console.log(state.figreviews); // Debugging purpose
+                
+            })
+            .addCase(fetchFigurineReviews.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'An error occurred';
+                toast.error(`Error: ${state.error}`, {
+                    autoClose: 750,
+                });
+                state.figreviews = [];
+                console.log(state.error);
             });
     },
 });
-
+export const { resetReviewState } = reviewSlice.actions;
 export default reviewSlice.reducer;

@@ -5,6 +5,9 @@ import { BsBasket } from "react-icons/bs";
 import { addToCart, calculateTotal } from "../store/cardSlices/add2cartSlice";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import MiniReviewCard from "./miniReviewCard";
+import { fetchFigurineReviews } from "../store/reviewSlice";
+import { useSelector } from "react-redux";
 const FigurineModal = ({ images, details, isOpen, onClose, execute }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -25,12 +28,16 @@ const FigurineModal = ({ images, details, isOpen, onClose, execute }) => {
     };
 
   useEffect(() => {
+  
     if (isOpen) {
       setTimeout(() => setIsVisible(true), 50); // Add slight delay for smoother animation
     } else {
       setIsVisible(false);
     }
-  }, [isOpen]);
+  }, [isOpen, details._id, dispatch]);
+
+  const reviews = useSelector((state) => state.review.figreviews.data);
+  console.log(reviews);
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
@@ -101,8 +108,8 @@ const FigurineModal = ({ images, details, isOpen, onClose, execute }) => {
         <div className="flex flex-col justify-start gap-4 bg-gray-100 p-4 rounded-lg">
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2">
-              <h2 className="text-2xl font-bold mb-2">Manufacturer</h2>
-              <p className="text-gray-700 mb-2">Country: {details?.origin || "N/A"}</p>
+              <h2 className="text-2xl font-bold mb-2">{details?.manufacturer[0].name || "N/A"}</h2>
+              <p className="text-gray-700 mb-2">Country: {details?.manufacturer[0].country || "N/A"}</p>
             </div>
             <div className="flex justify-end items-center col-span-1">
               <div className="flex flex-col gap-4">
@@ -132,11 +139,15 @@ const FigurineModal = ({ images, details, isOpen, onClose, execute }) => {
       <h2 className="text-2xl font-bold mb-2">Reviews</h2>
     </div>
     <div className="flex justify-center bg-gray-100 p-4 rounded-lg mt-4 max-h-[30vh] overflow-y-auto">
-      <Stack divider={<Divider orientation="horizontal" flexItem />} spacing={5}>
-        <ListItem>Item 1</ListItem>
-        <ListItem>Item 2</ListItem>
-        <ListItem>Item 3</ListItem>
-        <ListItem>Item 4</ListItem>
+      <Stack divider={<Divider orientation="horizontal" flexItem />} spacing={1}>
+      
+          {reviews && reviews.map((review) => (
+              <ListItem key={review._id}>
+            <MiniReviewCard key={review._id} review={review} />
+              </ListItem>
+          ))}
+         
+        
       </Stack>
     </div>
   </div>

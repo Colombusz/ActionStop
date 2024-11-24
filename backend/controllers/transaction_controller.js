@@ -347,3 +347,24 @@ export const editMyReview = async (req, res) => {
         res.status(500).json({ success: false, error: error });
     }
 }
+
+export const fetchFigReview = async (req, res) => {
+    const { figId } = req.params;
+
+    try {
+        const reviews = await Review.find({ figurine: figId })
+            .populate({
+                path : 'user',
+                select: '',
+            
+            });
+        if (!reviews || reviews.length === 0) {
+            return res.status(404).json({ success: false, message: "No reviews found for this figurine" });
+        }
+        res.status(200).json({ success: true, data: reviews });
+    }
+    catch (error) {
+        console.log("Error in Fetching Reviews: ", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+}

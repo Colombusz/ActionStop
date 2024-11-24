@@ -14,14 +14,16 @@ import { addToCart } from "../store/cardSlices/add2cartSlice";
 import { calculateTotal } from "../store/cardSlices/add2cartSlice";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { fetchFigurineReviews } from "../store/reviewSlice";
+import { resetReviewState } from "../store/reviewSlice";
 const FigurineCard3d = ({ figurine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.add2Favorite.favorites);
+
 
   const user = JSON.parse(localStorage.getItem('user'));
   const userId = user ? user._id : null;
-  const isFavorite = favorites.some(fav => fav._id === figurine._id);
+  
 
   const handleAddToFavorite = (figurineId) => {
     console.log("Adding to favorites:", figurineId); // Debugging the dispatch
@@ -35,6 +37,15 @@ const FigurineCard3d = ({ figurine }) => {
   const handlenotifyBuy = (name) => {
     toast.warn(`Please login to Buy ${name} !!!`);
   };
+
+  const handleModal = (figurineId) => {
+    setIsModalOpen(true);
+    dispatch(fetchFigurineReviews(figurineId));
+  };
+
+
+
+  
 
   const handleAdd2Cart = (figurine) =>
   {
@@ -106,7 +117,7 @@ const FigurineCard3d = ({ figurine }) => {
               <Tooltip title="View Full Product" placement="top">
                 <IconButton
                   aria-label="view"
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => handleModal(figurine._id)}
                 >
                   <PreviewIcon />
                 </IconButton>
