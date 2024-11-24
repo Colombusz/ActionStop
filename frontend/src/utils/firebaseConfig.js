@@ -1,7 +1,5 @@
-
-
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { getAnalytics } from "firebase/analytics";
 import { getMessaging, getToken } from "firebase/messaging";
 import { getAuth } from "firebase/auth";
 
@@ -23,12 +21,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 // const messaging = getMessaging(app);
-export { app, analytics, getAuth };
+export { app, getAuth };
 export const messaging = getMessaging(app);
-export const generateToken = async () => {
 
+export const generateToken = async () => {
   const permisssion  = await Notification.requestPermission();
 
   if (permisssion !== 'granted') {
@@ -41,5 +39,4 @@ export const generateToken = async () => {
   // console.log(token)
 
   return token;
-  
 }

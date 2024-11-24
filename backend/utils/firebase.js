@@ -17,11 +17,12 @@ const serviceAccount = {
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
+  messengingSenderId: "989052833474",
 });
 
-const messaging = admin.messaging();
-
+export const messaging = admin.messaging();
 export const auth = admin.auth();
+
 export const sendNotification = async (token, title, body) => {
   const message = {
     token,
@@ -29,7 +30,6 @@ export const sendNotification = async (token, title, body) => {
       title,
       body,
     },
-   
   };
 
   try {

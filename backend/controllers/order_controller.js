@@ -3,6 +3,7 @@ import Order from "../models/order.js";
 import Figurine from "../models/figurine.js";
 import { sendOrderDetailsEmail } from "../utils/emails.js";
 import { sendNotification } from "../utils/firebase.js";
+import User from "../models/user.js";
 
 // Get all orders
 export const getOrders = async (req, res) => {
@@ -29,11 +30,14 @@ export const updateOrder = async (req, res) => {
 
     try {
         const updatedOrder = await Order.findByIdAndUpdate(id, req.body, { new: true });
-        
+        console.log("Update Order Request: ", updatedOrder);
         if (!updatedOrder) {
             return res.status(404).json({ success: false, message: "Order not found" });
         }
-        const FCM = updatedOrder.user.FCMtoken;
+        
+        const userBuyer = await User.findById(updatedOrder.user._id);
+        console.log("User Buyer Credentials: ", userBuyer);
+        const FCMToken = userBuyer.FCMToken;
 
         // Fetch figurine details for all figurines in the order
         const figurineDetails = await Figurine.find({
@@ -52,7 +56,7 @@ export const updateOrder = async (req, res) => {
         const enrichedOrder = {
             ...updatedOrder.toObject(),
             orderItems: enrichedOrderItems,
-            
+            username: userBuyer.username,
         };
 
         console.log("Updated Order with Figurine Details: ", enrichedOrder);
@@ -60,7 +64,7 @@ export const updateOrder = async (req, res) => {
         // Send email if the order status is updated to 'shipping'
         if (req.body.status === "shipping") {
             try {
-                const userEmail = updatedOrder?.user?.email || "kylasalardaa@gmail.com"; // Default email as fallback
+                const userEmail = "kylasalardaa@gmail.com" || userBuyer.email; // Original Buyer email
                 console.log("Sending email to:", userEmail);
                 await sendOrderDetailsEmail(userEmail, enrichedOrder);
             } catch (emailError) {
@@ -68,7 +72,7 @@ export const updateOrder = async (req, res) => {
             }
         }
 
-        await sendNotification(FCM, `Order Stat: ${updateOrder.status}`, "");
+        await sendNotification(FCMToken, `Order Stat: ${req.body.status}`, "");
         res.status(200).json({ success: true, data: enrichedOrder });
     } catch (error) {
         console.error("Error Updating Order:", error.message);
