@@ -49,7 +49,10 @@ const FigurineCard3d = ({ figurine }) => {
 
   const handleAdd2Cart = (figurine) =>
   {
-    // console.log(figurine)
+    if(!user)
+    {
+      return toast.warn("Please login to add to cart");
+    }
     dispatch(addToCart({
       id : figurine._id,
       name: figurine.name,
@@ -143,13 +146,19 @@ const FigurineCard3d = ({ figurine }) => {
               </Tooltip>
 
               <Tooltip title={`Buy ${figurine.name} now!`} placement="top">
-              <IconButton 
-                aria-label="buy" 
-                className="ml-auto"
-                onClick={() => handleAdd2Cart(figurine)}
-                component={Link} 
-                to="/user/checkout"
-              >
+              <IconButton
+                  aria-label="buy"
+                  className="ml-auto"
+                  onClick={() => {
+                    if (!user) {
+                      handleAdd2Cart(figurine);
+                    } else {
+                      handleAdd2Cart(figurine); // Add figurine to cart if user is authenticated
+                    }
+                  }}
+                  component={Link}
+                  to={user ? "/user/checkout" : "/"} // Redirect based on user authentication
+                >
                 <StorefrontIcon />
               </IconButton>
               </Tooltip>
