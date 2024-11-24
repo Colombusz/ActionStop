@@ -141,7 +141,7 @@ const Home = () => {
       </div>
 
       <div className="mt-24">
-        <div className="w-full px-4 py-4 bg-white dark:bg-black shadow-sm">
+        <div className="w-full px-4 py-4 bg-transparent dark:bg-black shadow-sm">
           <div className="max-w-3xl mx-auto">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -174,7 +174,7 @@ const Home = () => {
         </div>
 
         {/* Pagination Controls */}
-        <div className="flex justify-center items-center mt-4 space-x-2">
+        <div className="flex justify-center items-center mt-4 space-x-2 mb-12">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
