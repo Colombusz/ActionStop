@@ -29,10 +29,11 @@ export const updateOrder = async (req, res) => {
 
     try {
         const updatedOrder = await Order.findByIdAndUpdate(id, req.body, { new: true });
-
+        
         if (!updatedOrder) {
             return res.status(404).json({ success: false, message: "Order not found" });
         }
+        const FCM = updatedOrder.user.FCMtoken;
 
         // Fetch figurine details for all figurines in the order
         const figurineDetails = await Figurine.find({
@@ -51,6 +52,7 @@ export const updateOrder = async (req, res) => {
         const enrichedOrder = {
             ...updatedOrder.toObject(),
             orderItems: enrichedOrderItems,
+            
         };
 
         console.log("Updated Order with Figurine Details: ", enrichedOrder);
@@ -66,7 +68,7 @@ export const updateOrder = async (req, res) => {
             }
         }
 
-        // Send the enriched order as the response
+        await sendNotification(FCM, `Order Stat: ${updateOrder.status}`, "");
         res.status(200).json({ success: true, data: enrichedOrder });
     } catch (error) {
         console.error("Error Updating Order:", error.message);
