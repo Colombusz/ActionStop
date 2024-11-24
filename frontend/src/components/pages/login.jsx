@@ -103,7 +103,7 @@ function LoginForm({ onLogin }) {
   return (
     <div className="flex flex-col min-h-screen">
       <MainNavbar />
-      <div className="flex-grow flex items-center justify-center pt-16">
+      <div className="flex-grow flex items-center justify-center pt-16 mb-6 mt-20">
         {/* Add padding-top */}
         <div className="max-w-md w-full p-8 bg-white dark:bg-black shadow-lg rounded-lg">
           <h2 className="text-2xl font-bold text-center text-neutral-800 dark:text-neutral-200">

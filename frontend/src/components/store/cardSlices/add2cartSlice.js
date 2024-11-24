@@ -38,7 +38,7 @@ const add2CartSlice = createSlice({
 
             // Check if the item already exists in the cart
             const existingItem = state.cartItems.find(item => item.id === id);
-
+          
             if (existingItem) {
                 // Update quantity if item exists
                 existingItem.quantity += quantity;
