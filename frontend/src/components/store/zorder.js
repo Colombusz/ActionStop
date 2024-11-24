@@ -9,43 +9,79 @@ export const useOrderStore = create((set) => ({
       // Fetch orders
       const res = await fetch("/api/orders");
       const { data: orders } = await res.json();
-
-      // Extract unique figurine IDs from the orders
+  
+      // console.log("Fetched Orders:", orders);
+  
+      if (!orders || !orders.length) {
+        console.warn("No orders found");
+        set({ orders: [] });
+        return;
+      }
+  
+      // Extract unique figurine and user IDs
       const figurineIds = [
         ...new Set(orders.flatMap((order) => order.orderItems.map((item) => item.figurine))),
       ];
-
-      // Fetch figurine details
-      const figurineResponse = await fetch(`/api/figurines?ids=${figurineIds.join(",")}`);
-      const figurineData = await figurineResponse.json();
-
+      const userIds = [...new Set(orders.map((order) => order.user))];
+  
+      // console.log("Figurine IDs:", figurineIds);
+      // console.log("User IDs:", userIds);
+  
+      // Fetch figurine and user data in parallel
+      const [figurineResponse, userResponse] = await Promise.all([
+        fetch(`/api/figurines?ids=${figurineIds.join(",")}`).then((res) => res.json()),
+        fetch(`/api/auth/users?ids=${userIds.join(",")}`).then((res) => res.json()),
+      ]);
+  
+      // Handle cases where the responses are not arrays
+      const figurineData = Array.isArray(figurineResponse.data)
+        ? figurineResponse.data
+        : [];
+      const userData = Array.isArray(userResponse.users)
+        ? userResponse.users
+        : [];
+  
+      // console.log("Figurine Data:", figurineData);
+      // console.log("User Data:", userData);
+  
       // Map figurine IDs to their data
-      const figurinesMap = figurineData.data.reduce((acc, figurine) => {
+      const figurinesMap = figurineData.reduce((acc, figurine) => {
         acc[figurine._id] = {
           name: figurine.name,
           images: figurine.images || [],
         };
         return acc;
       }, {});
-
-      // Enrich orders with figurine names and images
+  
+      // Map user IDs to their data
+      const usersMap = userData.reduce((acc, user) => {
+        acc[user._id] = {
+          name: user.username,
+          email: user.email,
+        };
+        return acc;
+      }, {});
+  
+      // Enrich orders with figurine and user data
       const enrichedOrders = orders.map((order) => ({
         ...order,
+        user: usersMap[order.user] || { name: "Unknown User", email: "" },
         orderItems: order.orderItems.map((item) => ({
           ...item,
           figurineName: figurinesMap[item.figurine]?.name || "Unknown Figurine",
           figurineImages: figurinesMap[item.figurine]?.images || [],
         })),
       }));
-
+  
       console.log("Enriched Orders:", enrichedOrders);
-
+  
       // Update Zustand state
       set({ orders: enrichedOrders });
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
   },
+  
 
   updateOrder: async (id, updatedOrder) => {
     try {

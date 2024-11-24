@@ -53,7 +53,7 @@ const OrdersDashboard = () => {
             newStatus = "shipping";
             break;
           case "shipping":
-            newStatus = "shipped";
+            newStatus = "completed";
             break;
           default:
             toast.info("Order cannot be updated further.");
@@ -86,8 +86,6 @@ const OrdersDashboard = () => {
       <AdminSidebar />
       <Loading loading={loading} />
       <div className="flex-1 p-5">
-        {/* <h1 className="font-delius text-3xl font-bold mb-4">Orders Dashboard</h1> */}
-
         <DataTable
           rows={orders}
           onDetailsClick={handleDetailsClick}
@@ -109,30 +107,39 @@ const OrdersDashboard = () => {
 
         {/* Order Details */}
         {selectedOrder && (
-          <div className="p-4 bg-gray-100 border-t border-gray-300 mt-4">
-            {/* <h2 className="font-bold text-xl mb-4">Order Details</h2> */}
+          <div className="p-4 bg-gray-100 border-t border-gray-300 mt-4 rounded-md shadow-md">
+            <h2 className="font-bold text-xl mb-4">Order Details</h2>
             <p><strong>Order ID:</strong> {selectedOrder._id}</p>
             <p><strong>Status:</strong> {selectedOrder.status}</p>
             <p><strong>Total Price:</strong> ${selectedOrder.totalPrice}</p>
             <p><strong>Shipping Address:</strong> {selectedOrder.shippingAddress}</p>
             <p><strong>Payment Method:</strong> {selectedOrder.paymentMethod}</p>
+            <p><strong>Created At:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
+            
+            <h3 className="font-bold text-lg mt-4">Buyer Details</h3>
+            <p><strong>Name:</strong> {selectedOrder.user?.name || "Unknown User"}</p>
+            <p><strong>Email:</strong> {selectedOrder.user?.email || "N/A"}</p>
+            
+            <h3 className="font-bold text-lg mt-4">Order Items</h3>
             <ul className="list-disc ml-6">
               {selectedOrder.orderItems.map((item, index) => (
-                <li key={index}>
-                  Figurine: {item.figurineName}
-                  <br />
-                  Quantity: {item.qty}
-                  <br />
-                  Images:
+                <li key={index} className="mb-4">
+                  <p><strong>Figurine:</strong> {item.figurineName || "Unknown Figurine"}</p>
+                  <p><strong>Quantity:</strong> {item.qty}</p>
+                  <p>Images:</p>
                   <div className="flex space-x-2 mt-2">
                     {item.figurineImages.map((image, imgIndex) => (
-                      <img key={imgIndex} src={image.url} alt={`Figurine ${index} Image ${imgIndex}`} className="w-16 h-16 object-cover" />
+                      <img
+                        key={imgIndex}
+                        src={image.url}
+                        alt={`Figurine ${index} Image ${imgIndex}`}
+                        className="w-16 h-16 object-cover"
+                      />
                     ))}
                   </div>
                 </li>
               ))}
             </ul>
-            <p><strong>Created At:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
           </div>
         )}
       </div>

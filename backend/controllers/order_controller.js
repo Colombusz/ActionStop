@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Order from "../models/order.js";
 import Figurine from "../models/figurine.js";
 import { sendOrderDetailsEmail } from "../utils/emails.js";
+import { sendNotification } from "../utils/firebase.js";
 
 // Get all orders
 export const getOrders = async (req, res) => {
@@ -22,13 +23,11 @@ export const getOrders = async (req, res) => {
 export const updateOrder = async (req, res) => {
     const { id } = req.params;
 
-    // Validate the provided ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ success: false, message: `No Order with id: ${id}` });
     }
 
     try {
-        // Find and update the order with the new details
         const updatedOrder = await Order.findByIdAndUpdate(id, req.body, { new: true });
 
         if (!updatedOrder) {
@@ -39,7 +38,6 @@ export const updateOrder = async (req, res) => {
         const figurineDetails = await Figurine.find({
             _id: { $in: updatedOrder.orderItems.map(item => item.figurine) },
         });
-
         // Append figurine details to order items
         const enrichedOrderItems = updatedOrder.orderItems.map(item => {
             const figurine = figurineDetails.find(f => f._id.equals(item.figurine));
