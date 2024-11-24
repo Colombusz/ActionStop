@@ -112,7 +112,7 @@ const Home = () => {
         }
       });
     }
-
+    // filtered = filtered.filter((figurine) => figurine.stock < 1);
     // Apply rating filter (e.g., stars like 5, 4, 3)
     if (rating) {
 
@@ -128,7 +128,8 @@ const Home = () => {
           break;
       }
     }
-
+    // filtered = filtered.filter((figurine) => Number(figurine.stock) === 0);
+    
     return filtered;
   };
 

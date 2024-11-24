@@ -206,22 +206,36 @@ export const fetchOrders = async (req, res) => {
 export const cancelOrder = async (req, res) => {
     const { orderid, id } = req.body;
     try {
-        const udir = await Order.findById(orderid);
-        if (!udir) {
+        const udir = await Order.findById(orderid).populate({
+            path: "orderItems.figurine", // Populate figurines in order items
+            model: "Figurine",
+          });
+          
+          if (!udir) {
             return res.status(404).json({ success: false, message: "Order not found" });
-        }
-        udir.status = "cancelled";
-        await udir.save();
-
-        const user = await User.findById(id).populate({
+          }
+          
+          // Restore stocks for figurines in the order
+          for (const item of udir.orderItems) {
+            const figurine = item.figurine; // Populated figurine
+            if (figurine) {
+              figurine.stock += item.qty; // Adjust stock based on the order quantity
+              await figurine.save(); // Save the updated stock
+            }
+          }
+          
+          // Update order status to 'cancelled'
+          udir.status = "cancelled";
+          await udir.save();
+          
+          const user = await User.findById(id).populate({
             path: "order",
             model: "Order",
             populate: {
-                path: "orderItems.figurine", // Populate figurines in order items
-                model: "Figurine",
-                
-            }
-        });
+              path: "orderItems.figurine",
+              model: "Figurine",
+            },
+          });
     
         // Check if user exists
         if (!user) {
