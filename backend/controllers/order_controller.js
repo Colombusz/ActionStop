@@ -3,6 +3,7 @@ import Order from "../models/order.js";
 import Figurine from "../models/figurine.js";
 import { sendOrderDetailsEmail } from "../utils/emails.js";
 import { sendNotification } from "../utils/firebase.js";
+import User from "../models/user.js";
 
 // Get all orders
 export const getOrders = async (req, res) => {
@@ -29,11 +30,13 @@ export const updateOrder = async (req, res) => {
 
     try {
         const updatedOrder = await Order.findByIdAndUpdate(id, req.body, { new: true });
-        
+        console.log("Update Order Request: ", updatedOrder);
         if (!updatedOrder) {
             return res.status(404).json({ success: false, message: "Order not found" });
         }
-        const FCM = updatedOrder.user.FCMtoken;
+        
+        const userBuyer = await User.findById(updatedOrder.user._id);
+        console.log("User Buyer Test: ", userBuyer);
 
         // Fetch figurine details for all figurines in the order
         const figurineDetails = await Figurine.find({
@@ -68,7 +71,7 @@ export const updateOrder = async (req, res) => {
             }
         }
 
-        await sendNotification(FCM, `Order Stat: ${updateOrder.status}`, "");
+        await sendNotification(userBuyer.FCMtoken, `Order Stat: ${updateOrder.status}`, "");
         res.status(200).json({ success: true, data: enrichedOrder });
     } catch (error) {
         console.error("Error Updating Order:", error.message);

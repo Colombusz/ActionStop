@@ -84,10 +84,15 @@ export const useOrderStore = create((set) => ({
   
 
   updateOrder: async (id, updatedOrder) => {
+    const sanitizedOrder = {
+      ...updatedOrder,
+      user: typeof updatedOrder.user === "object" ? updatedOrder.user._id : updatedOrder.user,
+    };
+
     try {
       const res = await fetch(`/api/orders/${id}`, {
         method: "PUT",
-        body: JSON.stringify(updatedOrder),
+        body: JSON.stringify(sanitizedOrder),
         headers: {
           "Content-Type": "application/json",
         },
