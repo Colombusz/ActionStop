@@ -4,7 +4,7 @@ import './index.css';
 
 // Utility Components
 import { Vortex } from './components/ui/vortex.jsx';
-import { Modal } from './components/ui/animated-modal.jsx';
+import { ModalProvider } from './components/ui/animated-modal.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -15,8 +15,7 @@ import store from './components/store/store.js';
 // Admin Pages
 import AdminHomePage from './components/admin/home';
 import FigurineDashboard from './components/admin/figurine.jsx';
-import ManufacturerDashboard from './components/admin/manufacturer.jsx';
-import PromoDashboard from './components/admin/promo.jsx';
+import ReviewsDashboard from './components/admin/reviews.jsx';
 
 // User / Non-User Pages
 import Home from './components/pages/home';
@@ -76,7 +75,7 @@ function App() {
             particleCount={500}
             baseHue={120}
           />
-        <Modal>
+        <ModalProvider>
           <ToastContainer />
           <div className="relative z-10">
             <Routes>
@@ -91,7 +90,7 @@ function App() {
               <Route path="/user/reviewpage" element={<ReviewPage />} />
               {/* <Route path="/figurine/detail" element={<Details />} /> */}
 
-              {/* Profile Cards */}
+              {/* Profile Pages */}
               <Route path="/profile" element={<ProfileCard />} />
               <Route path="/admin/profile" element={<AdminProfile />} />
 
@@ -102,11 +101,10 @@ function App() {
               <Route path="/admin/promos" element={<ProtectedRoute element={<PromoDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} /> */}
               <Route path="/admin" element={<AdminHomePage />} />
               <Route path="/admin/figurines" element={<FigurineDashboard />} />
-              <Route path="/admin/manufacturers" element={<ManufacturerDashboard />} />
-              <Route path="/admin/promos" element={<PromoDashboard />} />
+              <Route path="/admin/reviews" element={<ReviewsDashboard />} />
             </Routes>
           </div>
-        </Modal>
+        </ModalProvider>
       </Router>
     </Provider>
   );

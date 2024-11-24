@@ -9,7 +9,8 @@ import {
 } from "@tabler/icons-react";
 import { GiFigurehead } from "react-icons/gi";
 import { PiTruck } from "react-icons/pi";
-import { MdOutlinePrecisionManufacturing } from "react-icons/md";
+import { FaRegUser } from "react-icons/fa";
+import { MdOutlinePreview } from "react-icons/md";
 import { IoGift } from "react-icons/io5";
 import { toast } from 'react-toastify';
 import Loading from '../common/loading';
@@ -55,11 +56,10 @@ const AdminSidebar = () => {
   const links = [
     { label: "Dashboard", to: "/admin", icon: <IconBrandTabler className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
     { label: "Profile", to: "/admin/profile", icon: <IconUserBolt className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
-    { label: "Orders", to: "/orders", icon: <PiTruck className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
+    { label: "Orders", to: "/admin/orders", icon: <PiTruck className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
     { label: "Figurines", to: "/admin/figurines", icon: <GiFigurehead className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
-    { label: "Manufacturers", to: "/admin/manufacturers", icon: <MdOutlinePrecisionManufacturing className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
-    { label: "Promos", to: "/admin/promos", icon: <IoGift className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
-    { label: "Settings", to: "/settings", icon: <IconSettings className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
+    { label: "Reviews", to: "/admin/reviews", icon: <MdOutlinePreview className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
+    { label: "Users", to: "/admin/users", icon: <FaRegUser className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
     {
       label: "Logout",
       to: "#", // Dummy link
