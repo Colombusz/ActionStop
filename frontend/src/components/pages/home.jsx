@@ -12,7 +12,7 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Adjust as needed
-
+  const {classification, date, popularity, price, rating} = useSelector((state) => state.figurines.filters);
   useEffect(() => {
     dispatch(fetchFigurines());
   }, [dispatch]);
@@ -24,6 +24,92 @@ const Home = () => {
       filtered = filtered.filter((figurine) =>
         figurine.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
+    }
+    if (classification) {
+      switch(classification) {
+        case "Western":
+          filtered = filtered.filter((figurine) => figurine.classification === "Western");
+          break;
+        case "Anime":
+          filtered = filtered.filter((figurine) => figurine.classification === "Anime");
+          break;
+        case "Manga":
+          filtered = filtered.filter((figurine) => figurine.classification === "Manga");
+          break;
+        case "Fantasy":
+          filtered = filtered.filter((figurine) => figurine.classification === "Fantasy");
+          break;
+        case "Other":
+          filtered = filtered.filter((figurine) => figurine.classification === "Other");
+          break;
+      }
+    }
+    // Apply date filter (assuming `figurine.date` is a Date object or ISO string)
+    if (date) {
+      const now = new Date();
+      filtered = filtered.filter((figurine) => {
+        switch (date) {
+          case "today":
+            return new Date(figurine.date).toDateString() === now.toDateString();
+          case "old":
+            return new Date(figurine.date) < now;
+          case "month":
+            return new Date(figurine.date).getMonth() === now.getMonth();
+          default:
+            return true;
+        }
+      });
+    }
+    // Apply popularity filter (e.g., most, lo-hi, hi-lo)
+    if (popularity) {
+      switch (popularity) {
+        case "most":
+          filtered = [...filtered].sort((a, b) => b.totalQty - a.totalQty);
+          break;
+        case "lo-hi":
+          filtered = [...filtered].sort((a, b) => a.totalQty - b.totalQty);
+          break;
+        case "hi-lo":
+          filtered = [...filtered].sort((a, b) => b.totalQty - a.totalQty);
+          break;
+        default:
+          break;
+      }
+    }
+
+    // Apply price filter (e.g., ranges like "50<", "50-200", "200-500", "500>")
+    if (price) {
+      filtered = filtered.filter((figurine) => {
+        const figurinePrice = figurine.price;
+        switch (price) {
+          case "50<":
+            return figurinePrice < 50;
+          case "50-200":
+            return figurinePrice >= 50 && figurinePrice <= 200;
+          case "200-500":
+            return figurinePrice > 200 && figurinePrice <= 500;
+          case "500>":
+            return figurinePrice > 500;
+          default:
+            return true;
+        }
+      });
+    }
+
+    // Apply rating filter (e.g., stars like 5, 4, 3)
+    if (rating) {
+
+      switch(rating) {
+        case 5:
+          filtered = filtered.filter((figurine) =>figurine.averageRating >= 4  && figurine.averageRating <= 5 );
+          break;
+        case 4:
+          filtered = filtered.filter((figurine) => figurine.averageRating >= 3  && figurine.averageRating < 4);
+          break;
+        case 3:
+          filtered = filtered.filter((figurine) =>figurine.averageRating < 3  && figurine.averageRating >= 1);
+          break;
+      }
     }
 
     return filtered;
