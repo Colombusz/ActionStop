@@ -5,8 +5,10 @@ import ResponsiveFooter from '../common/footer';
 import FigurineCard3d from '../common/figurineCard3d';
 import MainNavbar from '../common/navbar';
 import { Search } from 'lucide-react';
-
+import { storeFCMToken } from '../store/userSlice.js';
+import { generateToken } from '../../utils/firebaseConfig.js';
 const Home = () => {
+  
   const dispatch = useDispatch();
   const { figurines, loading, error } = useSelector((state) => state.figurines);
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,8 +16,23 @@ const Home = () => {
   const itemsPerPage = 3; // Adjust as needed
   const {classification, date, popularity, price, rating} = useSelector((state) => state.figurines.filters);
   useEffect(() => {
-    dispatch(fetchFigurines());
-  }, [dispatch]);
+    const fetchData = async () => {
+        // Dispatching to fetch figurines
+        dispatch(fetchFigurines());
+
+        try {
+            // Waiting for the token to be generated
+            const token = await generateToken();
+            
+            // Dispatching the action to store the FCM token after the token is generated
+            dispatch(storeFCMToken(token));
+        } catch (error) {
+            console.error("Error generating token:", error);
+        }
+    };
+
+    fetchData();  // Call the async function
+}, [dispatch]);
 
   const filterFigurines = () => {
     let filtered = figurines;

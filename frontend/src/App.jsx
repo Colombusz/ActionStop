@@ -33,9 +33,29 @@ import AdminProfile from './components/admin/adminprofile.jsx';
 import { checkAuthStatus, handleLogout } from './utils/userauth.js';
 import ProtectedRoute from './components/common/protectedroute.jsx';
 
+
+// firebase notif
+import { generateToken } from './utils/firebaseConfig.js';
+// import { toast } from 'react-toastify';
 import Checkout from './components/pages/checkout.jsx';
+import { onMessage } from 'firebase/messaging';
+import { messaging } from './utils/firebaseConfig.js';
 
 function App() {
+
+  useEffect(() => {
+    
+    
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+
+      toast.info(payload.notification.title, {
+        body: payload.notification.body,
+        icon: payload.notification.image,
+      });
+      // ...
+    });
+  }, []);
   // Authentication
   const [isAuthenticated, setIsAuthenticated] = useState(() => checkAuthStatus);
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));

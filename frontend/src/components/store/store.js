@@ -8,6 +8,7 @@ import  add2CartReducer  from './cardSlices/add2cartSlice';
 import checkoutReducer from './checkOutSlices/checkoutSlice';
 import OrderReducer from './utilitiesSlice';
 import ReviewReducer from './reviewSlice';
+import UserReducer from './userSlice';
 const store = configureStore({
   reducer: {
     figurines: figurineReducer,
@@ -18,6 +19,7 @@ const store = configureStore({
     checkout: checkoutReducer,
     orders: OrderReducer,
     review: ReviewReducer,
+    user: UserReducer,
   },
 });
 

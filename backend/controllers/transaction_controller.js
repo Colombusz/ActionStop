@@ -98,6 +98,7 @@ export const checkout = async (req, res) => {
           shippingPrice: shipfee,
           totalPrice: total,
           status: status,
+          user: userId,
         });
     
         // Save the order to the database

@@ -67,6 +67,11 @@ const userSchema = mongoose.Schema(
         ref: "Order",
       },
     ],
+    FCMtoken:
+    {
+      type: String,
+      required: false,
+    },
     resetPasswordToken: String,
     resetPasswordExpiresAt: Date,
     verificationToken: String,

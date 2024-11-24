@@ -39,7 +39,7 @@ export const signup = async (req, res) => {
             verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours   
         });
         await user.save();
-
+        
         // JWT
         generateTokenAndSetCookie(res, user._id);
 
@@ -365,3 +365,26 @@ export const getCurrentUser = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+
+
+export const storeFCM = async (req, res) => {
+    const { token, id } = req.body;
+    try {
+        const user = await User.findById(id);
+        
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+        user.FCMtoken = token;
+
+        await user.save();
+        res.status(200).json({
+            success: true,
+            message: "FCM token stored successfully",
+            data: user.FCMtoken,
+        });
+    }
+    catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+}

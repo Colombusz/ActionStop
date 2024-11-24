@@ -2,7 +2,10 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getMessaging, getToken } from "firebase/messaging";
 import { getAuth } from "firebase/auth";
+
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,5 +24,22 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
+// const messaging = getMessaging(app);
 export { app, analytics, getAuth };
+export const messaging = getMessaging(app);
+export const generateToken = async () => {
+
+  const permisssion  = await Notification.requestPermission();
+
+  if (permisssion !== 'granted') {
+    return null;
+  }
+  const token = await getToken(messaging, {
+    vapidKey:
+    "BB7zxEehNkzV-2S_WO1coP0wIb2rcFCQJRBuI4kfA3lk4tzww-ugVtkVuZPihL0yFY2ivadFEVMlO8UjZTCVgU8"
+  })
+  // console.log(token)
+
+  return token;
+  
+}

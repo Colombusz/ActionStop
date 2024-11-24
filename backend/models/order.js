@@ -42,6 +42,11 @@ const orderSchema = mongoose.Schema({
       deliveredAt: {
         type: Date,
       },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User",
+      },
 },{
     timestamps: true,
 });
