@@ -102,30 +102,27 @@ function App() {
           <div className="relative z-10">
             <Routes>
               {/* User / Non-User Routes */}
+              <Route path="/login" element={<Login onLogin={handleLogin} />} />
+              <Route path="/signup" element={<Signup />} />
               <Route path="/about" element={<About />} />
               <Route path="/" element={<Home />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login onLogin={handleLogin} />} />
-              <Route path="/user/favorite" element={<Favorites />} />
-              <Route path="/user/checkout" element={<Checkout />} />
-              <Route path="/user/purchases" element={<Purchases />} />
-              <Route path="/user/reviewpage" element={<ReviewPage />} />
+
+              {/* User Routes */}
+              <Route path="/user/favorite" element={<ProtectedRoute element={<Favorites />} isAuthenticated={isAuthenticated} /> } />
+              <Route path="/user/checkout" element={<ProtectedRoute element={<Checkout />} isAuthenticated={isAuthenticated} />} />
+              <Route path="/user/purchases" element={<ProtectedRoute element={<Purchases />} isAuthenticated={isAuthenticated} />} />
+              <Route path="/user/reviewpage" element={<ProtectedRoute element={<ReviewPage />} isAuthenticated={isAuthenticated} />} />
+              <Route path="/profile" element={<ProtectedRoute element={<ProfileCard />} isAuthenticated={isAuthenticated} />} />
+
               {/* <Route path="/figurine/detail" element={<Details />} /> */}
 
-              {/* Profile Pages */}
-              <Route path="/profile" element={<ProfileCard />} />
-              <Route path="/admin/profile" element={<AdminProfile />} />
-
               {/* Admin Routes */}
-              {/* <Route path="/admin" element={<ProtectedRoute element={<AdminHomePage />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              <Route path="/admin" element={<ProtectedRoute element={<AdminHomePage />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
               <Route path="/admin/figurines" element={<ProtectedRoute element={<FigurineDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
-              <Route path="/admin/manufacturers" element={<ProtectedRoute element={<ManufacturerDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
-              <Route path="/admin/promos" element={<ProtectedRoute element={<PromoDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} /> */}
-              <Route path="/admin" element={<AdminHomePage />} />
-              <Route path="/admin/figurines" element={<FigurineDashboard />} />
-              <Route path="/admin/reviews" element={<ReviewsDashboard />} />
-              <Route path="/admin/orders" element={<OrdersDashboard />} />
-              <Route path="/admin/users" element={<UsersDashboard />} />
+              <Route path="/admin/reviews" element={<ProtectedRoute element={<ReviewsDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              <Route path="/admin/orders" element={<ProtectedRoute element={<OrdersDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              <Route path="/admin/users" element={<ProtectedRoute element={<UsersDashboard />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} />} />
+              <Route path="/admin/profile" element={<ProtectedRoute element={<AdminProfile />} isAuthenticated={isAuthenticated} isAdmin={isAdmin} adminOnly={true} /> }/>
 
             </Routes>
           </div>

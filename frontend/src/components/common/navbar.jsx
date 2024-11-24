@@ -110,7 +110,7 @@ const MainNavbar = ({ className }) => {
                             <HoveredLink href="/profile">
                                 <AiOutlineSetting className="inline-block mr-2" /> Account Settings
                             </HoveredLink>
-                            {isAdmin && <HoveredLink href="/admin/dashboard">Admin Dashboard</HoveredLink>}
+                            {isAdmin && <HoveredLink href="/admin/">Admin Dashboard</HoveredLink>}
                             <button onClick={logout} className="text-red-500 hover:text-red-700">
                                 <AiOutlineLogout className="inline-block mr-2" /> Log Out
                             </button>
