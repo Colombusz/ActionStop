@@ -45,8 +45,6 @@ import { messaging } from './utils/firebaseConfig.js';
 function App() {
 
   useEffect(() => {
-    
-    
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
 

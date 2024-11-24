@@ -14,7 +14,7 @@ export const storeFCMToken = createAsyncThunk(
             
             const userid = JSON.parse(localStorage.getItem('user'))._id;
             const id = userid;
-            console.log("id", id, token);
+            console.log("id", id, "Token: ",token);
             const response = await axios.put('/api/auth/user/fcmToken', { token, id });
             return response.data;
         } catch (error) {

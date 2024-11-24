@@ -45,3 +45,5 @@ export const sendNotification = async (token, title, body) => {
     };
   }
 };
+
+// sendNotification('token', 'title', 'body');
