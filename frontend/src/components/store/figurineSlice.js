@@ -24,6 +24,7 @@ export const fetchFigurines = createAsyncThunk(
 
 const initialState = {
   figurines: [],
+  filters: {},
   loading: false,
   error: null,
 };
@@ -31,7 +32,20 @@ const initialState = {
 const figurineSlice = createSlice({
   name: 'figurines',
   initialState,
-  reducers: {},
+  reducers: {
+
+    filterPush: (state, action) => {
+      const { key, value } = action.payload;
+      if (value === null || value === '') {
+        delete state.filters[key]; // Remove the filter if the value is null or empty
+      }
+      // Update the filter directly as an object
+      state.filters[key] = value;
+    },
+    filterReset: (state) => {
+      state.filters = {}; // Reset filters to an empty object
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFigurines.pending, (state) => {
@@ -53,6 +67,6 @@ const figurineSlice = createSlice({
 
 
 
-
+export const { filterPush, filterReset } = figurineSlice.actions;
 export default figurineSlice.reducer;
 

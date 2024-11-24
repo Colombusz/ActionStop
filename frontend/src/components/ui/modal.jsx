@@ -37,7 +37,7 @@ const FigurineModal = ({ images, details, isOpen, onClose, execute }) => {
   }, [isOpen, details._id, dispatch]);
 
   const reviews = useSelector((state) => state.review.figreviews.data);
-  console.log(reviews);
+  
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>

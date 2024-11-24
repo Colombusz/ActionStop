@@ -22,7 +22,66 @@ const uploadToCloudinary = (buffer) => {
 
 export const getFigurines = async (req, res) => {
     try {
-        const figurines = await Figurine.find({});
+        const figurines = await Figurine.aggregate([
+            {
+                $lookup: {
+                    from: "reviews", // The collection name for reviews
+                    localField: "_id", // Match figurine _id with figurine field in reviews
+                    foreignField: "figurine", // Figurine field in reviews
+                    as: "reviews" // This will add reviews to each figurine
+                }
+            },
+            // Step 2: Add averageRating field
+            {
+                $addFields: {
+                    averageRating: {
+                        $cond: {
+                            if: { $gt: [{ $size: "$reviews" }, 0] }, // If reviews exist
+                            then: { $avg: "$reviews.rating" }, // Calculate average of ratings
+                            else: 0 // If no reviews, set rating to 0
+                        }
+                    }
+                }
+            },
+            // Step 3: Lookup orders for each figurine based on review's order field
+            {
+                $lookup: {
+                    from: "orders", // The collection name for orders
+                    localField: "reviews.order", // The order field in the review document
+                    foreignField: "_id", // The _id field in the orders collection
+                    as: "orders" // This will add orders to each figurine
+                }
+            },
+            // Step 4: Add totalQty field based on the quantity in orderItems for each figurine
+            {
+                $addFields: {
+                    totalQty: {
+                        $sum: {
+                            $map: {
+                                input: "$orders", // Iterate over the orders
+                                as: "order",
+                                in: {
+                                    $sum: {
+                                        $map: {
+                                            input: "$$order.orderItems", // Iterate over orderItems in each order
+                                            as: "orderItem",
+                                            in: {
+                                                $cond: {
+                                                    if: { $eq: ["$$orderItem.figurine", "$_id"] }, // Check if the figurine matches
+                                                    then: "$$orderItem.qty", // If matches, add the qty
+                                                    else: 0 // Otherwise, set to 0
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]);
+
         res.status(200).json({
             success: true, 
             data: figurines,
