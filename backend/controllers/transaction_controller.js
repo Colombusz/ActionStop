@@ -295,3 +295,55 @@ export const createReview  = async (req, res) => {
     }
 
 }
+
+export const fetchMyReviews = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const reviews = await Review.find({ user: id }) // Find reviews by user ID
+            .populate({
+                path: 'user', // Populate the `user` field
+                select: 'name email avatar', // Specify the fields to include (optional)
+            })
+            .populate({
+                path: 'figurine', // If `figurine` is also referenced, populate it
+                select: 'name price images', // Specify fields to include (optional)
+            })
+            .populate({
+                path: 'order', // If `order` is also referenced, populate it
+                select: '_id', // Specify fields to include (optional)
+            });
+    
+        if (!reviews || reviews.length === 0) {
+            return res.status(404).json({ success: false, message: "No reviews found for this user" });
+        }
+    
+        res.status(200).json({ success: true, data: reviews });
+    } catch (error) {
+        console.error("Error fetching reviews:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+}
+
+
+export const editMyReview = async (req, res) => {
+    console.log(req.body);
+    const { comment, rating, id } = req.body;
+
+    try {
+        const review = await Review.findById(id);
+        if (!review) {
+            return res.status(404).json({ success: false, message: "Review not found" });
+        }
+        
+        review.comment = comment;
+        review.rating = rating;
+        await review.save();
+
+        res.status(200).json({ success: true, data: review });
+    }
+    catch (error) {
+        console.log("Error in Editing Review: ", error.message);
+        res.status(500).json({ success: false, error: error });
+    }
+}
