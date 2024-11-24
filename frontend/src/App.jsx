@@ -17,6 +17,7 @@ import AdminHomePage from './components/admin/home';
 import FigurineDashboard from './components/admin/figurine.jsx';
 import ReviewsDashboard from './components/admin/reviews.jsx';
 import OrdersDashboard from './components/admin/orders.jsx';
+import UsersDashboard from './components/admin/users.jsx';
 
 // User / Non-User Pages
 import Home from './components/pages/home';
@@ -124,6 +125,7 @@ function App() {
               <Route path="/admin/figurines" element={<FigurineDashboard />} />
               <Route path="/admin/reviews" element={<ReviewsDashboard />} />
               <Route path="/admin/orders" element={<OrdersDashboard />} />
+              <Route path="/admin/users" element={<UsersDashboard />} />
 
             </Routes>
           </div>

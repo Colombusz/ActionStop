@@ -4,20 +4,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../common/loading";
 import AdminSidebar from "./adminsidebar";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const AdminProfile = () => {
   const [user, setUser] = useState({
-    userId: "",
-    username: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-    address: "",
-    phone: "",
-    image: { public_id: "", url: "" },
-  });
-
-  const [editedUser, setEditedUser] = useState({
     userId: "",
     username: "",
     firstname: "",
@@ -55,7 +46,7 @@ const AdminProfile = () => {
       };
 
       setUser(userData);
-      setEditedUser(userData);
+      formik.setValues(userData); // Populate form with user data
     } catch (error) {
       toast.error(`An error occurred: ${error.message}`);
     } finally {
@@ -63,10 +54,56 @@ const AdminProfile = () => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedUser({ ...editedUser, [name]: value || "" }); // Ensure value is always a string
-  };
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+      address: "",
+      phone: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().required("Username is required"),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      firstname: Yup.string().required("First name is required"),
+      lastname: Yup.string().required("Last name is required"),
+      address: Yup.string().required("Address is required"),
+      phone: Yup.string()
+        .matches(/^[0-9]{11}$/, "Phone must be 11 digits")
+        .required("Phone is required"),
+    }),
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const formData = new FormData();
+        formData.append("userId", user._id);
+        Object.entries(values).forEach(([key, value]) =>
+          formData.append(key, value)
+        );
+
+        if (imageFile) {
+          formData.append("upload_profile", imageFile);
+        }
+
+        const { data } = await axios.put(
+          "http://localhost:5000/api/auth/update",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+
+        toast.success("Profile updated successfully!");
+        setUser(data.user);
+        formik.resetForm();
+      } catch (error) {
+        toast.error(`Failed to update profile: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -74,46 +111,12 @@ const AdminProfile = () => {
       setImageFile(file);
       const reader = new FileReader();
       reader.onload = () => {
-        setEditedUser({
-          ...editedUser,
-          image: { ...editedUser.image, url: reader.result },
-        });
+        setUser((prevUser) => ({
+          ...prevUser,
+          image: { ...prevUser.image, url: reader.result },
+        }));
       };
       reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      console.log("Edited User For Submission:", user._id);
-      const formData = new FormData();
-      formData.append("userId", user._id);
-      formData.append("username", editedUser.username || "");
-      formData.append("firstname", editedUser.firstname || "");
-      formData.append("lastname", editedUser.lastname || "");
-      formData.append("email", editedUser.email || "");
-      formData.append("address", editedUser.address || "");
-      formData.append("phone", editedUser.phone || "");
-
-      if (imageFile) {
-        formData.append("upload_profile", imageFile);
-      }
-
-      const { data } = await axios.put(
-        "http://localhost:5000/api/auth/update",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      toast.success("Profile updated successfully!");
-      setUser(data.user);
-      setEditedUser(data.user);
-    } catch (error) {
-      toast.error(`Failed to update profile: ${error.message}`);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -150,26 +153,25 @@ const AdminProfile = () => {
           }}
         >
           <Typography
-            variant="h3"
+            variant="h6"
             sx={{
               fontSize: { lg: "2rem", md: "1.75rem", sm: "1.5rem", xs: "1.5rem" },
               fontWeight: "bold",
               fontFamily: "serif",
-              mb: 2,
               color: (theme) =>
                 theme.palette.mode === "dark" ? "white" : "black",
             }}
           >
             Profile
           </Typography>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={formik.handleSubmit}>
             {/* Profile Image */}
             <Box
               sx={{
-                width: 141,
-                height: 141,
+                width: 250, // Doubled the width
+                height: 250, // Doubled the height
                 borderRadius: "50%",
-                backgroundImage: `url(${editedUser.image?.url || ""})`,
+                backgroundImage: `url(${user.image?.url || ""})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 display: "flex",
@@ -177,7 +179,6 @@ const AdminProfile = () => {
                 alignItems: "flex-end",
                 position: "relative",
                 mx: "auto",
-                mb: 2,
               }}
             >
               <input
@@ -234,15 +235,20 @@ const AdminProfile = () => {
                 fullWidth
                 label="Username"
                 name="username"
-                value={editedUser.username || ""}
-                onChange={handleInputChange}
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                error={formik.touched.username && Boolean(formik.errors.username)}
+                helperText={formik.touched.username && formik.errors.username}
               />
               <TextField
                 fullWidth
                 label="Email"
                 name="email"
-                value={editedUser.email || ""}
-                onChange={handleInputChange}
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+                disabled
               />
             </Box>
             <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
@@ -250,15 +256,19 @@ const AdminProfile = () => {
                 fullWidth
                 label="First Name"
                 name="firstname"
-                value={editedUser.firstname || ""}
-                onChange={handleInputChange}
+                value={formik.values.firstname}
+                onChange={formik.handleChange}
+                error={formik.touched.firstname && Boolean(formik.errors.firstname)}
+                helperText={formik.touched.firstname && formik.errors.firstname}
               />
               <TextField
                 fullWidth
                 label="Last Name"
                 name="lastname"
-                value={editedUser.lastname || ""}
-                onChange={handleInputChange}
+                value={formik.values.lastname}
+                onChange={formik.handleChange}
+                error={formik.touched.lastname && Boolean(formik.errors.lastname)}
+                helperText={formik.touched.lastname && formik.errors.lastname}
               />
             </Box>
             <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
@@ -266,22 +276,26 @@ const AdminProfile = () => {
                 fullWidth
                 label="Address"
                 name="address"
-                value={editedUser.address || ""}
-                onChange={handleInputChange}
+                value={formik.values.address}
+                onChange={formik.handleChange}
+                error={formik.touched.address && Boolean(formik.errors.address)}
+                helperText={formik.touched.address && formik.errors.address}
               />
               <TextField
                 fullWidth
                 label="Phone"
                 name="phone"
-                value={editedUser.phone || ""}
-                onChange={handleInputChange}
+                value={formik.values.phone}
+                onChange={formik.handleChange}
+                error={formik.touched.phone && Boolean(formik.errors.phone)}
+                helperText={formik.touched.phone && formik.errors.phone}
               />
             </Box>
             <Button
               variant="contained"
               type="submit"
               fullWidth
-              sx={{ mt: 4, backgroundColor: "black", color: "white" }}
+              sx={{ backgroundColor: "black", color: "white", mt: 2}}
             >
               Save Changes
             </Button>

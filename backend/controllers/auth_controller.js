@@ -135,7 +135,7 @@ export const googlelogin = async (req, res) => {
         const email = decodedToken.email;
         const firebaseUid = decodedToken.uid;
 
-        console.log("Decoded Token:", decodedToken);
+        // console.log("Decoded Token:", decodedToken);
 
         let user = await User.findOne({ email });
         if (!user) {
@@ -258,6 +258,22 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+
+// Get all users
+export const getUsers = async (req, res, next) => {
+    try {
+        const users = await User.find(); // Fetch all users
+        res.status(200).json({
+            success: true,
+            count: users.length, // Count the fetched users
+            users, // Return the list of users
+        });
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        next(new ErrorHandler("Error fetching users", 500)); // Use the ErrorHandler
+    }
+};
+
 export const forgotPassword = async (req, res) => {
     const { email } = req.body;
     try {
@@ -313,21 +329,6 @@ export const resetPassword = async (req, res) => {
     } catch (error) {
         console.log("Error in resetPassword ", error);
         res.status(400).json({ success: false, message: error.message });
-    }
-};
-
-// Get all users
-export const getUsers = async (req, res, next) => {
-    try {
-        const users = await User.find(); // Fetch all users
-        res.status(200).json({
-            success: true,
-            count: users.length, // Count the fetched users
-            users, // Return the list of users
-        });
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        next(new ErrorHandler("Error fetching users", 500)); // Use the ErrorHandler
     }
 };
 
