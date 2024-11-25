@@ -29,17 +29,27 @@ const AdminHomePage = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
-      <AdminSidebar />
-      <div style={{ flex: 1, padding: "80px", display: "flex" }}>
-        <div style={{ flex: 2 }}>
-          <Charts setSummaryData={setSummaryData} />
-        </div>
-        {/* Cards Section */}
-        <div style={{ flex: 1, marginLeft: "20px" }}>
-          <Cards summaryData={summaryData} />
-        </div>
-      </div>
+  <div
+    style={{
+      position: "sticky",
+      top: 0,
+      height: "100vh", // Full viewport height
+      backgroundColor: "#f0f0f0", // Optional for visibility
+      flexShrink: 0, // Prevent shrinking
+    }}
+  >
+    <AdminSidebar />
+  </div>
+  <div style={{ flex: 1, padding: "80px", display: "flex" }}>
+    <div style={{ flex: 2 }}>
+      <Charts setSummaryData={setSummaryData} />
     </div>
+    {/* Cards Section */}
+    <div style={{ flex: 1, marginLeft: "20px" }}>
+      <Cards summaryData={summaryData} />
+    </div>
+  </div>
+</div>
   );
 };
 
