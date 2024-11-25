@@ -11,28 +11,12 @@ const Home = () => {
   
   const dispatch = useDispatch();
   const { figurines, loading, error } = useSelector((state) => state.figurines);
+  console.log("Figurines: ", figurines);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Adjust as needed
   const {classification, date, popularity, price, rating} = useSelector((state) => state.figurines.filters);
-  useEffect(() => {
-    const fetchData = async () => {
-        // Dispatching to fetch figurines
-        dispatch(fetchFigurines());
-
-        try {
-            // Waiting for the token to be generated
-            const token = await generateToken();
-            
-            // Dispatching the action to store the FCM token after the token is generated
-            dispatch(storeFCMToken(token));
-        } catch (error) {
-            console.error("Error generating token:", error);
-        }
-    };
-
-    fetchData();  // Call the async function
-}, [dispatch]);
+ 
 
   const filterFigurines = () => {
     let filtered = figurines;
@@ -128,12 +112,33 @@ const Home = () => {
           break;
       }
     }
+    console.log(filtered);
     // filtered = filtered.filter((figurine) => Number(figurine.stock) === 0);
     
     return filtered;
   };
 
-  const filteredFigurines = filterFigurines();
+  useEffect(() => {
+    const fetchData = async () => {
+        // Dispatching to fetch figurines
+        dispatch(fetchFigurines());
+
+        try {
+            // Waiting for the token to be generated
+            const token = await generateToken();
+            
+            // Dispatching the action to store the FCM token after the token is generated
+            dispatch(storeFCMToken(token));
+        } catch (error) {
+            console.error("Error generating token:", error);
+        }
+    };
+
+    fetchData();  // Call the async function
+    
+}, [dispatch]);
+const filteredFigurines = filterFigurines();
+  
 
   // Pagination logic
   const totalItems = filteredFigurines.length;
