@@ -16,6 +16,7 @@ import {
   Button,
   TextField
 } from '@mui/material';
+import {Filter} from 'bad-words'
 import EditIcon from '@mui/icons-material/Edit';
 import MainNavbar from "../common/navbar";
 import ResponsiveFooter from "../common/footer";
@@ -28,9 +29,10 @@ const ReviewPage = () => {
   useEffect(() => {
     dispatch(fetchMyReviews(id));
   }, [dispatch, id]); // Add dependencies to avoid unnecessary re-renders
-
-  const review = useSelector((state) => state.review.myreviews.data);
-
+  const customFilter = new Filter({ placeHolder: 'x' })
+  
+  const reviews = useSelector((state) => state.review.myreviews.data);
+  const review = customFilter.clean(reviews);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
   const [editedRating, setEditedRating] = useState(0);
