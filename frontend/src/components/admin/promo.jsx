@@ -19,7 +19,17 @@ const PromoDashboard = () => {
 
     return (
         <div className="flex">
-            <AdminSidebar />
+             <div
+                    style={{
+                    position: "sticky",
+                    top: 0,
+                    height: "100vh", // Full viewport height
+                    backgroundColor: "#f0f0f0", // Optional for visibility
+                    flexShrink: 0, // Prevent shrinking
+                    }}
+                >
+                    <AdminSidebar />
+                </div>
             <Stack spacing={2} className="flex-1 p-5">
                 <h1 className="font-delius text-3xl font-bold mb-4">Promo Dashboard</h1>
                 <DataTable rows={promos} />
