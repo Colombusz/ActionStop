@@ -31,8 +31,8 @@ const ReviewPage = () => {
   }, [dispatch, id]); // Add dependencies to avoid unnecessary re-renders
   const customFilter = new Filter({ placeHolder: 'x' })
   
-  const reviews = useSelector((state) => state.review.myreviews.data);
-  const review = customFilter.clean(reviews);
+  const review = useSelector((state) => state.review.myreviews.data);
+  // const CleanReview = customFilter.clean(review);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
   const [editedRating, setEditedRating] = useState(0);
@@ -87,7 +87,7 @@ const ReviewPage = () => {
                     
                     <Rating value={review.rating} readOnly sx={{ mb: 1 }} />
                     <Typography variant="body1" sx={{ mb: 1 }}>
-                      Comment: {review.comment}
+                      Comment: {customFilter.clean(review.comment)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Reviewed on {new Date(review.createdAt).toLocaleDateString()}
