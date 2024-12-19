@@ -1,7 +1,8 @@
 import { Star } from "lucide-react";
+import {Filter} from 'bad-words'
 
 const MiniReviewCard = ({ review }) => {
-  
+  const customFilter = new Filter({ placeHolder: 'x' })
 
   return (
     <div className="w-full max-w-2xl rounded-lg border bg-card p-6 shadow-sm">
@@ -26,7 +27,7 @@ const MiniReviewCard = ({ review }) => {
         </div>
 
         {/* Review Comment */}
-        <p className="mt-3 text-base text-gray-600">{review.comment}</p>
+        <p className="mt-3 text-base text-gray-600">{customFilter.clean(review.comment)}</p>
       </div>
     </div>
   </div>

@@ -91,78 +91,94 @@ const FigurineCard3d = ({ figurine }) => {
             Origin: {figurine.origin} <br />
             Classification: {figurine.classification} <br />
             Price: ${figurine.price}<br />
-            Stocks: {figurine.stock}
+            Stocks: {figurine.stock === 0 ? "Out of Stock" : figurine.stock}  
           </CardItem>
 
           <div className="flex justify-center items-center mt-4">
-            <CardItem translateZ={20} as="div" className="flex space-x-10">
-              <Tooltip title={`Add ${figurine.name} to Favorites <3`} placement="top">
-                
-                  {userId ?
-                    <IconButton 
-                    aria-label="add to favorites"
-                    onClick={() => handleAddToFavorite(figurine._id)}
-                  >
-                   <FavoriteIcon /> 
-                   </IconButton>
-                   : 
-                   <IconButton 
-                    aria-label="add to favorites"
-                    onClick={() => handlenotify(figurine.name)}
-                  >
-                    <FavoriteBorderIcon /> 
-                    </IconButton>
-                    
-                    }
-                
-              </Tooltip>
-              
+            {figurine.stock === 0 ?
+            <CardItem>
+               Out of Stock 
               <Tooltip title="View Full Product" placement="top">
-                <IconButton
-                  aria-label="view"
-                  onClick={() => handleModal(figurine._id)}
-                >
-                  <PreviewIcon />
-                </IconButton>
-              </Tooltip>
-              
-              <Tooltip title={`Add ${figurine.name} to Cart!`} placement="top">
-              {userId ?
-                    <IconButton 
-                    aria-label="add to favorites"
-                    onClick={() => handleAdd2Cart(figurine)}
-                  >
-                   <AddShoppingCartIcon  /> 
-                   </IconButton>
-                   : 
-                   <IconButton 
-                    aria-label="add to favorites"
-                    onClick={() => handlenotifyBuy(figurine.name)}
-                  >
-                    <AddShoppingCartIcon  /> 
-                    </IconButton>
-                    
-                    }
-              </Tooltip>
-
-              <Tooltip title={`Buy ${figurine.name} now!`} placement="top">
               <IconButton
-                  aria-label="buy"
-                  className="ml-auto"
-                  onClick={() => {
-                    if (!user) {
-                      handleAdd2Cart(figurine);
-                    } else {
-                      handleAdd2Cart(figurine); // Add figurine to cart if user is authenticated
-                    }
-                  }}
-                  component={Link}
-                  to={user ? "/user/checkout" : "/"} // Redirect based on user authentication
-                >
-                <StorefrontIcon />
+                aria-label="view"
+                onClick={() => handleModal(figurine._id)}
+              >
+                <PreviewIcon />
               </IconButton>
-              </Tooltip>
-            </CardItem>
+            </Tooltip>
+             
+            </CardItem> 
+            :
+            <CardItem translateZ={20} as="div" className="flex space-x-10">
+            <Tooltip title={`Add ${figurine.name} to Favorites <3`} placement="top">
+              
+                {userId ?
+                  <IconButton 
+                  aria-label="add to favorites"
+                  onClick={() => handleAddToFavorite(figurine._id)}
+                >
+                 <FavoriteIcon /> 
+                 </IconButton>
+                 : 
+                 <IconButton 
+                  aria-label="add to favorites"
+                  onClick={() => handlenotify(figurine.name)}
+                >
+                  <FavoriteBorderIcon /> 
+                  </IconButton>
+                  
+                  }
+              
+            </Tooltip>
+            
+            <Tooltip title="View Full Product" placement="top">
+              <IconButton
+                aria-label="view"
+                onClick={() => handleModal(figurine._id)}
+              >
+                <PreviewIcon />
+              </IconButton>
+            </Tooltip>
+            
+            <Tooltip title={`Add ${figurine.name} to Cart!`} placement="top">
+            {userId ?
+                  <IconButton 
+                  aria-label="add to favorites"
+                  onClick={() => handleAdd2Cart(figurine)}
+                >
+                 <AddShoppingCartIcon  /> 
+                 </IconButton>
+                 : 
+                 <IconButton 
+                  aria-label="add to favorites"
+                  onClick={() => handlenotifyBuy(figurine.name)}
+                >
+                  <AddShoppingCartIcon  /> 
+                  </IconButton>
+                  
+                  }
+            </Tooltip>
+
+            <Tooltip title={`Buy ${figurine.name} now!`} placement="top">
+            <IconButton
+                aria-label="buy"
+                className="ml-auto"
+                onClick={() => {
+                  if (!user) {
+                    handleAdd2Cart(figurine);
+                  } else {
+                    handleAdd2Cart(figurine); // Add figurine to cart if user is authenticated
+                  }
+                }}
+                component={Link}
+                to={user ? "/user/checkout" : "/"} // Redirect based on user authentication
+              >
+              <StorefrontIcon />
+            </IconButton>
+            </Tooltip>
+          </CardItem>
+            }
+            
           </div>
         </CardBody>
       </CardContainer>

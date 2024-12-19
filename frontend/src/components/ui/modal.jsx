@@ -102,6 +102,7 @@ const FigurineModal = ({ images, details, isOpen, onClose, execute }) => {
           <p className="text-gray-700 mb-2">Origin: {details.origin} </p>
           <p className="text-gray-700 mb-2">Classification: {details.classification}</p>
           <p className="text-lg font-semibold">Price: ${details?.price || "0.00"}</p>
+          <p className="text-lg font-semibold">Stocks: {details?.stock===0 ?"Out of Stock" :details.stock }</p>
         </div>
 
         {/* Buttons Section */}
@@ -111,25 +112,33 @@ const FigurineModal = ({ images, details, isOpen, onClose, execute }) => {
               <h2 className="text-2xl font-bold mb-2">{details?.manufacturer[0].name || "N/A"}</h2>
               <p className="text-gray-700 mb-2">Country: {details?.manufacturer[0].country || "N/A"}</p>
             </div>
-            <div className="flex justify-end items-center col-span-1">
-              <div className="flex flex-col gap-4">
-                <Button 
-                variant="outlined" 
-                startIcon={<StorefrontIcon />}
-                onClick = {() => handleAdd2Cart(details)}
-                component={Link} 
-                to="/user/checkout"
-                >
-                  Buy
-                </Button>
-                <Button variant="outlined" 
-                startIcon={<BsBasket />}
-                onClick = {() => handleAdd2Cart(details)}
-                >
-                  Add To Cart
-                </Button>
-              </div>
-            </div>
+
+            {!(details?.stock === 0) ?
+             <div className="flex justify-end items-center col-span-1">
+             <div className="flex flex-col gap-4">
+               <Button 
+               variant="outlined" 
+               startIcon={<StorefrontIcon />}
+               onClick = {() => handleAdd2Cart(details)}
+               component={Link} 
+               to="/user/checkout"
+               >
+                 Buy
+               </Button>
+               <Button variant="outlined" 
+               startIcon={<BsBasket />}
+               onClick = {() => handleAdd2Cart(details)}
+               >
+                 Add To Cart
+               </Button>
+             </div>
+           </div>
+             :
+              ""
+             }
+            
+
+
           </div>
         </div>
       </div>
